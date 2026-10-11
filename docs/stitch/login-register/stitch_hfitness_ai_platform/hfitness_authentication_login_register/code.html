@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="en" class="h-full"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HFitness - Authentication</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#0B0B0D',
+              card: '#18181B',
+              'card-border': '#27272A',
+              text: '#F4F4F5',
+              muted: '#A1A1AA',
+              subtle: '#71717A',
+              red: '#EF4444',
+              'red-hover': '#DC2626',
+              'red-bg': 'rgba(239, 68, 68, 0.12)',
+              'red-border': 'rgba(239, 68, 68, 0.35)',
+              input: '#121214',
+              'input-border': '#27272A',
+              'input-focus': '#3F3F46',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0B0B0D;
+      color: #F4F4F5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-ring:focus-within {
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+    }
+    .ambient-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, rgba(11, 11, 13, 0) 70%);
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      z-index: 0;
+    }
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0B0B0D;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272A;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-center items-center py-10 px-4 relative overflow-x-hidden selection:bg-red-500/20 selection:text-white">
+
+  <!-- Ambient Glow effect behind card -->
+  <div class="ambient-glow"></div>
+
+  <!-- Background Subtle Grid Pattern -->
+  <div class="fixed inset-0 pointer-events-none opacity-[0.03]" style="background-image: radial-gradient(#F4F4F5 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <!-- Main Container -->
+  <div class="w-full max-w-[480px] z-10 flex flex-col items-center">
+    
+    <!-- Top Branding Header -->
+    <div class="flex flex-col items-center text-center mb-7">
+      <div class="flex items-center gap-2.5 mb-2.5 group cursor-pointer">
+        <div class="w-10 h-10 rounded-xl bg-[#18181B] border border-[#27272A] flex items-center justify-center shadow-lg group-hover:border-red-500/40 transition-colors">
+          <svg class="w-6 h-6 text-[#EF4444]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 5v14M18 5v14M6 12h12M4 7h4M16 7h4M4 17h4M16 17h4"></path>
+          </svg>
+        </div>
+        <span class="text-2xl font-extrabold tracking-tight text-[#F4F4F5] flex items-center">
+          HF<span class="text-[#EF4444]">itness</span>
+        </span>
+      </div>
+      <p class="text-sm font-medium text-[#A1A1AA] max-w-xs leading-relaxed">
+        Personalized gym training and nutrition powered by AI.
+      </p>
+    </div>
+
+    <!-- Auth Main Card -->
+    <div class="w-full bg-[#18181B] border border-[#27272A] rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur-md relative transition-all duration-300">
+      
+      <!-- Variant Switcher Tabs -->
+      <div class="flex p-1 bg-[#121214] border border-[#27272A] rounded-xl mb-6">
+        <button id="tab-login" onclick="switchTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-[#F4F4F5] bg-[#18181B] border border-[#27272A] shadow-sm transition-all duration-150 flex items-center justify-center gap-2">
+          <span>Log In</span>
+        </button>
+        <button id="tab-register" onclick="switchTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-[#A1A1AA] hover:text-[#F4F4F5] transition-all duration-150 flex items-center justify-center gap-2">
+          <span>Create Account</span>
+        </button>
+      </div>
+
+      <!-- General Error Banner (Dismissible / Toggleable) -->
+      <div id="general-error-banner" class="mb-6 p-3.5 rounded-xl bg-red-950/30 border border-red-500/40 text-red-200 text-xs sm:text-sm flex items-start gap-3 relative transition-all duration-200">
+        <div class="p-1 rounded-md bg-red-500/20 text-[#EF4444] shrink-0 mt-0.5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="flex-1 pr-2">
+          <p class="font-semibold text-[#F4F4F5] leading-snug">Authentication checkpoint failed</p>
+          <p class="text-[#A1A1AA] text-xs mt-0.5 leading-normal">Invalid security credentials or network timeout. Please verify and retry.</p>
+        </div>
+        <button onclick="dismissErrorBanner()" class="text-[#A1A1AA] hover:text-[#F4F4F5] p-1 -mr-1 transition-colors" title="Dismiss error banner">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- ================= LOGIN FORM VARIANT ================= -->
+      <form id="form-login" class="space-y-4" onsubmit="event.preventDefault(); simulateSubmit('login');">
+        <!-- Email field with error simulation -->
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label for="login-email" class="block text-xs font-semibold text-[#F4F4F5] uppercase tracking-wider">Email Address</label>
+            <span class="text-[11px] text-[#71717A]">athlete@domain.com</span>
+          </div>
+          <div class="relative">
+            <input type="email" id="login-email" value="alex.vance@hfitness.ai" class="w-full bg-[#121214] border border-[#27272A] rounded-xl px-4 py-3 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-red-500/60 focus:ring-1 focus:ring-red-500/60 transition-all" placeholder="name@domain.com">
+          </div>
+        </div>
+
+        <!-- Password Field with inline validation error preview -->
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label for="login-password" class="block text-xs font-semibold text-[#F4F4F5] uppercase tracking-wider">Password</label>
+            <a href="javascript:void(0)" onclick="alert('Password reset link sent to your registered email.')" class="text-xs text-[#EF4444] hover:underline font-medium transition-colors">
+              Forgot password?
+            </a>
+          </div>
+          <div class="relative">
+            <!-- Using an input with warning border state to demonstrate inline error message style requested -->
+            <input type="password" id="login-password" value="••••••••••••" class="w-full bg-[#121214] border border-red-500/50 rounded-xl px-4 py-3 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all pr-10" placeholder="••••••••••••">
+            <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-3 top-3 text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors p-0.5">
+              <svg class="w-4 h-4 eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <!-- Inline Error Message: With Icon + Text (not color alone) -->
+          <div class="mt-1.5 flex items-center gap-1.5 text-xs text-[#EF4444] font-medium animate-fadeIn">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Password does not match our encrypted records.</span>
+          </div>
+        </div>
+
+        <!-- Primary Action Button with Loading State Switcher -->
+        <div class="pt-2">
+          <button type="submit" id="btn-login-submit" class="w-full py-3.5 px-4 bg-[#EF4444] hover:bg-[#DC2626] active:scale-[0.99] text-white font-bold text-sm rounded-xl shadow-lg shadow-red-900/20 transition-all flex items-center justify-center gap-2 group cursor-pointer">
+            <!-- Button Content Normal -->
+            <span class="btn-text flex items-center gap-2">
+              <span>Log in</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+            <!-- Button Loading Indicator (shown on click / state toggled) -->
+            <span class="btn-spinner hidden items-center gap-2">
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Authenticating telemetry...</span>
+            </span>
+          </button>
+        </div>
+
+        <!-- Bottom Switch Variant Link -->
+        <div class="pt-4 text-center border-t border-[#27272A]/70">
+          <p class="text-sm text-[#A1A1AA]">
+            Don't have an account? 
+            <button type="button" onclick="switchTab('register')" class="text-[#EF4444] hover:underline font-semibold ml-1">
+              Create one
+            </button>
+          </p>
+        </div>
+      </form>
+
+      <!-- ================= REGISTER FORM VARIANT ================= -->
+      <form id="form-register" class="space-y-4 hidden" onsubmit="event.preventDefault(); simulateSubmit('register');">
+        <!-- Email Field -->
+        <div>
+          <label for="reg-email" class="block text-xs font-semibold text-[#F4F4F5] uppercase tracking-wider mb-1.5">Email Address</label>
+          <input type="email" id="reg-email" class="w-full bg-[#121214] border border-[#27272A] rounded-xl px-4 py-3 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-red-500/60 focus:ring-1 focus:ring-red-500/60 transition-all" placeholder="athlete@domain.com">
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label for="reg-password" class="block text-xs font-semibold text-[#F4F4F5] uppercase tracking-wider mb-1.5">Create Password</label>
+          <div class="relative">
+            <input type="password" id="reg-password" class="w-full bg-[#121214] border border-[#27272A] rounded-xl px-4 py-3 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-red-500/60 focus:ring-1 focus:ring-red-500/60 transition-all pr-10" placeholder="Minimum 8 characters">
+            <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-3 top-3 text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors p-0.5">
+              <svg class="w-4 h-4 eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field with Sample Mismatch Error -->
+        <div>
+          <label for="reg-confirm-password" class="block text-xs font-semibold text-[#F4F4F5] uppercase tracking-wider mb-1.5">Confirm Password</label>
+          <div class="relative">
+            <input type="password" id="reg-confirm-password" class="w-full bg-[#121214] border border-red-500/50 rounded-xl px-4 py-3 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all pr-10" placeholder="Re-enter password" value="short">
+            <button type="button" onclick="togglePasswordVisibility('reg-confirm-password', this)" class="absolute right-3 top-3 text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors p-0.5">
+              <svg class="w-4 h-4 eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <!-- Inline Error with explicit Icon and Text -->
+          <div class="mt-1.5 flex items-center gap-1.5 text-xs text-[#EF4444] font-medium">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Passwords do not match. Minimum 8 characters required.</span>
+          </div>
+        </div>
+
+        <!-- Terms agreement notice -->
+        <div class="flex items-start gap-2.5 pt-1">
+          <input type="checkbox" id="terms" checked="" class="mt-1 rounded bg-[#121214] border-[#27272A] text-[#EF4444] focus:ring-red-500/40">
+          <label for="terms" class="text-xs text-[#A1A1AA] leading-snug">
+            By registering, you consent to AI-calculated biometrics and workout telemetry guidelines.
+          </label>
+        </div>
+
+        <!-- Primary Create Account Button -->
+        <div class="pt-2">
+          <button type="submit" id="btn-register-submit" class="w-full py-3.5 px-4 bg-[#EF4444] hover:bg-[#DC2626] active:scale-[0.99] text-white font-bold text-sm rounded-xl shadow-lg shadow-red-900/20 transition-all flex items-center justify-center gap-2 group cursor-pointer">
+            <!-- Button Content Normal -->
+            <span class="btn-text flex items-center gap-2">
+              <span>Create account</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+            <!-- Button Loading Indicator -->
+            <span class="btn-spinner hidden items-center gap-2">
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Initializing protocol...</span>
+            </span>
+          </button>
+        </div>
+
+        <!-- Bottom Link to Login -->
+        <div class="pt-4 text-center border-t border-[#27272A]/70">
+          <p class="text-sm text-[#A1A1AA]">
+            Already have an account? 
+            <button type="button" onclick="switchTab('login')" class="text-[#EF4444] hover:underline font-semibold ml-1">
+              Log in
+            </button>
+          </p>
+        </div>
+      </form>
+
+      <!-- Testing State Switcher Pill bar (Convenient for review) -->
+      <div class="mt-6 pt-4 border-t border-[#27272A]/50 flex items-center justify-between text-[11px] text-[#71717A]">
+        <span>UI State Preview:</span>
+        <div class="flex gap-2">
+          <button onclick="toggleErrorBanner()" class="hover:text-[#F4F4F5] underline underline-offset-2">Toggle Banner</button>
+          <span>•</span>
+          <button onclick="toggleActiveLoading()" class="hover:text-[#EF4444] underline underline-offset-2">Toggle Loading State</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security & Trust Badge Footer -->
+    <div class="mt-8 flex items-center gap-4 text-xs text-[#71717A]">
+      <div class="flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>End-to-end Encrypted</span>
+      </div>
+      <span>•</span>
+      <a href="#" class="hover:text-[#A1A1AA] transition-colors">Privacy Policy</a>
+      <span>•</span>
+      <a href="#" class="hover:text-[#A1A1AA] transition-colors">System Status</a>
+    </div>
+
+  </div>
+
+  <script>
+    // Tab switching logic
+    function switchTab(mode) {
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const formLogin = document.getElementById('form-login');
+      const formRegister = document.getElementById('form-register');
+
+      if (mode === 'login') {
+        tabLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-[#F4F4F5] bg-[#18181B] border border-[#27272A] shadow-sm transition-all duration-150 flex items-center justify-center gap-2";
+        tabRegister.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-[#A1A1AA] hover:text-[#F4F4F5] transition-all duration-150 flex items-center justify-center gap-2";
+        formLogin.classList.remove('hidden');
+        formRegister.classList.add('hidden');
+      } else {
+        tabRegister.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-[#F4F4F5] bg-[#18181B] border border-[#27272A] shadow-sm transition-all duration-150 flex items-center justify-center gap-2";
+        tabLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-[#A1A1AA] hover:text-[#F4F4F5] transition-all duration-150 flex items-center justify-center gap-2";
+        formRegister.classList.remove('hidden');
+        formLogin.classList.add('hidden');
+      }
+    }
+
+    // Toggle General Error Banner
+    function dismissErrorBanner() {
+      const banner = document.getElementById('general-error-banner');
+      banner.classList.add('hidden');
+    }
+
+    function toggleErrorBanner() {
+      const banner = document.getElementById('general-error-banner');
+      banner.classList.toggle('hidden');
+    }
+
+    // Password visibility toggle
+    function togglePasswordVisibility(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.classList.add('text-[#EF4444]');
+        btn.classList.remove('text-[#A1A1AA]');
+      } else {
+        input.type = 'password';
+        btn.classList.remove('text-[#EF4444]');
+        btn.classList.add('text-[#A1A1AA]');
+      }
+    }
+
+    // Simulate submission loading state
+    function simulateSubmit(type) {
+      const btn = type === 'login' 
+        ? document.getElementById('btn-login-submit') 
+        : document.getElementById('btn-register-submit');
+      
+      const txt = btn.querySelector('.btn-text');
+      const spinner = btn.querySelector('.btn-spinner');
+
+      txt.classList.add('hidden');
+      spinner.classList.remove('hidden');
+      spinner.classList.add('flex');
+      btn.disabled = true;
+      btn.classList.add('opacity-90', 'cursor-not-allowed');
+
+      setTimeout(() => {
+        txt.classList.remove('hidden');
+        spinner.classList.add('hidden');
+        spinner.classList.remove('flex');
+        btn.disabled = false;
+        btn.classList.remove('opacity-90', 'cursor-not-allowed');
+      }, 2500);
+    }
+
+    // Toggle active loading manually for inspection
+    function toggleActiveLoading() {
+      const isLoginVisible = !document.getElementById('form-login').classList.contains('hidden');
+      const btn = isLoginVisible ? document.getElementById('btn-login-submit') : document.getElementById('btn-register-submit');
+      const txt = btn.querySelector('.btn-text');
+      const spinner = btn.querySelector('.btn-spinner');
+
+      if (txt.classList.contains('hidden')) {
+        txt.classList.remove('hidden');
+        spinner.classList.add('hidden');
+        spinner.classList.remove('flex');
+        btn.disabled = false;
+      } else {
+        txt.classList.add('hidden');
+        spinner.classList.remove('hidden');
+        spinner.classList.add('flex');
+        btn.disabled = true;
+      }
+    }
+  </script>
+
+
+</body></html>
