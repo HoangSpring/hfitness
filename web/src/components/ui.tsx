@@ -11,7 +11,6 @@ export function Field({ label, error, children }: { label: string; error?: strin
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) { return <section className={`card ${className}`}>{children}</section>; }
 export function Spinner() { return <span className="spinner" aria-label={t('common.loading')} />; }
 export function Skeleton({ className = '' }: { className?: string }) { return <div className={`skeleton ${className}`} aria-hidden="true" />; }
-export function EmptyState({ title, description }: { title: string; description: string }) { return <Card className="empty-state"><h2>{title}</h2><p>{description}</p></Card>; }
+export function EmptyState({ title, description, children }: { title: string; description: string; children?: ReactNode }) { return <Card className="empty-state"><h2>{title}</h2><p>{description}</p>{children}</Card>; }
 export function ErrorState({ onRetry }: { onRetry?: () => void }) { return <Card className="error-state"><p role="alert">! {t('common.error')}</p>{onRetry && <Button variant="secondary" onClick={onRetry}>{t('common.retry')}</Button>}</Card>; }
 export function Toast({ children }: { children: ReactNode }) { return <div className="toast" role="status">{children}</div>; }
-

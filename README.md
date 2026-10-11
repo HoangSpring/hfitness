@@ -9,8 +9,22 @@ TypeScript, and Supabase.
    publishable key.
 2. Copy `server/.env.example` to `server/.env` and fill in the Supabase URL,
    publishable key, and server-only secret key.
-3. Apply `supabase/migrations/001_profiles.sql` in the Supabase SQL Editor.
-4. Install dependencies and start both applications:
+3. Apply `supabase/migrations/001_profiles.sql`, `002_fitness_assessments.sql`,
+   and `003_exercises.sql` in the Supabase SQL Editor, in that order. The
+   migration grants only public read access to published exercises; it does not
+   grant public write access.
+4. Run the idempotent exercise seed from the `server` directory. It reads the
+   server-only Supabase credentials from `server/.env`, validates every row
+   before writing, upserts by `slug`, and prints the status counts:
+
+```powershell
+cd server
+npm run seed:exercises
+```
+
+The two `ZZ Hidden...` rows are deliberately DRAFT/ARCHIVED and should not
+appear in the public library. Never print or commit the service-role key.
+5. Install dependencies and start both applications:
 
 ```powershell
 cd web
@@ -31,4 +45,3 @@ The web app runs at `http://localhost:5173` and the API at
 
 Run `npm run typecheck`, `npm run build`, and `npm test` in both `web` and
 `server`.
-

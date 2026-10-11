@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.seed.json",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "seed:exercises": "tsx scripts/seed-exercises.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
@@ -30,4 +31,3 @@
     "vitest": "^3.0.5"
   }
 }
-
