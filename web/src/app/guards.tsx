@@ -1,12 +1,31 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Spinner } from '../components/ui';
+import { useEffect, useState } from 'react';
+import { ErrorState, Spinner } from '../components/ui';
 import { useAuth } from '../features/auth/useAuth';
+import { getProfile, type Profile } from '../features/profile/profile';
 
 export function ProtectedRoute() {
   const { user, loading } = useAuth();
   const location = useLocation();
-  if (loading) return <div className="center-page"><Spinner /></div>;
-  return user ? <Outlet /> : <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(false);
+  useEffect(() => {
+    if (!user) {
+      setProfile(null);
+      setProfileLoading(false);
+      return;
+    }
+    setProfileError(false);
+    setProfileLoading(true);
+    void getProfile(user.id).then(setProfile).catch(() => setProfileError(true)).finally(() => setProfileLoading(false));
+  }, [user]);
+  if (loading || (user && profileLoading)) return <div className="center-page"><Spinner /></div>;
+  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  if (profileError || !profile) return <div className="center-page"><ErrorState onRetry={() => window.location.reload()} /></div>;
+  if (!profile.onboarding_completed && location.pathname !== '/onboarding' && location.pathname !== '/analyzing') return <Navigate to="/onboarding" replace />;
+  if (profile.onboarding_completed && location.pathname === '/onboarding') return <Navigate to="/dashboard" replace />;
+  return <Outlet />;
 }
 export function PublicOnlyRoute() {
   const { user, loading } = useAuth();
