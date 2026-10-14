@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-fixed":"#ffdad7","surface-tint":"#ffb3ad","secondary-container":"#47464a","on-secondary-fixed":"#1b1b1e","tertiary-fixed-dim":"#ffb3ad","inverse-primary":"#b91a24","on-secondary-container":"#b6b4b8","primary-fixed":"#ffdad7","tertiary":"#ffb3ad","surface":"#131315","secondary-fixed":"#e4e1e5","surface-container-highest":"#353437","error-container":"#93000a","on-primary-container":"#5c0008","tertiary-container":"#ff5451","on-surface-variant":"#e4beba","on-primary-fixed":"#410004","primary-container":"#ff5451","on-background":"#e5e1e4","on-primary":"#68000a","surface-variant":"#353437","on-error-container":"#ffdad6","on-secondary":"#303033","inverse-surface":"#e5e1e4","on-tertiary-fixed-variant":"#930013","on-tertiary-fixed":"#410004","surface-bright":"#39393b","surface-container-low":"#1c1b1d","primary-fixed-dim":"#ffb3ad","on-primary-fixed-variant":"#930013","on-tertiary-container":"#5c0008","surface-container":"#201f21","on-secondary-fixed-variant":"#47464a","background":"#131315","surface-container-high":"#2a2a2c","primary":"#ffb3ad","on-tertiary":"#68000a","error":"#ffb4ab","inverse-on-surface":"#313032","outline-variant":"#5b403e","on-error":"#690005","on-surface":"#e5e1e4","surface-dim":"#131315","secondary":"#c8c6c9","outline":"#ab8986","secondary-fixed-dim":"#c8c6c9","surface-container-lowest":"#0e0e10"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-2xl":"3rem","gutter":"1.5rem","space-sm":"0.5rem","space-md":"1rem","margin":"1rem","space-xs":"0.25rem","margin-desktop":"2.5rem","gutter-desktop":"2rem","space-xl":"2rem","space-lg":"1.5rem"},"fontFamily":{"data-mono":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"metric-display-mobile":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-xl":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-xl-mobile":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"metric-display":["Plus Jakarta Sans"]},"fontSize":{"data-mono":["0.8125rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"700"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-lg":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0.01em","fontWeight":"600"}],"metric-display-mobile":["2.5rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"800"}],"body-md":["0.9375rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"700"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.05em","fontWeight":"600"}],"body-lg":["1.125rem",{"lineHeight":"1.75rem","fontWeight":"400"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-display":["3.5rem",{"lineHeight":"3.75rem","letterSpacing":"-0.04em","fontWeight":"800"}]}}}}</script></head><body class="bg-surface-container-lowest font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low border-r border-surface-container-high z-50 flex flex-col justify-between select-none"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm border-b border-surface-container-high/60"><img alt="HFitness Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VdObItvinDkfhMGcmb-wa1-EOT-8y05C6VQ-k3ktyvctsplndfnpNhd12hO30uzW3mnDJmslMn90hN90MrGeF-6m2587ImEfeCDToxfRLlSDqBgnKQZjQfpwzl2awazXqAxri00PK54G2zds46-S8LJ1Hc80vVplr5qY7vFsO9_Umx_LmxE3z-HvleKSCnP4ag_Ez_3_a_jm3WtfyOdbGiHTaiy2UTKz6v2X0do0wezFG9O3a__EMQZw"/><span class="font-headline-md text-headline-md tracking-tight text-on-surface font-bold">HFitness</span></div><div class="px-space-md py-space-sm"><p class="px-space-sm pt-space-sm pb-space-xs font-label-md text-label-md uppercase tracking-wider text-secondary">Telemetry &amp; Core</p></div><nav class="flex flex-col gap-1 px-space-sm" data-active-classes="bg-primary-container text-on-primary-container font-semibold"><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="dashboard" href="#">Dashboard</a><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="workout" href="#">Workout</a><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="exercises" href="#">Exercises</a><a class="flex items-center px-space-md py-space-sm rounded-lg bg-primary-container text-on-primary-container font-semibold transition-colors font-label-lg text-label-lg" data-path="nutrition" href="#">Nutrition</a><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="progress" href="#">Progress</a><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="ai-coach" href="#">AI Coach</a><a class="flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="profile" href="#">Profile</a></nav></div><div class="p-space-md border-t border-surface-container-high"><a class="flex items-center justify-between p-space-sm bg-surface-container rounded-xl hover:bg-surface-container-high transition-colors group cursor-pointer" data-path="profile" href="#"><div class="flex items-center gap-space-sm min-w-0"><img alt="Alex Vance" class="w-9 h-9 rounded-full object-cover ring-1 ring-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsoeYy-eANwEtKwbIRj841hLudgqMfdzs-wYwPVq2herbmrESQSKat19SinyuLEY6CuXcgIEtuiCWNlQAfYEXpI8JfUM9PXucQY5nRB6JaGjrlwHK705WeayOk5NE_Jf1cfuzgqBm0eMbZ-NFnc0WSiITAE8o_3kYL9840MYFLaVONMk7VoJPkOf3wmC2pmYh02LEl6kSK0EUQsKSlWHMgLQsneN_OIvqZ3wx_dYrPCarAIVVUx8jq"/><div class="flex flex-col min-w-0"><span class="font-label-lg text-label-lg text-on-surface truncate group-hover:text-primary transition-colors">Alex Vance</span><span class="font-label-md text-label-md text-primary font-medium truncate">Pro Plan</span></div></div><div class="flex items-center gap-1"><span class="material-symbols-outlined text-secondary group-hover:text-on-surface text-[18px] transition-colors">chevron_right</span></div></a></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-container-low/90 backdrop-blur-xl border-b border-surface-container-high/60 z-40 flex items-center justify-between px-gutter-desktop"><div class="flex items-center gap-space-md"><div class="flex items-center bg-surface-container px-space-md py-1.5 rounded-full border border-surface-container-high"><span class="material-symbols-outlined text-secondary text-[18px] mr-space-sm">search</span><span class="font-body-md text-body-md text-secondary select-none">Search telemetry, movements, bio-metrics...</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-md py-1 bg-surface-container rounded-full border border-surface-container-high font-data-mono text-data-mono text-secondary"><span class="material-symbols-outlined text-primary text-[16px]">schedule</span><span>TODAY</span></div><button class="relative p-2 rounded-lg bg-surface-container border border-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface-container"></span></button><a class="flex items-center justify-center" data-path="profile" href="#"><img alt="Alex Vance Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container-highest hover:ring-primary transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsoeYy-eANwEtKwbIRj841hLudgqMfdzs-wYwPVq2herbmrESQSKat19SinyuLEY6CuXcgIEtuiCWNlQAfYEXpI8JfUM9PXucQY5nRB6JaGjrlwHK705WeayOk5NE_Jf1cfuzgqBm0eMbZ-NFnc0WSiITAE8o_3kYL9840MYFLaVONMk7VoJPkOf3wmC2pmYh02LEl6kSK0EUQsKSlWHMgLQsneN_OIvqZ3wx_dYrPCarAIVVUx8jq"/></a></div></header><main class="w-full pt-16 px-gutter-desktop py-space-xl bg-surface-container-lowest min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Control Bar / Breadcrumb / Screen Mode Switcher -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg mb-space-xl">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs font-data-mono text-data-mono text-secondary tracking-widest uppercase">
+<span>HFitness</span>
+<span class="material-symbols-outlined text-[14px] text-surface-tint">chevron_right</span>
+<span class="text-primary font-bold">Progress</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Progress</h1>
+<p class="font-body-md text-body-md text-secondary max-w-2xl">
+        Track your body weight, workout consistency, and nutrition adherence over time.
+      </p>
+</div>
+<!-- Controls: Time Range & View Mode Preview -->
+<div class="flex flex-wrap items-center gap-space-md">
+<!-- 30d / 90d Segmented Switch -->
+<div class="flex items-center bg-surface-container-low p-1 rounded-xl">
+<button class="px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-high text-on-surface shadow-sm transition-all" id="btn-range-30" type="button">
+          30 days
+        </button>
+<button class="px-space-md py-1.5 rounded-lg font-label-lg text-label-lg text-secondary hover:text-on-surface transition-all" id="btn-range-90" type="button">
+          90 days
+        </button>
+</div>
+<!-- State Inspector Toggle (Populated vs Empty) -->
+<div class="flex items-center bg-surface-container-low p-1 rounded-xl">
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg font-label-md text-label-md bg-primary-container text-on-primary-container font-semibold transition-all" id="btn-view-populated" type="button">
+<span class="material-symbols-outlined text-[16px]">database</span>
+<span>Populated</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg font-label-md text-label-md text-secondary hover:text-on-surface transition-all" id="btn-view-empty" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility_off</span>
+<span>Empty State</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MAIN TELEMETRY CONTENT WRAPPER -->
+<div class="flex flex-col gap-space-2xl">
+<!-- ========================================== -->
+<!-- SECTION 1: BODY WEIGHT TRACKING            -->
+<!-- ========================================== -->
+<section class="flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-xs">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Body Weight</h2>
+<p class="font-body-md text-body-md text-secondary">Consistent weigh-ins over time</p>
+</div>
+<button class="inline-flex items-center justify-center gap-space-xs px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg bg-primary-container text-on-primary-container font-semibold hover:opacity-90 transition-all shadow-sm" id="btn-open-modal" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Log Weight</span>
+</button>
+</div>
+<!-- POPULATED STATE: WEIGHT -->
+<div class="flex flex-col gap-space-lg" id="weight-populated-group">
+<!-- Highlights Row: 3 Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Card 1 -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Latest Weight</span>
+<span class="px-2 py-0.5 rounded-full font-data-mono text-data-mono bg-surface-container-high text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+                -0.6 kg in 7 days
+              </span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight">83.4</span>
+<span class="font-label-lg text-label-lg text-secondary">kg</span>
+</div>
+<p class="font-data-mono text-data-mono text-secondary mt-space-xs">Today, Oct 24 • Morning fasting</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Starting (30d ago)</span>
+<span class="px-2 py-0.5 rounded-full font-data-mono text-data-mono bg-surface-container-high text-secondary">
+                -0.8 kg total
+              </span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight">84.2</span>
+<span class="font-label-lg text-label-lg text-secondary">kg</span>
+</div>
+<p class="font-data-mono text-data-mono text-secondary mt-space-xs">Logged on Sep 25, 2024</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Weigh-in Frequency</span>
+<span class="px-2 py-0.5 rounded-full font-data-mono text-data-mono bg-surface-container-high text-on-surface">
+                Target: &gt; 3/wk
+              </span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight">4.2</span>
+<span class="font-label-lg text-label-lg text-secondary">days / week</span>
+</div>
+<p class="font-data-mono text-data-mono text-secondary mt-space-xs">18 total logs recorded this month</p>
+</div>
+</div>
+<!-- Main Chart + Recent Logs Split View -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Main Weight Interactive SVG Chart (8 Cols) -->
+<div class="lg:col-span-8 bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between min-h-[380px]">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-md text-headline-md text-on-surface">Weight Telemetry</span>
+<span class="px-2 py-0.5 rounded-md font-data-mono text-data-mono bg-surface-container text-surface-tint">30-DAY SMOOTHED</span>
+</div>
+<div class="flex items-center gap-space-md text-data-mono font-data-mono text-secondary">
+<span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span> Recorded</span>
+<span class="inline-flex items-center gap-1.5"><span class="w-3 h-0.5 bg-surface-container-highest"></span> Trendline</span>
+</div>
+</div>
+<!-- SVG Line Graph Container with hoverable coordinate tooltip -->
+<div class="relative w-full h-64 flex flex-col justify-end select-none">
+<!-- Y-Axis guidelines & text labels -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
+<div class="w-full flex items-center justify-between border-b border-surface-container-highest/60 pb-1">
+<span class="font-data-mono text-data-mono text-secondary">85.0 kg</span>
+<div class="w-full h-px bg-surface-container-highest ml-3"></div>
+</div>
+<div class="w-full flex items-center justify-between border-b border-surface-container-highest/60 pb-1">
+<span class="font-data-mono text-data-mono text-secondary">84.0 kg</span>
+<div class="w-full h-px bg-surface-container-highest ml-3"></div>
+</div>
+<div class="w-full flex items-center justify-between border-b border-surface-container-highest/60 pb-1">
+<span class="font-data-mono text-data-mono text-secondary">83.0 kg</span>
+<div class="w-full h-px bg-surface-container-highest ml-3"></div>
+</div>
+<div class="w-full flex items-center justify-between pb-1">
+<span class="font-data-mono text-data-mono text-secondary">82.0 kg</span>
+<div class="w-full h-px bg-surface-container-highest ml-3"></div>
+</div>
+</div>
+<!-- High-precision SVG Chart Curve -->
+<svg class="w-full h-full overflow-visible relative z-10" preserveaspectratio="none" viewbox="0 0 760 220">
+<defs>
+<lineargradient id="weightAreaGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ff5451" stop-opacity="0.22"></stop>
+<stop offset="100%" stop-color="#ff5451" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Gradient Area Fill below curve -->
+<path d="M 60 75 L 180 82 L 310 98 L 440 102 L 560 125 L 680 142 L 680 210 L 60 210 Z" fill="url(#weightAreaGrad)"></path>
+<!-- Trend Line (smoothed) -->
+<path d="M 60 75 Q 240 88 440 102 T 680 142" fill="none" stroke="#353437" stroke-dasharray="4 4" stroke-width="2"></path>
+<!-- Actual Metric Data Line -->
+<path d="M 60 75 L 180 82 L 310 98 L 440 102 L 560 125 L 680 142" fill="none" stroke="#ff5451" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></path>
+<!-- Data Points -->
+<circle class="fill-surface-container-lowest stroke-primary-container" cx="60" cy="75" r="5" stroke-width="3"></circle>
+<circle class="fill-surface-container-lowest stroke-primary-container" cx="180" cy="82" r="5" stroke-width="3"></circle>
+<circle class="fill-surface-container-lowest stroke-primary-container" cx="310" cy="98" r="5" stroke-width="3"></circle>
+<circle class="fill-surface-container-lowest stroke-primary-container" cx="440" cy="102" r="5" stroke-width="3"></circle>
+<circle class="fill-surface-container-lowest stroke-primary-container" cx="560" cy="125" r="5" stroke-width="3"></circle>
+<circle class="fill-primary-container stroke-on-surface" cx="680" cy="142" r="7" stroke-width="2"></circle>
+</svg>
+<!-- Active Focal Callout Tooltip positioned at Latest Value -->
+<div class="absolute right-6 top-16 z-20 flex flex-col items-center pointer-events-none">
+<div class="bg-surface-container-high px-space-md py-1.5 rounded-lg shadow-xl flex flex-col items-start gap-0.5">
+<span class="font-data-mono text-data-mono text-secondary">Oct 24 • Latest</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">83.4 kg <span class="text-primary text-xs font-normal">(-0.2 vs prior)</span></span>
+</div>
+<div class="w-2 h-2 bg-surface-container-high rotate-45 -mt-1"></div>
+</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="flex items-center justify-between pt-space-sm pl-10 pr-4 font-data-mono text-data-mono text-secondary">
+<span>Oct 01</span>
+<span>Oct 08</span>
+<span>Oct 15</span>
+<span>Oct 22</span>
+<span class="text-on-surface font-bold">Today (Oct 24)</span>
+</div>
+</div>
+<!-- Recent Entries List Card (4 Cols) -->
+<div class="lg:col-span-4 bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-md border-b border-surface-container-high/60">
+<span class="font-headline-md text-headline-md text-on-surface">Recent Logs</span>
+<span class="font-data-mono text-data-mono text-secondary">5 ENTRIES</span>
+</div>
+<!-- Entries List -->
+<div class="flex flex-col" id="weight-log-list">
+<!-- Row 1 -->
+<div class="group flex items-center justify-between py-space-sm border-b border-surface-container-high/40 hover:bg-surface-container-high/20 px-space-xs rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Today, Oct 24</span>
+<span class="font-data-mono text-data-mono text-secondary">07:15 AM</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">83.4 kg</span>
+<button class="text-secondary hover:text-error transition-colors p-1" onclick="this.closest('.group').remove()" title="Delete entry" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="group flex items-center justify-between py-space-sm border-b border-surface-container-high/40 hover:bg-surface-container-high/20 px-space-xs rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Tue, Oct 22</span>
+<span class="font-data-mono text-data-mono text-secondary">06:50 AM</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">83.6 kg</span>
+<button class="text-secondary hover:text-error transition-colors p-1" onclick="this.closest('.group').remove()" title="Delete entry" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="group flex items-center justify-between py-space-sm border-b border-surface-container-high/40 hover:bg-surface-container-high/20 px-space-xs rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Sun, Oct 20</span>
+<span class="font-data-mono text-data-mono text-secondary">07:45 AM</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">83.8 kg</span>
+<button class="text-secondary hover:text-error transition-colors p-1" onclick="this.closest('.group').remove()" title="Delete entry" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="group flex items-center justify-between py-space-sm border-b border-surface-container-high/40 hover:bg-surface-container-high/20 px-space-xs rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Fri, Oct 18</span>
+<span class="font-data-mono text-data-mono text-secondary">07:05 AM</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">84.0 kg</span>
+<button class="text-secondary hover:text-error transition-colors p-1" onclick="this.closest('.group').remove()" title="Delete entry" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Row 5 -->
+<div class="group flex items-center justify-between py-space-sm hover:bg-surface-container-high/20 px-space-xs rounded-lg transition-colors">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Mon, Oct 14</span>
+<span class="font-data-mono text-data-mono text-secondary">08:10 AM</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">84.2 kg</span>
+<button class="text-secondary hover:text-error transition-colors p-1" onclick="this.closest('.group').remove()" title="Delete entry" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-sm border-t border-surface-container-high/60 flex items-center justify-between text-secondary font-data-mono text-data-mono">
+<span>Calculated using morning weigh-ins</span>
+<span class="text-on-surface font-semibold">Scale calibrated</span>
+</div>
+</div>
+</div>
+</div>
+<!-- EMPTY STATE: WEIGHT (Toggleable via Preview switch) -->
+<div class="hidden bg-surface-container-low rounded-2xl p-space-2xl flex-col items-center justify-center text-center py-16" id="weight-empty-card">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary-container mb-space-md">
+<span class="material-symbols-outlined text-[32px]">monitor_weight</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-space-xs">No weight entries yet</h3>
+<p class="font-body-md text-body-md text-secondary max-w-md mb-space-lg">
+          Add your first one to start tracking. Your moving averages and weekly body weight trends will calibrate here automatically.
+        </p>
+<button class="px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg bg-primary-container text-on-primary-container font-semibold hover:opacity-90 transition-all" onclick="document.getElementById('btn-open-modal').click()" type="button">
+          Add your first weight
+        </button>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- SECTION 2: WORKOUTS & CONSISTENCY          -->
+<!-- ========================================== -->
+<section class="flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-xs">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Workouts</h2>
+<p class="font-body-md text-body-md text-secondary">Session consistency and training volume over the last 8 weeks</p>
+</div>
+<div class="flex items-center gap-2 font-data-mono text-data-mono text-secondary">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span>4 SESSIONS / WEEK TARGET</span>
+</div>
+</div>
+<!-- POPULATED STATE: WORKOUTS -->
+<div class="flex flex-col gap-space-lg" id="workouts-populated-group">
+<!-- Three Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Stat 1 -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider mb-space-sm">Workouts this week</span>
+<div class="flex items-baseline gap-space-xs mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">3 of 4</span>
+<span class="font-label-lg text-label-lg text-secondary">sessions</span>
+</div>
+<!-- Progress Mini-Bar -->
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mb-space-xs">
+<div class="bg-primary-container h-full rounded-full" style="width: 75%"></div>
+</div>
+<span class="font-data-mono text-data-mono text-secondary">75% completed • 1 session remaining</span>
+</div>
+<!-- Stat 2 -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider mb-space-sm">Completion rate</span>
+<div class="flex items-baseline gap-space-xs mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">92%</span>
+<span class="font-label-lg text-label-lg text-primary">On Target</span>
+</div>
+<!-- Progress Mini-Bar -->
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mb-space-xs">
+<div class="bg-primary h-full rounded-full" style="width: 92%"></div>
+</div>
+<span class="font-data-mono text-data-mono text-secondary">11 of 12 sessions completed this month</span>
+</div>
+<!-- Stat 3 -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider mb-space-sm">Total volume this week</span>
+<div class="flex items-baseline gap-space-xs mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">18,650</span>
+<span class="font-label-lg text-label-lg text-secondary">kg</span>
+</div>
+<div class="flex items-center gap-1 font-data-mono text-data-mono text-primary mb-space-xs">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+<span>Up +450 kg vs last week</span>
+</div>
+<span class="font-data-mono text-data-mono text-secondary">Aggregated sets across Push, Pull, Legs</span>
+</div>
+</div>
+<!-- 8-Week Frequency Bar Chart Card -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-xl">
+<div>
+<span class="font-headline-md text-headline-md text-on-surface">Weekly Session Frequency</span>
+<p class="font-body-md text-body-md text-secondary">8-week training blocks consistency</p>
+</div>
+<div class="flex items-center gap-space-md font-data-mono text-data-mono">
+<span class="flex items-center gap-1.5 text-secondary">
+<span class="w-3 h-3 rounded bg-surface-container-high"></span> Completed
+              </span>
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-3 h-3 rounded bg-primary-container"></span> Current (Week 8)
+              </span>
+</div>
+</div>
+<!-- Discrete Bar Chart Display -->
+<div class="grid grid-cols-8 gap-space-sm sm:gap-space-md items-end h-48 pt-6 pb-2 px-space-xs">
+<!-- Week 1: 4 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">4</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 80%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W1</span>
+</div>
+<!-- Week 2: 3 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">3</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 60%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W2</span>
+</div>
+<!-- Week 3: 4 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">4</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 80%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W3</span>
+</div>
+<!-- Week 4: 4 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">4</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 80%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W4</span>
+</div>
+<!-- Week 5: 3 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">3</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 60%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W5</span>
+</div>
+<!-- Week 6: 4 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">4</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 80%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W6</span>
+</div>
+<!-- Week 7: 4 sessions -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-secondary mb-1 opacity-0 group-hover:opacity-100 transition-opacity">4</span>
+<div class="w-full max-w-[48px] bg-surface-container-high group-hover:bg-surface-bright rounded-t-lg transition-all" style="height: 80%;"></div>
+<span class="font-data-mono text-data-mono text-secondary mt-space-sm">W7</span>
+</div>
+<!-- Week 8 (Current): 3 sessions (in progress) -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-data-mono text-data-mono text-primary mb-1">3</span>
+<div class="w-full max-w-[48px] bg-primary-container rounded-t-lg transition-all shadow-md" style="height: 60%;"></div>
+<span class="font-data-mono text-data-mono text-on-surface font-bold mt-space-sm">W8</span>
+</div>
+</div>
+</div>
+</div>
+<!-- EMPTY STATE: WORKOUTS -->
+<div class="hidden bg-surface-container-low rounded-2xl p-space-2xl flex-col items-center justify-center text-center py-16" id="workouts-empty-card">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary-container mb-space-md">
+<span class="material-symbols-outlined text-[32px]">fitness_center</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-space-xs">Finish a workout to see your stats</h3>
+<p class="font-body-md text-body-md text-secondary max-w-md mb-space-lg">
+          Complete and record your scheduled exercise sets to monitor volume and consistency trends.
+        </p>
+<button class="px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-all font-semibold" type="button">
+          Go to Workout Plan
+        </button>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- SECTION 3: NUTRITION ADHERENCE (7 DAYS)   -->
+<!-- ========================================== -->
+<section class="flex flex-col gap-space-lg mb-space-xl">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-xs">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Nutrition Consistency</h2>
+<p class="font-body-md text-body-md text-secondary">Weekly macro averages compared to your daily targets</p>
+</div>
+<span class="font-data-mono text-data-mono text-secondary">LAST 7 DAYS WINDOW</span>
+</div>
+<!-- POPULATED STATE: NUTRITION -->
+<div class="flex flex-col gap-space-lg" id="nutrition-populated-group">
+<!-- Stat Banner: Days logged with 7 dots -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Days logged: 5 of 7 days</span>
+<p class="font-data-mono text-data-mono text-secondary">Consistent logging improves baseline calorie precision</p>
+</div>
+</div>
+<!-- 7-Day Dot Indicators -->
+<div class="flex items-center gap-space-sm">
+<!-- Day 1 (Thu) Filled -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-[10px] text-secondary">THU</span>
+</div>
+<!-- Day 2 (Fri) Filled -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-[10px] text-secondary">FRI</span>
+</div>
+<!-- Day 3 (Sat) Filled -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-[10px] text-secondary">SAT</span>
+</div>
+<!-- Day 4 (Sun) Empty -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-surface-container-highest"></span>
+<span class="font-data-mono text-[10px] text-secondary">SUN</span>
+</div>
+<!-- Day 5 (Mon) Filled -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-[10px] text-secondary">MON</span>
+</div>
+<!-- Day 6 (Tue) Empty -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-surface-container-highest"></span>
+<span class="font-data-mono text-[10px] text-secondary">TUE</span>
+</div>
+<!-- Day 7 (Wed/Today) Filled -->
+<div class="flex flex-col items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-[10px] text-on-surface font-bold">WED</span>
+</div>
+</div>
+</div>
+<!-- Comparative Macro Cards (2 Core + 2 Sub-trackers) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Card: Calories -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Average Calories</span>
+<span class="font-data-mono text-data-mono text-secondary">97% OF TARGET</span>
+</div>
+<div class="flex items-baseline gap-space-xs mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">2,040</span>
+<span class="font-label-lg text-label-lg text-secondary">/ 2,100 kcal</span>
+</div>
+<!-- Bar -->
+<div class="w-full bg-surface-container h-2.5 rounded-full overflow-hidden mb-space-sm">
+<div class="bg-primary-container h-full rounded-full" style="width: 97.1%"></div>
+</div>
+</div>
+<p class="font-data-mono text-data-mono text-secondary mt-space-sm">
+              60 kcal below target average • Adherence window: optimal
+            </p>
+</div>
+<!-- Card: Protein -->
+<div class="bg-surface-container-low rounded-2xl p-space-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Average Protein</span>
+<span class="font-data-mono text-data-mono text-primary">102% OF TARGET</span>
+</div>
+<div class="flex items-baseline gap-space-xs mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">168</span>
+<span class="font-label-lg text-label-lg text-secondary">/ 165 g</span>
+</div>
+<!-- Bar -->
+<div class="w-full bg-surface-container h-2.5 rounded-full overflow-hidden mb-space-sm">
+<div class="bg-primary h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<p class="font-data-mono text-data-mono text-secondary mt-space-sm">
+              +3 g above daily goal • Consistent protein intake maintained
+            </p>
+</div>
+</div>
+<!-- Secondary Macros: Carbs & Fat Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Carbs -->
+<div class="bg-surface-container-low rounded-2xl p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-secondary uppercase tracking-wider">Average Carbohydrates</span>
+<span class="text-on-surface font-bold font-data-mono">215 / 220 g (98%)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-surface-variant h-full rounded-full" style="width: 97.7%"></div>
+</div>
+</div>
+<!-- Fat -->
+<div class="bg-surface-container-low rounded-2xl p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-secondary uppercase tracking-wider">Average Fats</span>
+<span class="text-on-surface font-bold font-data-mono">58 / 60 g (97%)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-surface-variant h-full rounded-full" style="width: 96.6%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- EMPTY STATE: NUTRITION -->
+<div class="hidden bg-surface-container-low rounded-2xl p-space-2xl flex-col items-center justify-center text-center py-16" id="nutrition-empty-card">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary-container mb-space-md">
+<span class="material-symbols-outlined text-[32px]">nutrition</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-space-xs">Log meals to see your averages</h3>
+<p class="font-body-md text-body-md text-secondary max-w-md mb-space-lg">
+          Track your daily meals to review your rolling weekly macro adherence and calorie distribution.
+        </p>
+<button class="px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-all font-semibold" type="button">
+          Open Nutrition Log
+        </button>
+</div>
+</section>
+</div>
+<!-- ========================================== -->
+<!-- ADD WEIGHT MODAL (Interactive Dialog)      -->
+<!-- ========================================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-surface-container-lowest/80 backdrop-blur-md hidden p-4" id="weight-modal">
+<div class="bg-surface-container-low w-full max-w-md rounded-2xl p-space-xl shadow-2xl flex flex-col gap-space-lg">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Log Weight</h3>
+<p class="font-body-md text-body-md text-secondary">Record today's weigh-in to keep your trend accurate.</p>
+</div>
+<button class="text-secondary hover:text-on-surface p-1" id="btn-close-modal-x" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<form class="flex flex-col gap-space-lg" id="weight-entry-form" onsubmit="event.preventDefault();">
+<!-- Date Selector -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-secondary uppercase tracking-wider">Date</label>
+<div class="h-12 bg-surface-container rounded-xl px-space-md flex items-center justify-between text-on-surface">
+<span class="font-body-md text-body-md">Today, Oct 24, 2024</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">calendar_today</span>
+</div>
+</div>
+<!-- Weight Numeric Input with Stepper Controls -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-secondary uppercase tracking-wider">Weight (kg)</label>
+<div class="flex items-center gap-space-sm">
+<button class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors" id="btn-weight-minus" type="button">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<div class="flex-1 relative h-12 bg-surface-container rounded-xl flex items-center px-space-md focus-within:ring-1 focus-within:ring-primary-container">
+<input class="w-full bg-transparent text-center font-headline-md text-headline-md text-on-surface focus:outline-none" id="modal-weight-val" step="0.1" type="number" value="83.4"/>
+<span class="font-label-lg text-label-lg text-secondary absolute right-4">kg</span>
+</div>
+<button class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors" id="btn-weight-plus" type="button">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<span class="font-data-mono text-data-mono text-secondary mt-1">Recommended: Measure after waking up, prior to eating.</span>
+</div>
+<!-- Actions -->
+<div class="flex items-center justify-end gap-space-md pt-space-xs">
+<button class="px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" id="btn-cancel-modal" type="button">
+            Cancel
+          </button>
+<button class="px-space-lg py-2.5 rounded-xl font-label-lg text-label-lg bg-primary-container text-on-primary-container font-semibold hover:opacity-90 transition-all" id="btn-save-weight" type="button">
+            Save Entry
+          </button>
+</div>
+</form>
+</div>
+</div>
+<!-- Micro-interactions Controller Script -->
+<script>
+    (function initProgressTelemetry() {
+      // 1. Modal open/close logic
+      const modal = document.getElementById('weight-modal');
+      const openBtn = document.getElementById('btn-open-modal');
+      const closeX = document.getElementById('btn-close-modal-x');
+      const cancelBtn = document.getElementById('btn-cancel-modal');
+      const saveBtn = document.getElementById('btn-save-weight');
+      const weightInput = document.getElementById('modal-weight-val');
+      const minusBtn = document.getElementById('btn-weight-minus');
+      const plusBtn = document.getElementById('btn-weight-plus');
+
+      function openModal() {
+        modal.classList.remove('hidden');
+      }
+      function closeModal() {
+        modal.classList.add('hidden');
+      }
+
+      if (openBtn) openBtn.addEventListener('click', openModal);
+      if (closeX) closeX.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+      // Steppers for modal
+      if (minusBtn && weightInput) {
+        minusBtn.addEventListener('click', () => {
+          let val = parseFloat(weightInput.value) || 83.4;
+          weightInput.value = (val - 0.1).toFixed(1);
+        });
+      }
+      if (plusBtn && weightInput) {
+        plusBtn.addEventListener('click', () => {
+          let val = parseFloat(weightInput.value) || 83.4;
+          weightInput.value = (val + 0.1).toFixed(1);
+        });
+      }
+
+      // Add row action
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          const list = document.getElementById('weight-log-list');
+          if (list && weightInput) {
+            const row = document.createElement('div');
+            row.className = "group flex items-center justify-between py-space-sm border-b border-surface-container-high/40 hover:bg-surface-container-high/20 px-space-xs rounded-lg transition-colors";
+            row.innerHTML = `
+              <div class="flex flex-col">
+                <span class="font-label-lg text-label-lg text-on-surface">Just Now</span>
+                <span class="font-data-mono text-data-mono text-primary font-bold">New Entry</span>
+              </div>
+              <div class="flex items-center gap-space-md">
+                <span class="font-label-lg text-label-lg text-on-surface font-bold">\${parseFloat(weightInput.value).toFixed(1)} kg</span>
+                <button type="button" onclick="this.closest('.group').remove()" class="text-secondary hover:text-error transition-colors p-1" title="Delete entry">
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            `;
+            list.prepend(row);
+          }
+          closeModal();
+        });
+      }
+
+      // 2. State Switcher: Populated vs Empty Preview
+      const btnPopulated = document.getElementById('btn-view-populated');
+      const btnEmpty = document.getElementById('btn-view-empty');
+
+      const weightPopulated = document.getElementById('weight-populated-group');
+      const weightEmpty = document.getElementById('weight-empty-card');
+
+      const workoutsPopulated = document.getElementById('workouts-populated-group');
+      const workoutsEmpty = document.getElementById('workouts-empty-card');
+
+      const nutritionPopulated = document.getElementById('nutrition-populated-group');
+      const nutritionEmpty = document.getElementById('nutrition-empty-card');
+
+      if (btnEmpty && btnPopulated) {
+        btnEmpty.addEventListener('click', () => {
+          btnEmpty.className = "flex items-center gap-1.5 px-space-md py-1.5 rounded-lg font-label-md text-label-md bg-primary-container text-on-primary-container font-semibold transition-all";
+          btnPopulated.className = "flex items-center gap-1.5 px-space-md py-1.5 rounded-lg font-label-md text-label-md text-secondary hover:text-on-surface transition-all";
+
+          weightPopulated.classList.add('hidden');
+          weightEmpty.classList.remove('hidden');
+          weightEmpty.classList.add('flex');
+
+          workoutsPopulated.classList.add('hidden');
+          workoutsEmpty.classList.remove('hidden');
+          workoutsEmpty.classList.add('flex');
+
+          nutritionPopulated.classList.add('hidden');
+          nutritionEmpty.classList.remove('hidden');
+          nutritionEmpty.classList.add('flex');
+        });
+
+        btnPopulated.addEventListener('click', () => {
+          btnPopulated.className = "flex items-center gap-1.5 px-space-md py-1.5 rounded-lg font-label-md text-label-md bg-primary-container text-on-primary-container font-semibold transition-all";
+          btnEmpty.className = "flex items-center gap-1.5 px-space-md py-1.5 rounded-lg font-label-md text-label-md text-secondary hover:text-on-surface transition-all";
+
+          weightPopulated.classList.remove('hidden');
+          weightEmpty.classList.add('hidden');
+          weightEmpty.classList.remove('flex');
+
+          workoutsPopulated.classList.remove('hidden');
+          workoutsEmpty.classList.add('hidden');
+          workoutsEmpty.classList.remove('flex');
+
+          nutritionPopulated.classList.remove('hidden');
+          nutritionEmpty.classList.add('hidden');
+          nutritionEmpty.classList.remove('flex');
+        });
+      }
+
+      // 3. Segmented 30d / 90d button active state
+      const btn30 = document.getElementById('btn-range-30');
+      const btn90 = document.getElementById('btn-range-90');
+      if (btn30 && btn90) {
+        btn30.addEventListener('click', () => {
+          btn30.className = "px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-high text-on-surface shadow-sm transition-all";
+          btn90.className = "px-space-md py-1.5 rounded-lg font-label-lg text-label-lg text-secondary hover:text-on-surface transition-all";
+        });
+        btn90.addEventListener('click', () => {
+          btn90.className = "px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-high text-on-surface shadow-sm transition-all";
+          btn30.className = "px-space-md py-1.5 rounded-lg font-label-lg text-label-lg text-secondary hover:text-on-surface transition-all";
+        });
+      }
+    })();
+  </script>
+</div></main></div></body></html>
