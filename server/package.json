@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "ai:check": "tsx scripts/ai-check.ts",
-    "seed:exercises": "tsx scripts/seed-exercises.ts"
+    "seed:exercises": "tsx scripts/seed-exercises.ts",
+    "seed:foods": "tsx scripts/seed-foods.ts"
   },
   "dependencies": {
     "@google/genai": "^2.28.0",

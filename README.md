@@ -24,7 +24,19 @@ npm run seed:exercises
 
 The two `ZZ Hidden...` rows are deliberately DRAFT/ARCHIVED and should not
 appear in the public library. Never print or commit the service-role key.
-5. Install dependencies and start both applications:
+5. Apply only the next migration, `supabase/migrations/007_foods_meals.sql`, after
+   the earlier migrations have been applied. Then seed the approximate food data
+   from the `server` directory:
+
+```powershell
+cd server
+npm run seed:foods
+```
+
+The food values are hand-written **APPROXIMATE** values and have not been
+verified. The seed validates rows, warns about large calorie/macro differences,
+and upserts by slug. Never print or commit the service-role key.
+6. Install dependencies and start both applications:
 
 ```powershell
 cd web
