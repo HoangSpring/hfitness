@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"on-secondary-fixed-variant":"#47464a","error":"#ffb4ab","on-tertiary-container":"#5c0008","surface-bright":"#39393b","on-secondary":"#303033","surface-container-lowest":"#0e0e10","surface-container-high":"#2a2a2c","on-primary":"#68000a","on-primary-container":"#5c0008","primary":"#ffb3ad","inverse-on-surface":"#313032","on-error-container":"#ffdad6","primary-fixed":"#ffdad7","surface-container":"#201f21","on-primary-fixed":"#410004","on-tertiary":"#68000a","secondary":"#c8c6c9","tertiary-fixed-dim":"#ffb3ad","inverse-surface":"#e5e1e4","surface-dim":"#131315","tertiary":"#ffb3ad","on-secondary-container":"#b6b4b8","tertiary-fixed":"#ffdad7","surface-tint":"#ffb3ad","on-tertiary-fixed":"#410004","outline-variant":"#5b403e","tertiary-container":"#ff5451","surface-container-low":"#1c1b1d","on-background":"#e5e1e4","on-secondary-fixed":"#1b1b1e","on-tertiary-fixed-variant":"#930013","surface":"#131315","outline":"#ab8986","on-surface":"#e5e1e4","error-container":"#93000a","on-error":"#690005","primary-container":"#ff5451","on-surface-variant":"#e4beba","surface-variant":"#353437","secondary-container":"#47464a","inverse-primary":"#b91a24","surface-container-highest":"#353437","on-primary-fixed-variant":"#930013","secondary-fixed":"#e4e1e5","background":"#131315","secondary-fixed-dim":"#c8c6c9","primary-fixed-dim":"#ffb3ad"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-desktop":"2rem","gutter":"1.5rem","space-sm":"0.5rem","space-xs":"0.25rem","space-lg":"1.5rem","space-md":"1rem","margin-desktop":"2.5rem","space-2xl":"3rem","margin":"1rem","space-xl":"2rem"},"fontFamily":{"data-mono":["Plus Jakarta Sans"],"metric-display":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"headline-xl":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-xl-mobile":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"metric-display-mobile":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"]},"fontSize":{"data-mono":["0.8125rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"700"}],"metric-display":["3.5rem",{"lineHeight":"3.75rem","letterSpacing":"-0.04em","fontWeight":"800"}],"body-lg":["1.125rem",{"lineHeight":"1.75rem","fontWeight":"400"}],"body-md":["0.9375rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"700"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-lg":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0.01em","fontWeight":"600"}],"metric-display-mobile":["2.5rem",{"lineHeight":"2.75rem","letterSpacing":"-0.03em","fontWeight":"800"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.05em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center font-headline-md text-headline-md text-on-primary-container">H</div><span class="font-headline-md text-headline-md tracking-tight uppercase text-on-surface">HFitness</span></div><div class="flex items-center gap-space-md"><a class="text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg transition-colors flex items-center gap-space-xs" href="#"><span class="material-symbols-outlined text-[18px]">help</span><span>Assistance</span></a><a class="text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg transition-colors flex items-center gap-space-xs" href="#"><span class="material-symbols-outlined text-[20px]">close</span></a></div></div></header><main class="w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full">
+<!-- Internal Telemetry Sub-Header & Onboarding Progress -->
+<section class="w-full bg-surface-container-lowest/80 backdrop-blur-md">
+<div class="max-w-5xl mx-auto px-margin md:px-margin-desktop py-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<!-- Left: Logo Stamp & Stage -->
+<div class="flex items-center gap-space-md">
+<div class="w-7 h-7 rounded bg-primary-container flex items-center justify-center font-data-mono text-data-mono text-on-primary-container font-bold">
+          05
+        </div>
+<div class="flex flex-col">
+<span class="font-data-mono text-data-mono uppercase text-on-surface-variant tracking-wider">HFIT Protocol Stage</span>
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight">System Initialization</span>
+</div>
+</div>
+<!-- Center: 5-Segment Progress Telemetry Gauge -->
+<div class="flex items-center gap-space-md w-full md:w-auto">
+<div class="flex flex-col gap-1 w-full md:w-64">
+<div class="flex items-center justify-between font-data-mono text-data-mono text-on-surface-variant">
+<span class="text-primary-container font-bold">STEP 05 / 05</span>
+<span class="text-on-surface tracking-widest font-semibold">100% COMPLETE</span>
+</div>
+<!-- 5 Segments fully populated / filled in primary red -->
+<div class="grid grid-cols-5 gap-1.5 h-1.5 w-full">
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,84,81,0.5)]"></div>
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,84,81,0.5)]"></div>
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,84,81,0.5)]"></div>
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_8px_rgba(255,84,81,0.5)]"></div>
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_12px_rgba(255,84,81,0.8)] animate-pulse"></div>
+</div>
+</div>
+<!-- Right: Action Utility -->
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+<span>Save &amp; Exit</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Main Formulation Content Body -->
+<div class="max-w-5xl mx-auto w-full px-margin md:px-margin-desktop py-space-xl pb-32">
+<!-- Screen Header & Context Block -->
+<div class="mb-space-xl flex flex-col md:flex-row md:items-end justify-between gap-space-lg">
+<div class="max-w-2xl">
+<div class="flex items-center gap-space-sm mb-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-data-mono uppercase tracking-widest text-primary font-bold">Dietary Preferences</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant font-normal">/ PARAM_SET_V5</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight mb-space-xs">
+          Nutrition preferences
+        </h1>
+<p class="font-body-lg text-body-lg text-secondary">
+          Customize your meal plan constraints to ensure every recommended recipe fits your diet.
+        </p>
+</div>
+<!-- Telemetry Status Quick Badge -->
+<div class="flex items-center gap-space-md p-space-sm px-space-md rounded-xl bg-surface-container-low shadow-sm">
+<span class="material-symbols-outlined text-primary-container text-[24px]">verified</span>
+<div class="flex flex-col font-data-mono text-data-mono">
+<span class="text-on-surface uppercase font-bold">Constraint Engine</span>
+<span class="text-on-surface-variant font-normal">Auto-calibration Ready</span>
+</div>
+</div>
+</div>
+<!-- Layout Grid: 3 Interactive Architectural Blocks -->
+<div class="flex flex-col gap-space-lg">
+<!-- SECTION 1: Allergies & Intolerances -->
+<section class="bg-surface-container rounded-2xl p-space-lg shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary-container text-[20px]">emergency</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">1. Allergies &amp; Intolerances</h2>
+</div>
+<span class="font-data-mono text-data-mono uppercase text-on-surface-variant">CRITICAL_EXCLUSIONS</span>
+</div>
+<p class="font-body-md text-body-md text-secondary -mt-1">
+          Select all substances that cause an adverse physiological response. Formulations containing these will be purged entirely from generated meal matrices.
+        </p>
+<!-- Multi-select Filter Chips Group -->
+<div class="flex flex-wrap gap-2.5 pt-space-xs" id="allergy-chips-container">
+<!-- Active Pill 1 -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-primary-container text-on-primary-container font-semibold shadow-[0_0_12px_rgba(255,84,81,0.25)]" data-allergy-chip="" type="button">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Dairy / Lactose</span>
+</button>
+<!-- Inactive Default Pill -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-surface-container-high text-on-surface hover:bg-surface-variant" data-allergy-chip="" type="button">
+<span>Gluten / Wheat</span>
+</button>
+<!-- Active Pill 2 -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-primary-container text-on-primary-container font-semibold shadow-[0_0_12px_rgba(255,84,81,0.25)]" data-allergy-chip="" type="button">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Peanuts</span>
+</button>
+<!-- Inactive Default Pill -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-surface-container-high text-on-surface hover:bg-surface-variant" data-allergy-chip="" type="button">
+<span>Tree nuts</span>
+</button>
+<!-- Inactive Default Pill -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-surface-container-high text-on-surface hover:bg-surface-variant" data-allergy-chip="" type="button">
+<span>Shellfish</span>
+</button>
+<!-- Inactive Default Pill -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-surface-container-high text-on-surface hover:bg-surface-variant" data-allergy-chip="" type="button">
+<span>Eggs</span>
+</button>
+<!-- Inactive Default Pill -->
+<button class="px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-surface-container-high text-on-surface hover:bg-surface-variant" data-allergy-chip="" type="button">
+<span>Soy</span>
+</button>
+</div>
+<!-- Inline Custom Allergy Input Block -->
+<div class="pt-space-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm max-w-lg">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">add_alert</span>
+<input class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-secondary-container font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary-container" id="custom-allergy-input" placeholder="Add specific allergy (e.g. Sesame, Mustard)" type="text"/>
+</div>
+<button class="h-11 px-4 rounded-xl bg-surface-container-high hover:bg-surface-variant text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" id="add-allergy-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add Exclusion</span>
+</button>
+</div>
+</section>
+<!-- SECTION 2: Foods You Dislike -->
+<section class="bg-surface-container rounded-2xl p-space-lg shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary-container text-[20px]">no_food</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">2. Foods you dislike</h2>
+</div>
+<span class="font-data-mono text-data-mono uppercase text-on-surface-variant">PALATABILITY_FILTER</span>
+</div>
+<p class="font-body-md text-body-md text-secondary -mt-1">
+          Specify ingredients you dislike or wish to minimize. Our algorithm will swap them out with metabolically equivalent items.
+        </p>
+<!-- Input Row with Add Button -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm max-w-xl">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full h-12 pl-10 pr-4 rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-secondary-container font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary-container" id="dislike-input" placeholder="Type an ingredient and press Enter (e.g. Mushrooms, Olives)..." type="text"/>
+</div>
+<button class="h-12 px-5 rounded-xl bg-primary-container hover:opacity-90 text-on-primary-container font-label-lg text-label-lg font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm" id="dislike-add-btn" type="button">
+<span>Add Item</span>
+</button>
+</div>
+<!-- Tag Cloud Container for Disliked Foods -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<span class="font-data-mono text-data-mono uppercase text-on-surface-variant font-semibold">Active Filter Tags:</span>
+<div class="flex flex-wrap gap-2.5" id="dislike-chips-container">
+<!-- Dislike Tag 1 -->
+<span class="dislike-tag inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md group hover:bg-surface-variant transition-all">
+<span class="font-medium">Cilantro</span>
+<button aria-label="Remove Cilantro" class="remove-tag text-on-surface-variant hover:text-primary-container flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</span>
+<!-- Dislike Tag 2 -->
+<span class="dislike-tag inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md group hover:bg-surface-variant transition-all">
+<span class="font-medium">Eggplant</span>
+<button aria-label="Remove Eggplant" class="remove-tag text-on-surface-variant hover:text-primary-container flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</span>
+<!-- Dislike Tag 3 -->
+<span class="dislike-tag inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md group hover:bg-surface-variant transition-all">
+<span class="font-medium">Liver</span>
+<button aria-label="Remove Liver" class="remove-tag text-on-surface-variant hover:text-primary-container flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</span>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Meals Per Day Segmented Pill Group -->
+<section class="bg-surface-container rounded-2xl p-space-lg shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary-container text-[20px]">schedule</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">3. Meals per day</h2>
+</div>
+<span class="font-data-mono text-data-mono uppercase text-on-surface-variant">FREQUENCY_CADENCE</span>
+</div>
+<p class="font-body-md text-body-md text-secondary -mt-1">
+          Select target meal frequency to partition macronutrients into balanced daily feeding windows.
+        </p>
+<!-- Segmented Selector Horizontal Pill Container -->
+<div class="pt-space-xs flex flex-col gap-space-sm">
+<div aria-label="Meals per day selection" class="grid grid-cols-5 p-1.5 bg-surface-container-lowest rounded-2xl gap-1.5" role="radiogroup">
+<!-- 2 Meals -->
+<button class="meal-freq-pill py-3 px-2 rounded-xl text-center transition-all flex flex-col items-center justify-center font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-meal-opt="2" type="button">
+<span class="font-headline-md text-headline-md leading-none mb-1">2</span>
+<span class="font-data-mono text-data-mono uppercase">Meals</span>
+</button>
+<!-- 3 Meals -->
+<button class="meal-freq-pill py-3 px-2 rounded-xl text-center transition-all flex flex-col items-center justify-center font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-meal-opt="3" type="button">
+<span class="font-headline-md text-headline-md leading-none mb-1">3</span>
+<span class="font-data-mono text-data-mono uppercase">Meals</span>
+</button>
+<!-- 4 Meals (Active Selection Highlighted with red fill) -->
+<button aria-checked="true" class="meal-freq-pill py-3 px-2 rounded-xl text-center transition-all flex flex-col items-center justify-center font-label-lg text-label-lg bg-primary-container text-on-primary-container font-bold shadow-[0_0_16px_rgba(255,84,81,0.35)]" data-meal-opt="4" type="button">
+<span class="font-headline-md text-headline-md leading-none mb-1 font-bold">4</span>
+<span class="font-data-mono text-data-mono uppercase font-bold tracking-wider">Meals</span>
+</button>
+<!-- 5 Meals -->
+<button class="meal-freq-pill py-3 px-2 rounded-xl text-center transition-all flex flex-col items-center justify-center font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-meal-opt="5" type="button">
+<span class="font-headline-md text-headline-md leading-none mb-1">5</span>
+<span class="font-data-mono text-data-mono uppercase">Meals</span>
+</button>
+<!-- 6 Meals -->
+<button class="meal-freq-pill py-3 px-2 rounded-xl text-center transition-all flex flex-col items-center justify-center font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-meal-opt="6" type="button">
+<span class="font-headline-md text-headline-md leading-none mb-1">6</span>
+<span class="font-data-mono text-data-mono uppercase">Meals</span>
+</button>
+</div>
+<!-- Dynamic Distribution Telemetry Preview -->
+<div class="mt-space-xs p-space-md rounded-xl bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm font-data-mono text-data-mono">
+<div class="flex items-center gap-space-sm text-secondary">
+<span class="material-symbols-outlined text-primary text-[18px]">sync_alt</span>
+<span id="meal-breakdown-caption">Active Schedule: Breakfast, Lunch, Post-Workout Fuel, Dinner</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface font-semibold">
+<span class="text-on-surface-variant uppercase">Partition:</span>
+<span>~25% Cal / Meal</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Protocol Architecture Note Banner -->
+<div class="p-space-md rounded-2xl bg-surface-container-lowest flex items-center justify-between gap-space-md shadow-inner">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Deterministic Protocol Finalization</span>
+<span class="font-body-md text-body-md text-secondary">Upon execution, parameters will be locked into HFitness Biometric Core for initial block synthesis.</span>
+</div>
+</div>
+<div class="hidden lg:flex items-center gap-2 font-data-mono text-data-mono text-on-surface-variant">
+<span>SHA-256</span>
+<span class="text-primary font-bold">READY</span>
+</div>
+</div>
+</div>
+<!-- Persistent Bottom Flow Control Actions (Back / Finish) -->
+<div class="mt-space-2xl pt-space-md flex items-center justify-between gap-space-md">
+<!-- Active Back Button -->
+<button class="h-12 px-6 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center gap-2 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Back</span>
+</button>
+<!-- Primary "Finish" CTA Button -->
+<button class="h-14 px-8 rounded-xl bg-primary-container hover:opacity-95 text-on-primary-container font-headline-md text-headline-md flex items-center justify-center gap-space-sm transition-all shadow-[0_0_24px_rgba(255,84,81,0.4)] hover:shadow-[0_0_32px_rgba(255,84,81,0.6)]" id="finish-btn" type="button">
+<span>Finish &amp; Build Plan</span>
+<span class="material-symbols-outlined text-[22px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Interactive Logic Hook -->
+<script>
+    (function initNutritionPreferences() {
+      // 1. Allergy Multi-Select Chips
+      const allergyContainer = document.getElementById('allergy-chips-container');
+      const customAllergyInput = document.getElementById('custom-allergy-input');
+      const addAllergyBtn = document.getElementById('add-allergy-btn');
+
+      if (allergyContainer) {
+        allergyContainer.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-allergy-chip]');
+          if (!btn) return;
+          const isSelected = btn.classList.contains('bg-primary-container');
+          if (isSelected) {
+            btn.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-semibold', 'shadow-[0_0_12px_rgba(255,84,81,0.25)]');
+            btn.classList.add('bg-surface-container-high', 'text-on-surface');
+            const check = btn.querySelector('.material-symbols-outlined');
+            if (check) check.remove();
+          } else {
+            btn.classList.remove('bg-surface-container-high', 'text-on-surface');
+            btn.classList.add('bg-primary-container', 'text-on-primary-container', 'font-semibold', 'shadow-[0_0_12px_rgba(255,84,81,0.25)]');
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined text-[16px]';
+            icon.textContent = 'check_circle';
+            btn.prepend(icon);
+          }
+        });
+      }
+
+      function addCustomAllergy() {
+        if (!customAllergyInput || !allergyContainer) return;
+        const val = customAllergyInput.value.trim();
+        if (!val) return;
+        const newChip = document.createElement('button');
+        newChip.type = 'button';
+        newChip.setAttribute('data-allergy-chip', '');
+        newChip.className = 'px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 transition-all bg-primary-container text-on-primary-container font-semibold shadow-[0_0_12px_rgba(255,84,81,0.25)]';
+        newChip.innerHTML = `<span class="material-symbols-outlined text-[16px]">check_circle</span><span>${val}</span>`;
+        allergyContainer.appendChild(newChip);
+        customAllergyInput.value = '';
+      }
+
+      if (addAllergyBtn) addAllergyBtn.addEventListener('click', addCustomAllergy);
+      if (customAllergyInput) {
+        customAllergyInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addCustomAllergy();
+          }
+        });
+      }
+
+      // 2. Disliked Foods Input & Tag Removal
+      const dislikeInput = document.getElementById('dislike-input');
+      const dislikeAddBtn = document.getElementById('dislike-add-btn');
+      const dislikeChipsContainer = document.getElementById('dislike-chips-container');
+
+      function addDislikedItem() {
+        if (!dislikeInput || !dislikeChipsContainer) return;
+        const val = dislikeInput.value.trim();
+        if (!val) return;
+        const span = document.createElement('span');
+        span.className = 'dislike-tag inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md group hover:bg-surface-variant transition-all';
+        span.innerHTML = `
+          <span class="font-medium">${val}</span>
+          <button type="button" class="remove-tag text-on-surface-variant hover:text-primary-container flex items-center justify-center transition-colors" aria-label="Remove ${val}">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        `;
+        dislikeChipsContainer.appendChild(span);
+        dislikeInput.value = '';
+      }
+
+      if (dislikeAddBtn) dislikeAddBtn.addEventListener('click', addDislikedItem);
+      if (dislikeInput) {
+        dislikeInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addDislikedItem();
+          }
+        });
+      }
+
+      if (dislikeChipsContainer) {
+        dislikeChipsContainer.addEventListener('click', (e) => {
+          const rmBtn = e.target.closest('.remove-tag');
+          if (rmBtn) {
+            const tag = rmBtn.closest('.dislike-tag');
+            if (tag) tag.remove();
+          }
+        });
+      }
+
+      // 3. Meals Per Day Segmented Control Selection
+      const mealButtons = document.querySelectorAll('.meal-freq-pill');
+      const mealCaption = document.getElementById('meal-breakdown-caption');
+      const captions = {
+        '2': 'Active Schedule: Fasting Period, Midday Feeding, Evening Anchor',
+        '3': 'Active Schedule: Breakfast, Balanced Midday, Dinner',
+        '4': 'Active Schedule: Breakfast, Lunch, Post-Workout Fuel, Dinner',
+        '5': 'Active Schedule: Early Breakfast, Lunch, Midday Fuel, Dinner, Pre-Sleep Protein',
+        '6': 'Active Schedule: High-frequency partitions every 2.5–3 hours'
+      };
+
+      mealButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          mealButtons.forEach((b) => {
+            b.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-[0_0_16px_rgba(255,84,81,0.35)]');
+            b.classList.add('text-on-surface-variant');
+            b.removeAttribute('aria-checked');
+            const spans = b.querySelectorAll('span');
+            spans.forEach(s => s.classList.remove('font-bold'));
+          });
+
+          btn.classList.remove('text-on-surface-variant');
+          btn.classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-[0_0_16px_rgba(255,84,81,0.35)]');
+          btn.setAttribute('aria-checked', 'true');
+          const spans = btn.querySelectorAll('span');
+          spans.forEach(s => s.classList.add('font-bold'));
+
+          const opt = btn.getAttribute('data-meal-opt');
+          if (mealCaption && captions[opt]) {
+            mealCaption.textContent = captions[opt];
+          }
+        });
+      });
+
+      // Finish Trigger Emulation
+      const finishBtn = document.getElementById('finish-btn');
+      if (finishBtn) {
+        finishBtn.addEventListener('click', () => {
+          finishBtn.innerHTML = `
+            <span class="inline-block w-4 h-4 rounded-full border-2 border-on-primary-container border-t-transparent animate-spin mr-2"></span>
+            <span>Synthesizing Plan...</span>
+          `;
+          setTimeout(() => {
+            finishBtn.innerHTML = `
+              <span class="material-symbols-outlined text-[22px]">check_circle</span>
+              <span>Protocol Configured!</span>
+            `;
+          }, 1200);
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-data-mono text-data-mono text-on-surface-variant uppercase">Telemetry System Active</span></div><div class="flex items-center gap-space-md"><span class="font-data-mono text-data-mono text-on-surface-variant">HFIT PROTOCOL v2.4</span></div></div></footer></body></html>

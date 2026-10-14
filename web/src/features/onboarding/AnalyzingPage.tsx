@@ -13,8 +13,8 @@ export function AnalyzingPage() {
     let active = true;
     setFailed(false);
     setFailureMessage(t('analyzing.error'));
-    void apiRequest('/fitness/assessment', { method: 'POST' }).then(() => {
-      if (active) navigate('/dashboard', { replace: true });
+    void apiRequest('/fitness/assessment', { method: 'POST' }).then(() => apiRequest('/ai/workout/generate', { method: 'POST' })).then(() => {
+      if (active) navigate('/workout', { replace: true });
     }).catch((error: unknown) => {
       if (active) {
         setFailureMessage(error instanceof ApiRequestError ? translatedError(error.code, t('analyzing.error')) : t('analyzing.error'));
@@ -23,5 +23,5 @@ export function AnalyzingPage() {
     });
     return () => { active = false; };
   }, [navigate, retry]);
-  return <div className="page-content analyzing-page"><Card><Spinner /><h1>{t('analyzing.title')}</h1><p className="muted">{t('analyzing.description')}</p><ol className="analysis-steps"><li>{t('analyzing.profile')}</li><li>{t('analyzing.targets')}</li><li>{t('analyzing.exercises')}</li><li>{t('analyzing.workout')}</li></ol>{failed && <div className="alert" role="alert">! {failureMessage}<Button onClick={() => setRetry((current) => current + 1)}>{t('analyzing.retry')}</Button></div>}<p className="muted">{t('analyzing.phaseFourHook')}</p></Card></div>;
+  return <div className="page-content analyzing-page"><Card><Spinner /><h1>{t('analyzing.title')}</h1><p className="muted">{t('analyzing.description')}</p><ol className="analysis-steps"><li>{t('analyzing.profile')}</li><li>{t('analyzing.targets')}</li><li>{t('analyzing.exercises')}</li><li>{t('analyzing.workout')}</li></ol>{failed && <div className="alert analysis-error" role="alert"><span>! {failureMessage}</span><Button onClick={() => setRetry((current) => current + 1)}>{t('analyzing.retry')}</Button><Button variant="secondary" onClick={() => navigate('/dashboard', { replace: true })}>{t('analyzing.continueWithoutPlan')}</Button></div>}</Card></div>;
 }
