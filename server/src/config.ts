@@ -13,6 +13,7 @@ const configSchema = z.object({
   AI_TIMEOUT_MS: z.coerce.number().int().min(30_000).max(120_000).default(75_000),
   AI_THINKING_BUDGET: z.coerce.number().int().min(0).max(32_768).optional(),
   AI_DAILY_LIMIT: z.coerce.number().int().positive().default(10),
+  AI_COACH_DAILY_LIMIT: z.coerce.number().int().positive().default(20),
 });
 
 const testDefaults = process.env.NODE_ENV === 'test'

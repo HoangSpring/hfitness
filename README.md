@@ -57,10 +57,78 @@ npm run dev
 The web app runs at `http://localhost:5173` and the API at
 `http://localhost:3001`.
 
+8. Apply only `supabase/migrations/009_ai_coach.sql` in the Supabase SQL
+   Editor after migrations `001` through `008` are already applied. Do not
+   re-run any earlier migration. This adds the RLS-protected coach conversation
+   and message tables.
+
 ## Checks
 
 Run `npm run typecheck`, `npm run build`, and `npm test` in both `web` and
 `server`.
+
+## AI Coach limits and safety
+
+`AI_DAILY_LIMIT` defaults to 10 successful workout-generation requests per
+user per UTC calendar day. `AI_COACH_DAILY_LIMIT` defaults to 20 successful
+coach requests per user per UTC calendar day. Provider failures, invalid
+provider responses, validation failures, and requests rejected by the limiter
+are logged when applicable but do not consume either limit. No model name is
+hardcoded; the server reads `AI_MODEL`.
+
+The coach is read-only. It can store user and assistant messages, but model
+output has no write path to workout, nutrition, profile, weight, or session
+records. Prompts contain compact structured context only, omit identity and
+secrets, delimit user-controlled text as data, and instruct the provider to
+give general fitness guidance rather than medical advice.
+
+## AI Coach RLS verification
+
+Apply `supabase/migrations/009_ai_coach.sql` once, then run these checks in the
+Supabase SQL Editor with two authenticated sessions. Replace the UUID with
+User A's ID. These statements are verification queries and were not run by
+this repository implementation.
+
+```sql
+-- As User A: both inserts omit user_id and must use auth.uid().
+insert into public.ai_conversations (title)
+values ('Test conversation')
+returning id, user_id, title;
+
+insert into public.ai_messages (conversation_id, role, content)
+values ('<user-a-conversation-id>', 'user', 'Test message')
+returning id, user_id, conversation_id;
+
+-- As User B: User A's conversation must not be readable.
+select * from public.ai_conversations
+where id = '<user-a-conversation-id>';
+
+-- As User B: inserting into User A's conversation must be rejected by RLS.
+insert into public.ai_messages (conversation_id, role, content)
+values ('<user-a-conversation-id>', 'user', 'Should be blocked');
+
+-- As User B: direct ownership spoofing must also be rejected.
+insert into public.ai_conversations (user_id, title)
+values ('<user-a-uuid>', 'Should be blocked');
+```
+
+The context sent to the model contains no email, user ID, token, or model
+secret. A redacted example is:
+
+```json
+{
+  "goal": "build_muscle",
+  "experience": "beginner",
+  "targets": {"calories": 2200, "protein_g": 140, "carbs_g": 250, "fat_g": 70},
+  "todays_planned_workout": {"name": "Full Body", "muscle_focus": "chest", "completed": false},
+  "last_7_days_sessions": {"completed": 2, "planned": 3},
+  "todays_nutrition": {"calories": 1300, "protein_g": 82, "carbs_g": 150, "fat_g": 40},
+  "latest_weight_kg": 70,
+  "weight_change_7d_kg": -0.5,
+  "recent_messages": [{"role": "user", "content": "[redacted]"}],
+  "response_locale": "en"
+}
+```
 
 ## Progress metric definitions
 

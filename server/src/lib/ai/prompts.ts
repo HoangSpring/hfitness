@@ -1,5 +1,6 @@
 import type { EligibleExercise } from '../schemas/workout.js';
 import { WORKING_SECONDS_PER_SET } from '../constants/workout.js';
+import { buildCoachPrompt } from '../../services/coachContext.service.js';
 
 export const WORKOUT_GENERATOR_V1 = (input: {
   goal: string;
@@ -23,3 +24,5 @@ The same muscle_focus must not appear on consecutive days. Do not repeat an exer
 Return JSON only, with no markdown or explanation. Example of a valid shape:
 {"name":"Strength Plan","days":[{"day_index":1,"name":"Full Body","muscle_focus":"chest","exercises":[{"exercise_id":"00000000-0000-0000-0000-000000000001","position":1,"sets":4,"reps_min":8,"reps_max":10,"rest_seconds":75}]}]}
 The example is illustrative; use only IDs from the eligible exercise list.`;
+
+export const COACH_V1 = buildCoachPrompt;

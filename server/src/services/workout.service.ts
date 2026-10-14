@@ -7,6 +7,7 @@ import { WORKOUT_GENERATOR_V1 } from '../lib/ai/prompts.js';
 import { AiProviderError, AiResponseError, createAiProvider, type AiProvider } from '../lib/ai/provider.js';
 import { generatedPlanSchema, type EligibleExercise, type GeneratedPlan } from '../lib/schemas/workout.js';
 import { getWorkoutValidationDiagnostics, repairDurationOnly, validateGeneratedWorkout } from './workout-validation.service.js';
+import { utcDayStart } from '../lib/ai/usage.js';
 
 type UserClient = SupabaseClient;
 
@@ -18,18 +19,14 @@ export function hasAiAttemptsRemaining(attempt: number): boolean {
   return attempt < MAX_AI_ATTEMPTS;
 }
 
-function dayStart(): string {
-  const now = new Date();
-  now.setUTCHours(0, 0, 0, 0);
-  return now.toISOString();
-}
-
 async function countRequests(userId: string): Promise<number> {
   const { count, error } = await serviceSupabaseClient
     .from('ai_requests')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', userId)
-    .gte('created_at', dayStart());
+    .eq('type', 'WORKOUT_GENERATION')
+    .eq('status', 'SUCCEEDED')
+    .gte('created_at', utcDayStart());
   if (error) throw new AppError(500, 'AI_USAGE_READ_FAILED', 'Could not check AI usage.');
   return count ?? 0;
 }
