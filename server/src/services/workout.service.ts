@@ -69,7 +69,7 @@ async function readPlan(client: UserClient, planId: string): Promise<unknown> {
 export async function readPlanDay(client: UserClient, dayId: string): Promise<unknown> {
   const { data, error } = await client
     .from('workout_plan_days')
-    .select('id, plan_id, day_index, name, muscle_focus, workout_plans!inner(id), workout_plan_exercises(id, exercise_id, position, sets, reps_min, reps_max, rest_seconds, notes, exercises(name, slug, primary_muscle))')
+    .select('id, plan_id, day_index, name, muscle_focus, workout_plans!inner(id), workout_plan_exercises(id, exercise_id, position, sets, reps_min, reps_max, rest_seconds, notes, exercises(name, slug, primary_muscle, safety_notes))')
     .eq('id', dayId)
     .maybeSingle();
   if (error) throw new AppError(500, 'WORKOUT_DAY_READ_FAILED', 'Could not load this workout day.');

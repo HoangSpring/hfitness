@@ -11,7 +11,7 @@ The user can log body weight, see progress across weight, workouts and nutrition
 ## Tasks
 
 ### Database
-1. Migration `007_weight_logs.sql`: `weight_logs` (`id`, `user_id`, `weight_kg` 20–400, `logged_at` date/timestamp, `created_at`). RLS: `auth.uid() = user_id`. Index on `(user_id, logged_at)`.
+1. Migration `007_weight_logs.sql`: `weight_logs` (`id`, `user_id`, `weight_kg` 20–400, `logged_at` date/timestamp, `created_at`). RLS: `auth.uid() = user_id`. Index on `(user_id, logged_at)`. Every user-owned table that the web client inserts into must define `user_id DEFAULT auth.uid()`; the client must not be trusted to send `user_id`.
 2. Do **not** create summary/aggregate tables. Derived metrics are computed from source records (queries, views or client-side aggregation).
 
 ### Logic (pure, unit-tested)

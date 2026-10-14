@@ -64,6 +64,7 @@ hfitness/
 ## 5. Server conventions
 
 - Per-request Supabase client built from the **user's JWT** so RLS applies. Use the service role client only for: inserting `ai_requests`, counting AI usage, and admin aggregates.
+- Every user-owned table that the web client inserts into must have `user_id DEFAULT auth.uid()` (the client must not be trusted to send `user_id`), in addition to the RLS policy `auth.uid() = user_id`.
 - Response format:
   - Success: `{ "data": ... }`
   - Error: `{ "error": { "code": "SOME_CODE", "message": "Human readable." } }`

@@ -15,7 +15,7 @@ The user can search foods, log meals with quantities, edit/delete items, and see
    - `foods` (`id`, `name`, `slug` unique, `category`, `serving_size` numeric, `unit` (e.g. g, ml, piece), `calories`, `protein`, `carbs`, `fat` — all per serving, non-negative; `status` `DRAFT|PUBLISHED|ARCHIVED`, timestamps).
    - `meals` (`id`, `user_id`, `meal_type` `BREAKFAST|LUNCH|DINNER|SNACK`, `eaten_at`).
    - `meal_items` (`id`, `meal_id`, `user_id`, `food_id`, `quantity` (number of servings), `calories`, `protein`, `carbs`, `fat` — **snapshot values computed at logging time**).
-2. RLS: `foods` — anyone authenticated can `SELECT` `PUBLISHED` rows (no write policies yet; admin policies in Phase 09). `meals` and `meal_items` — `auth.uid() = user_id`; `meal_items` insert must verify the meal belongs to the same user.
+2. RLS: `foods` — anyone authenticated can `SELECT` `PUBLISHED` rows (no write policies yet; admin policies in Phase 09). `meals` and `meal_items` — `auth.uid() = user_id`; `meal_items` insert must verify the meal belongs to the same user. Every user-owned table that the web client inserts into must define `user_id DEFAULT auth.uid()`; the client must not be trusted to send `user_id`.
 3. Indexes for food search (name) and for meals by `(user_id, eaten_at)`.
 
 ### Seed

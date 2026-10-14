@@ -13,7 +13,7 @@ A contextual, **read-only** AI Coach. It answers questions using the user's real
 ## Tasks
 
 ### Database
-1. Migration `008_ai_coach.sql`: `ai_conversations` (`id`, `user_id`, `title`, `created_at`) and `ai_messages` (`id`, `conversation_id`, `user_id`, `role` `user|assistant`, `content`, `created_at`). RLS: `auth.uid() = user_id` on both; inserting a message must verify the conversation belongs to the same user.
+1. Migration `008_ai_coach.sql`: `ai_conversations` (`id`, `user_id`, `title`, `created_at`) and `ai_messages` (`id`, `conversation_id`, `user_id`, `role` `user|assistant`, `content`, `created_at`). RLS: `auth.uid() = user_id` on both; inserting a message must verify the conversation belongs to the same user. Every user-owned table that the web client inserts into must define `user_id DEFAULT auth.uid()`; the client must not be trusted to send `user_id`.
 
 ### Backend
 2. **Context builder** (`server/src/services/coachContext.service.ts`) — pure and unit-tested where possible. It gathers only relevant, compact data:
