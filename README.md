@@ -61,6 +61,75 @@ The web app runs at `http://localhost:5173` and the API at
    Editor after migrations `001` through `008` are already applied. Do not
    re-run any earlier migration. This adds the RLS-protected coach conversation
    and message tables.
+9. Apply only `supabase/migrations/010_admin.sql` in the Supabase SQL Editor
+   after migrations `001` through `009` are already applied. Do not re-run an
+   earlier migration. This adds the `is_admin()` helper and admin-only
+   exercise/food writes.
+
+## Creating the first admin
+
+After applying `010_admin.sql`, create the first admin manually in the
+Supabase SQL Editor. Replace the placeholder with the user's Auth UUID from
+the Supabase Authentication users page:
+
+```sql
+update public.profiles
+set role = 'ADMIN'
+where id = '<user-uuid>';
+```
+
+The `profiles_prevent_role_change` trigger continues to prevent a signed-in
+user from changing their own role. The SQL Editor operation above is an
+administrator operation, not a client request.
+
+## Admin authorization verification
+
+These are verification statements only; they were not run by this
+implementation. Run them with a normal authenticated user's session, an admin
+authenticated user's session, and an anonymous session as indicated. Replace
+the UUID and slug values with records in your project.
+
+```sql
+-- Normal authenticated user: both writes must fail with an RLS error.
+insert into public.exercises
+  (name, slug, description, instructions, primary_muscle, equipment,
+   difficulty, movement_pattern, safety_notes)
+values
+  ('Unauthorized exercise', 'unauthorized-exercise', 'Test', '{Test}',
+   'chest', 'bodyweight', 'beginner', 'push', 'Test');
+
+update public.exercises
+set name = 'Unauthorized edit'
+where slug = '<published-or-draft-slug>';
+
+insert into public.foods
+  (name, slug, category, serving_size, unit, calories, protein, carbs, fat)
+values
+  ('Unauthorized food', 'unauthorized-food', 'Test', 1, 'piece', 1, 0, 0, 0);
+
+update public.foods
+set name = 'Unauthorized food edit'
+where slug = '<published-or-draft-food-slug>';
+
+-- Normal authenticated user: role escalation must fail.
+update public.profiles
+set role = 'ADMIN'
+where id = auth.uid();
+
+-- Normal authenticated user: the helper is callable but must return false.
+select public.is_admin();
+
+-- Anonymous session: this call must fail because execute is revoked.
+select public.is_admin();
+
+-- Admin authenticated user: this must return true and the admin writes above
+-- must be allowed when their values satisfy the table constraints.
+select public.is_admin();
+```
+
+The `is_admin()` function never exposes profile or Auth data; it only returns a
+boolean. No delete grant or delete policy is provided for exercises or foods,
+so content must be archived instead.
 
 ## Checks
 

@@ -7,6 +7,7 @@ export const en = {
     email: 'Email address', emailPlaceholder: 'athlete@domain.com', password: 'Password', confirmPassword: 'Confirm password', passwordPlaceholder: 'Enter your password', showPassword: 'Show password', hidePassword: 'Hide password', invalidEmail: 'Enter a valid email address.', passwordShort: 'Password must be at least 8 characters.', passwordMismatch: 'Passwords do not match.', genericError: 'Something went wrong. Please try again.',
   },
   navigation: { dashboard: 'Dashboard', workout: 'Workout', exercises: 'Exercises', nutrition: 'Nutrition', progress: 'Progress', coach: 'AI Coach', profile: 'Profile', home: 'Home', more: 'More', logout: 'Log out' },
+  admin: { label: 'Admin area', dashboard: 'Dashboard', users: 'Users', exercises: 'Exercises', foods: 'Foods', backToApp: 'Back to app', badge: 'ADMIN', administrator: 'Administrator', loadError: 'We could not verify your admin access. Please try again.', forbiddenCode: '403', forbiddenTitle: 'Access denied', forbiddenDescription: 'You do not have permission to view this area.' },
   public: {
     features: 'Features',
     login: 'Log in',
