@@ -751,6 +751,18 @@
   font-size: 13px;
 }
 
+/* Keep the add-food dialog centered instead of using the legacy bottom sheet layout. */
+.sheet-backdrop .food-sheet {
+  position: relative;
+  inset: auto;
+  width: min(720px, calc(100vw - 2rem));
+  max-width: 720px;
+  max-height: min(85vh, 760px);
+  margin: auto;
+  padding: 32px;
+  border-radius: 18px;
+}
+
 /* =========================================
    RESPONSIVE
 ========================================= */
@@ -815,6 +827,12 @@
 }
 
 @media (max-width: 480px) {
+  .sheet-backdrop .food-sheet {
+    width: calc(100vw - 1.5rem);
+    max-height: 90vh;
+    padding: 22px;
+  }
+
   .macro-grid {
     grid-template-columns: 1fr 1fr;
     gap: 10px;

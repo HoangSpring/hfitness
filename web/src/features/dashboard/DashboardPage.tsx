@@ -9,7 +9,7 @@ import { tEnum } from '../../i18n/enum';
 import { useLocale } from '../../i18n/LocaleContext';
 import { activeLocale } from '../../i18n/format';
 import { friendlyError } from '../../lib/errors';
-import { estimateDayMinutes, getCurrentPlan, localizeWorkoutExercise, startWorkout, type WorkoutPlan } from '../workout/workout';
+import { estimateDayMinutes, getCurrentPlan, getScheduledWeekday, localizeWorkoutExercise, requiresPastWorkoutConfirmation, startWorkout, type WorkoutPlan } from '../workout/workout';
 import { getDashboardActivity, getDashboardNutrition, getDashboardProfile, getDashboardWeight, type AssessmentTargets, type ProgressProfile, type WeightLog } from '../progress/progress';
 import './DashboardPage.css';
 
@@ -86,10 +86,18 @@ export function DashboardPage() {
   }, []);
   useEffect(() => { load(); }, [load]);
 
-  const start = async (dayId: string) => { setBusy(true); try { const session = await startWorkout(dayId); navigate(`/workout/session/${session.id}`); } finally { setBusy(false); } };
+  const start = async (dayId: string) => {
+    if (plan.data && workout.kind === 'start') {
+      const dayIndex = plan.data.workout_plan_days.findIndex((day) => day.id === dayId);
+      const scheduledWeekday = getScheduledWeekday(plan.data.workout_plan_days, dayIndex);
+      const todayWeekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][(new Date().getDay() + 6) % 7];
+      if (scheduledWeekday && requiresPastWorkoutConfirmation(plan.data.workout_plan_days, dayIndex) && !window.confirm(t('workout.pastDayConfirm', { today: t(`dashboard.${todayWeekday}`), day: t(`dashboard.${scheduledWeekday}`) }))) return;
+    }
+    setBusy(true); try { const session = await startWorkout(dayId); navigate(`/workout/session/${session.id}`); } finally { setBusy(false); }
+  };
 
   const workout = plan.data ? selectTodaysWorkout(plan.data.workout_plan_days, activity.data?.sessions ?? []) : { kind: 'no-plan' as const };
-  const selectedDay = plan.data && workout.kind === 'start' ? plan.data.workout_plan_days.find((day) => day.day_index === workout.dayIndex) : null;
+  const selectedDay = plan.data && (workout.kind === 'start' || workout.kind === 'view') ? plan.data.workout_plan_days.find((day) => day.day_index === workout.dayIndex) : null;
   const todayNutrition = nutrition.data?.nutrition.find((entry) => entry.date === dateKey(new Date()));
   const counts = activity.data ? weeklySessionCounts(activity.data.sessions) : [];
   const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => t(`dashboard.${day}`));
@@ -151,7 +159,9 @@ export function DashboardPage() {
           </div>
           <div className="db-hero-actions">
             <Link className="db-btn db-btn-ghost" to={`/workout/day/${selectedDay.id}`}>{Icon.eye} {t('dashboard.previewRoutine')}</Link>
-            <button type="button" className="db-btn db-btn-primary" onClick={() => void start(selectedDay.id)} disabled={busy}>{busy ? <Spinner /> : Icon.play} {t('dashboard.start')}</button>
+            {workout.kind === 'start'
+              ? <button type="button" className="db-btn db-btn-primary" onClick={() => void start(selectedDay.id)} disabled={busy}>{busy ? <Spinner /> : Icon.play} {t('dashboard.start')}</button>
+              : <span className="db-muted">{t('workout.viewOnlyToday')}</span>}
           </div>
         </div>
 

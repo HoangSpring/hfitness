@@ -60,6 +60,12 @@
 .wk-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; align-items: stretch; }
 .wk-day { background: var(--wk-card); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; border: 2px solid transparent; }
 .wk-day-next { border-color: var(--wk-accent); }
+.wk-day-completed { border-color: rgba(74, 222, 128, 0.45); }
+.wk-day-skipped, .wk-day-locked { opacity: 0.72; }
+.wk-rest-day { background: var(--wk-inner); border: 2px dashed var(--wk-track); color: var(--wk-muted); justify-content: center; min-height: 220px; }
+.wk-rest-day h3 { color: var(--wk-text); }
+.wk-rest-day .wk-day-top { margin-bottom: auto; }
+.wk-rest-day .wk-day-label { margin-top: auto; }
 .wk-day-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .wk-day-state { font-size: 0.75rem; color: var(--wk-muted); }
 .wk-minutes { font-size: 0.75rem; font-weight: 600; }

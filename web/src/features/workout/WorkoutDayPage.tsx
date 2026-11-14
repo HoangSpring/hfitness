@@ -8,7 +8,7 @@ import { tEnum } from '../../i18n/enum';
 import { useLocale } from '../../i18n/LocaleContext';
 import { friendlyError } from '../../lib/errors';
 import { ExerciseVideo } from '../exercises/ExerciseMedia';
-import { estimateDayMinutes, getPlanDay, localizeWorkoutExercise, startWorkout, type PlanDay } from './workout';
+import { estimateDayMinutes, getCurrentPlan, getPlanDay, getScheduledWeekday, getWorkoutDayState, localizeWorkoutExercise, requiresPastWorkoutConfirmation, startWorkout, type PlanDay, type WorkoutPlan } from './workout';
 import './WorkoutDayPage.css';
 
 const Icon = {
@@ -27,10 +27,20 @@ export function WorkoutDayPage() {
   const navigate = useNavigate();
   const { locale } = useLocale();
   const [day, setDay] = useState<PlanDay | null>();
+  const [currentPlan, setCurrentPlan] = useState<WorkoutPlan | null>();
   const [error, setError] = useState('');
   const [errorCode, setErrorCode] = useState('');
   const [starting, setStarting] = useState(false);
-  const load = useCallback(() => { setError(''); setErrorCode(''); void getPlanDay(dayId, locale).then(setDay).catch((reason: unknown) => { setErrorCode(reason instanceof ApiRequestError ? reason.code : 'REQUEST_FAILED'); setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.loadError')) : t('workout.loadError')); }); }, [dayId, locale]);
+  const load = useCallback(() => {
+    setError('');
+    setErrorCode('');
+    void Promise.all([getPlanDay(dayId, locale), getCurrentPlan(locale)])
+      .then(([loadedDay, loadedPlan]) => { setDay(loadedDay); setCurrentPlan(loadedPlan); })
+      .catch((reason: unknown) => {
+        setErrorCode(reason instanceof ApiRequestError ? reason.code : 'REQUEST_FAILED');
+        setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.loadError')) : t('workout.loadError'));
+      });
+  }, [dayId, locale]);
   useEffect(() => { load(); }, [load]);
 
   if (errorCode === 'WORKOUT_DAY_NOT_FOUND') return <main className="page-content"><Card className="not-found"><h1>{t('workout.dayNotFoundTitle')}</h1><p className="muted">{t('workout.dayNotFoundDescription')}</p><Link className="button button-secondary" to="/workout">{t('workout.backToPlan')}</Link></Card></main>;
@@ -38,7 +48,17 @@ export function WorkoutDayPage() {
   if (day === undefined) return <main className="page-content"><Skeleton /><Skeleton /><Skeleton /></main>;
   if (!day) return <main className="page-content"><ErrorState /></main>;
 
-  const start = async () => { setStarting(true); setError(''); try { const session = await startWorkout(day.id); navigate(`/workout/session/${session.id}`); } catch (reason) { setError(friendlyError(reason, reason instanceof Error ? reason.message : t('workoutSession.startError'))); } finally { setStarting(false); } };
+  const currentDayIndex = currentPlan?.workout_plan_days.findIndex((planDay) => planDay.id === day.id) ?? -1;
+  const canStart = currentPlan?.status === 'ACTIVE'
+    && currentDayIndex >= 0
+    && getWorkoutDayState(currentPlan.workout_plan_days, currentDayIndex) === 'up_next';
+  const start = async () => {
+    const scheduledWeekday = currentPlan && currentDayIndex >= 0 ? getScheduledWeekday(currentPlan.workout_plan_days, currentDayIndex) : null;
+    const todayWeekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][(new Date().getDay() + 6) % 7];
+    if (currentPlan && currentDayIndex >= 0 && scheduledWeekday && requiresPastWorkoutConfirmation(currentPlan.workout_plan_days, currentDayIndex) && !window.confirm(t('workout.pastDayConfirm', { today: t(`workout.${todayWeekday}`), day: t(`workout.${scheduledWeekday}`) }))) return;
+    setStarting(true); setError('');
+    try { const session = await startWorkout(day.id); navigate(`/workout/session/${session.id}`); } catch (reason) { setError(friendlyError(reason, reason instanceof Error ? reason.message : t('workoutSession.startError'))); } finally { setStarting(false); }
+  };
   const exercises = [...day.workout_plan_exercises].sort((a, b) => a.position - b.position);
 
   const StartButton = ({ large = false }: { large?: boolean }) => (
@@ -61,7 +81,7 @@ export function WorkoutDayPage() {
           <span>{Icon.bolt} {tEnum('muscle', day.muscle_focus)}</span>
         </div>
       </div>
-      <StartButton large />
+      {canStart ? <StartButton large /> : <p className="wd-muted">{t('workout.viewOnlyToday')}</p>}
     </header>
 
     {error && <p className="alert" role="alert">{error}</p>}
@@ -132,7 +152,7 @@ export function WorkoutDayPage() {
         <h2>{t('workout.readyToBegin')}</h2>
         <p className="wd-muted">{t('workout.readyDescription')}</p>
       </div>
-      <StartButton large />
+      {canStart ? <StartButton large /> : <p className="wd-muted">{t('workout.viewOnlyToday')}</p>}
     </section>
   </main>;
 }

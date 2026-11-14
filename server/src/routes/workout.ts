@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AppError } from '../lib/errors.js';
 import { requireAuth } from '../middleware/auth.js';
-import { generateWorkoutPlan, readCurrentPlan, readPlan, readPlanDay } from '../services/workout.service.js';
+import { ensureCurrentWeeklyPlan, generateWorkoutPlan, readPlan, readPlanDay } from '../services/workout.service.js';
 import { z } from 'zod';
 
 export const workoutGenerateRequestSchema = z.object({ locale: z.enum(['en', 'vi']).default('en') });
@@ -11,8 +11,8 @@ export const workoutRouter = Router();
 workoutRouter.get('/workout-plans/current', requireAuth, async (req, res, next) => {
   try {
     if (!req.supabase || !req.user) throw new AppError(401, 'UNAUTHORIZED', 'Authentication is required.');
-    const locale = typeof req.query.locale === 'string' ? req.query.locale : 'en';
-    res.json({ data: await readCurrentPlan(req.supabase, req.user.id, locale) });
+    const locale = req.query.locale === 'vi' ? 'vi' : 'en';
+    res.json({ data: await ensureCurrentWeeklyPlan(req.supabase, req.user.id, locale) });
   } catch (error) {
     next(error);
   }

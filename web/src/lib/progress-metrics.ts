@@ -87,9 +87,9 @@ export function sevenDayWeightChange(entries: WeightEntry[]): number | null {
   return older ? latest.weight_kg - older.weight_kg : null;
 }
 
-export type TodayWorkout = { kind: 'resume'; session: ProgressSession } | { kind: 'start'; dayIndex: number } | { kind: 'no-plan' };
+export type TodayWorkout = { kind: 'resume'; session: ProgressSession } | { kind: 'start' | 'view'; dayIndex: number } | { kind: 'no-plan' };
 
-export function selectTodaysWorkout(planDays: { day_index: number }[] | null, sessions: ProgressSession[]): TodayWorkout {
+export function selectTodaysWorkout(planDays: { day_index: number }[] | null, sessions: ProgressSession[], now = new Date()): TodayWorkout {
   if (!planDays?.length) return { kind: 'no-plan' };
   const inProgress = sessions.find((session) => session.status === 'IN_PROGRESS');
   if (inProgress) return { kind: 'resume', session: inProgress };
@@ -97,5 +97,7 @@ export function selectTodaysWorkout(planDays: { day_index: number }[] | null, se
   if (!completed.length) return { kind: 'start', dayIndex: 1 };
   const currentPosition = planDays.findIndex((day) => day.day_index === completed[0].day_index);
   const nextPosition = currentPosition < 0 ? 0 : (currentPosition + 1) % planDays.length;
-  return { kind: 'start', dayIndex: planDays[nextPosition].day_index };
+  const latestCompletion = completed[0].finished_at ?? completed[0].started_at;
+  const today = dateKey(now);
+  return { kind: dateKey(new Date(latestCompletion)) === today ? 'view' : 'start', dayIndex: planDays[nextPosition].day_index };
 }

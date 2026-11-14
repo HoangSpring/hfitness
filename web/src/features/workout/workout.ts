@@ -29,6 +29,7 @@ export type PlanDay = {
   name: string;
   muscle_focus: string;
   workout_plan_exercises: PlanExercise[];
+  progress: { status: 'COMPLETED' | 'SKIPPED'; finished_at: string } | null;
 };
 
 export type WorkoutPlan = {
@@ -39,7 +40,65 @@ export type WorkoutPlan = {
   workout_plan_days: PlanDay[];
 };
 
-export type SessionStatus = 'IN_PROGRESS' | 'COMPLETED' | 'ABANDONED';
+export type WeekdayKey = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
+export type WeeklyScheduleEntry = {
+  weekday: WeekdayKey;
+  day: PlanDay | null;
+};
+
+const WEEKDAYS: WeekdayKey[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const WORKOUT_DAY_POSITIONS: Record<number, number[]> = {
+  1: [0],
+  2: [0, 3],
+  3: [0, 2, 4],
+  4: [0, 1, 3, 4],
+  5: [0, 1, 2, 3, 4],
+  6: [0, 1, 2, 3, 4, 5],
+  7: [0, 1, 2, 3, 4, 5, 6],
+};
+
+export function getWeeklySchedule(days: PlanDay[]): WeeklyScheduleEntry[] {
+  const positions = WORKOUT_DAY_POSITIONS[days.length] ?? days.map((_, index) => index % WEEKDAYS.length);
+  const dayByWeekday = new Map(positions.map((weekdayIndex, dayIndex) => [weekdayIndex, days[dayIndex] ?? null]));
+  return WEEKDAYS.map((weekday, weekdayIndex) => ({ weekday, day: dayByWeekday.get(weekdayIndex) ?? null }));
+}
+
+export function getScheduledWeekday(days: PlanDay[], dayIndex: number): WeekdayKey | null {
+  return getWeeklySchedule(days).find((entry) => entry.day?.id === days[dayIndex]?.id)?.weekday ?? null;
+}
+
+export function requiresPastWorkoutConfirmation(days: PlanDay[], dayIndex: number, now = new Date()): boolean {
+  const scheduledWeekday = getScheduledWeekday(days, dayIndex);
+  if (!scheduledWeekday) return false;
+  const scheduledIndex = WEEKDAYS.indexOf(scheduledWeekday);
+  const todayIndex = (now.getDay() + 6) % 7;
+  return scheduledIndex < todayIndex;
+}
+
+export type WorkoutDayState = 'completed' | 'skipped' | 'up_next' | 'upcoming' | 'locked';
+
+export function localDateKey(date: Date): string {
+  const parts = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+export function getCurrentWorkoutDayIndex(days: PlanDay[], now = new Date()): number | null {
+  const firstPendingIndex = days.findIndex((day) => !day.progress);
+  if (firstPendingIndex < 0) return null;
+  const previous = days[firstPendingIndex - 1];
+  if (previous?.progress?.status === 'COMPLETED' && localDateKey(new Date(previous.progress.finished_at)) === localDateKey(now)) return null;
+  return firstPendingIndex;
+}
+
+export function getWorkoutDayState(days: PlanDay[], index: number, now = new Date()): WorkoutDayState {
+  const progress = days[index].progress;
+  if (progress?.status === 'COMPLETED') return 'completed';
+  if (progress?.status === 'SKIPPED') return 'skipped';
+  return getCurrentWorkoutDayIndex(days, now) === index ? 'up_next' : getCurrentWorkoutDayIndex(days, now) === null ? 'locked' : 'upcoming';
+}
+
+export type SessionStatus = 'IN_PROGRESS' | 'COMPLETED' | 'ABANDONED' | 'SKIPPED';
 export type WorkoutSet = {
   id: string;
   session_id: string;
@@ -107,11 +166,13 @@ export async function startWorkout(planDayId: string): Promise<WorkoutSession> {
   const existing = await supabase.from('workout_sessions').select('*').eq('status', 'IN_PROGRESS').maybeSingle();
   if (existing.error) throw existing.error;
   if (existing.data) return existing.data as WorkoutSession;
-  const created = await supabase.from('workout_sessions').insert({ plan_day_id: planDayId, status: 'IN_PROGRESS' }).select('*').single();
+  const created = await supabase.rpc('start_workout_session', { p_plan_day_id: planDayId });
   if (!created.error && created.data) return created.data as WorkoutSession;
-  if (created.error?.code === '23505') {
-    const resumed = await supabase.from('workout_sessions').select('*').eq('status', 'IN_PROGRESS').single();
-    if (!resumed.error && resumed.data) return resumed.data as WorkoutSession;
+  if (created.error?.message.includes('WORKOUT_DAY_ALREADY_COMPLETED_TODAY')) {
+    throw Object.assign(new Error(created.error.message), { code: 'WORKOUT_DAY_ALREADY_COMPLETED_TODAY' });
+  }
+  if (created.error?.message.includes('WORKOUT_SESSION_IN_PROGRESS')) {
+    throw Object.assign(new Error(created.error.message), { code: 'WORKOUT_SESSION_IN_PROGRESS' });
   }
   throw created.error ?? new Error('Could not start workout.');
 }
@@ -149,6 +210,17 @@ export async function finishWorkout(id: string): Promise<WorkoutSession> {
 export async function abandonWorkout(id: string): Promise<WorkoutSession> {
   const result = await supabase.rpc('abandon_workout_session', { session_id: id });
   if (result.error || !result.data) throw result.error ?? new Error('Could not abandon workout.');
+  return result.data as WorkoutSession;
+}
+
+export async function skipWorkoutDay(planDayId: string): Promise<WorkoutSession> {
+  const active = await supabase.from('workout_sessions').select('id, plan_day_id').eq('status', 'IN_PROGRESS').maybeSingle();
+  if (active.error) throw active.error;
+  if (active.data) {
+    await abandonWorkout(active.data.id);
+  }
+  const result = await supabase.rpc('skip_workout_day', { p_plan_day_id: planDayId });
+  if (result.error || !result.data) throw result.error ?? new Error('Could not skip workout day.');
   return result.data as WorkoutSession;
 }
 

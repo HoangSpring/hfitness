@@ -6,7 +6,7 @@ import { t, translatedError } from '../../i18n/en';
 import { tEnum } from '../../i18n/enum';
 import { useLocale } from '../../i18n/LocaleContext';
 import { friendlyError } from '../../lib/errors';
-import { activatePlan, estimateDayMinutes, generatePlan, getCurrentPlan, startWorkout, type WorkoutPlan } from './workout';
+import { activatePlan, estimateDayMinutes, generatePlan, getCurrentPlan, getScheduledWeekday, getWeeklySchedule, getWorkoutDayState, requiresPastWorkoutConfirmation, skipWorkoutDay, startWorkout, type WorkoutPlan } from './workout';
 import './WorkoutPage.css';
 
 type PlanDay = WorkoutPlan['workout_plan_days'][number];
@@ -72,7 +72,9 @@ export function WorkoutPage() {
     }
   };
 
-  const start = async (dayId: string) => {
+  const start = async (dayId: string, dayIndex: number) => {
+    const scheduledWeekday = getScheduledWeekday(days, dayIndex);
+    if (requiresPastWorkoutConfirmation(days, dayIndex) && scheduledWeekday && !window.confirm(t('workout.pastDayConfirm', { today: t(`workout.${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][(new Date().getDay() + 6) % 7]}`), day: t(`workout.${scheduledWeekday}`) }))) return;
     setBusy(true);
     setError('');
     try {
@@ -85,12 +87,30 @@ export function WorkoutPage() {
     }
   };
 
+  const skip = async (dayId: string) => {
+    if (!window.confirm(t('workout.skipConfirm'))) return;
+    setBusy(true);
+    setError('');
+    try {
+      await skipWorkoutDay(dayId);
+      setPlan(await getCurrentPlan(locale));
+    } catch (reason) {
+      setError(friendlyError(reason, t('workout.skipError')));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   if (plan === undefined && !error) return <main className="page-content workout-page"><Skeleton className="workout-skeleton" /><Skeleton /><Skeleton /></main>;
   if (error && plan === undefined) return <main className="page-content"><ErrorState onRetry={load} /><p className="alert" role="alert">{error}</p></main>;
   if (!plan) return <main className="page-content"><EmptyState title={t('workout.emptyTitle')} description={t('workout.emptyDescription')}><Button onClick={generate} disabled={busy}>{busy && <Spinner />}{t('workout.generate')}</Button></EmptyState></main>;
 
   const days: PlanDay[] = plan.workout_plan_days;
-  const nextDay = days[0];
+  const weeklySchedule = getWeeklySchedule(days);
+  const nextDay = days.find((day, index) => getWorkoutDayState(days, index) === 'up_next');
+  const nextDayIndex = nextDay ? days.indexOf(nextDay) : -1;
+  const isCatchUp = nextDayIndex >= 0 && requiresPastWorkoutConfirmation(days, nextDayIndex);
+  const waitingForTomorrow = !nextDay && days.some((day) => day.progress?.status === 'COMPLETED');
   const totalMinutes = days.reduce((sum, day) => sum + estimateDayMinutes(day), 0);
   const averageMinutes = days.length ? Math.round(totalMinutes / days.length) : 0;
   const isDraft = plan.status === 'DRAFT';
@@ -129,7 +149,9 @@ export function WorkoutPage() {
           </div>
           <h2 className="wk-plan-name">{plan.name}</h2>
         </div>
-        {nextDay && <button type="button" className="wk-btn wk-btn-primary" onClick={() => void start(nextDay.id)} disabled={busy}>{Icon.play} {t('workout.startToday')}</button>}
+        {nextDay
+          ? <button type="button" className="wk-btn wk-btn-primary" onClick={() => void start(nextDay.id, nextDayIndex)} disabled={busy}>{Icon.play} {t(isCatchUp ? 'workout.startCatchUp' : 'workout.startToday')}</button>
+          : <span className="wk-pill wk-pill-accent">{waitingForTomorrow ? t('workout.nextDayTomorrow') : t('workout.allDaysComplete')}</span>}
       </div>
       <dl className="wk-stats">
         <div><dt>{t('workout.weeklyTime')}</dt><dd>{formatTotal(totalMinutes)}</dd><span>{t('workout.minutesPerSession', { minutes: averageMinutes })}</span></div>
@@ -146,12 +168,24 @@ export function WorkoutPage() {
       </div>
 
       <div className="wk-days">
-        {days.map((day, index) => {
-          const next = index === 0;
+        {weeklySchedule.map(({ weekday, day }) => {
+          if (!day) {
+            return <article key={weekday} className="wk-day wk-rest-day">
+              <div className="wk-day-top"><span className="wk-day-state">{t('workout.restDay')}</span></div>
+              <p className="wk-day-label">{t(`workout.${weekday}`)}</p>
+              <h3>{t('workout.restDay')}</h3>
+              <p className="wk-muted">{t('workout.restDayDescription')}</p>
+            </article>;
+          }
+          const index = days.indexOf(day);
+          const state = getWorkoutDayState(days, index);
+          const next = state === 'up_next';
           const exercises = day.workout_plan_exercises;
-          return <article key={day.id} className={next ? 'wk-day wk-day-next' : 'wk-day'}>
+          return <article key={day.id} className={`wk-day ${next ? 'wk-day-next' : ''} wk-day-${state}`}>
             <div className="wk-day-top">
-              <span className={next ? 'wk-pill wk-pill-accent' : 'wk-day-state'}>{next ? t('workout.upNext') : t('workout.upcoming')}</span>
+              <span className={next ? 'wk-pill wk-pill-accent' : 'wk-day-state'}>
+                {state === 'completed' ? t('workout.completed') : state === 'skipped' ? t('workout.skipped') : state === 'locked' ? t('workout.nextDayTomorrow') : next ? t('workout.upNext') : t('workout.upcoming')}
+              </span>
               <span className="wk-minutes">{t('workout.minutes', { minutes: estimateDayMinutes(day) })}</span>
             </div>
             <p className="wk-day-label">{t('workout.day', { day: day.day_index })}</p>
@@ -164,7 +198,8 @@ export function WorkoutPage() {
             </ul>
 
             <div className="wk-day-actions">
-              {next && <button type="button" className="wk-btn wk-btn-primary wk-btn-block" onClick={() => void start(day.id)} disabled={busy}>{Icon.play} {t('workoutSession.start')}</button>}
+              {next && <button type="button" className="wk-btn wk-btn-primary wk-btn-block" onClick={() => void start(day.id, index)} disabled={busy}>{Icon.play} {t(isCatchUp ? 'workout.startCatchUp' : 'workoutSession.start')}</button>}
+              {next && <button type="button" className="wk-btn wk-btn-ghost wk-btn-block" onClick={() => void skip(day.id)} disabled={busy}>{t('workout.skipToday')}</button>}
               <Link className="wk-link" to={`/workout/day/${day.id}`}>{t('workout.viewWorkout')}</Link>
             </div>
           </article>;

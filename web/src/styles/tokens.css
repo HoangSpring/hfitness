@@ -21,6 +21,16 @@
   --color-success: #e0301e;
   --color-warning: #a3a3a3;
   --color-error: #ff8073;
+  --landing-bg: #050505;
+  --landing-bg-alt: #0b0b0c;
+  --landing-glass: rgb(255 255 255 / .06);
+  --landing-border: rgb(255 255 255 / .12);
+  --landing-accent: #f0352b;
+  --landing-accent-hover: #d42a21;
+  --landing-glow: rgb(240 53 43 / .45);
+  --landing-text-secondary: #b5b5b8;
+  --landing-text-muted: #77777b;
+  --landing-silver: linear-gradient(180deg, #fff 0%, #bfbfc4 60%, #7c7c82 100%);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -34,8 +44,8 @@
   --mosaic-gap: 13px;
   --mosaic-column: clamp(150px, 15.5vw, 205px);
   --tile-ratio: 3 / 4;
-  --font-display: "Oswald", "Arial Narrow", sans-serif;
-  --font-sans: "Barlow", "Inter", system-ui, sans-serif;
+  --font-display: "Montserrat", "Inter", system-ui, sans-serif;
+  --font-sans: "Montserrat", "Inter", system-ui, sans-serif;
   --focus-ring: #e0301e;
   --shadow-card: none;
   --sidebar-width: 15rem;

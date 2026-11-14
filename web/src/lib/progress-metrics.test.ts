@@ -26,10 +26,12 @@ describe('progress metrics', () => {
     expect(sevenDayWeightChange([{ logged_on: '2026-01-07', weight_kg: 80 }])).toBeNull();
     expect(sevenDayWeightChange([{ logged_on: '2025-12-31', weight_kg: 82 }, { logged_on: '2026-01-07', weight_kg: 80 }])).toBe(-2);
   });
-  it('selects resume, next completed day, day one, and no plan', () => {
+  it('selects resume, next completed day, view-only after today completion, day one, and no plan', () => {
+    const now = new Date('2026-01-07T10:00:00Z');
     expect(selectTodaysWorkout(null, [])).toEqual({ kind: 'no-plan' });
     expect(selectTodaysWorkout([{ day_index: 1 }, { day_index: 2 }], [session('i', '2026-01-07', 'IN_PROGRESS')])).toMatchObject({ kind: 'resume' });
     expect(selectTodaysWorkout([{ day_index: 1 }, { day_index: 2 }], [])).toEqual({ kind: 'start', dayIndex: 1 });
-    expect(selectTodaysWorkout([{ day_index: 1 }, { day_index: 2 }], [session('a', '2026-01-07', 'COMPLETED', 2)])).toEqual({ kind: 'start', dayIndex: 1 });
+    expect(selectTodaysWorkout([{ day_index: 1 }, { day_index: 2 }], [session('a', '2026-01-07', 'COMPLETED', 2)], now)).toEqual({ kind: 'view', dayIndex: 1 });
+    expect(selectTodaysWorkout([{ day_index: 1 }, { day_index: 2 }], [session('a', '2026-01-06', 'COMPLETED', 2)], now)).toEqual({ kind: 'start', dayIndex: 1 });
   });
 });

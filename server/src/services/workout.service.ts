@@ -11,6 +11,14 @@ import { utcDayStart } from '../lib/ai/usage.js';
 
 type UserClient = SupabaseClient;
 
+function currentWeekStart(now = new Date()): string {
+  const date = new Date(now);
+  const day = date.getUTCDay();
+  const daysSinceMonday = day === 0 ? 6 : day - 1;
+  date.setUTCDate(date.getUTCDate() - daysSinceMonday);
+  return date.toISOString().slice(0, 10);
+}
+
 export function isAiRateLimited(requestCount: number, dailyLimit: number): boolean {
   return requestCount >= dailyLimit;
 }
@@ -95,6 +103,38 @@ async function localizePlanExercises(client: UserClient, plan: any, locale: stri
   return plan;
 }
 
+async function attachWorkoutProgress(client: UserClient, plan: any) {
+  const days = plan.workout_plan_days as Array<{ id: string }>;
+  const dayIds = days.map((day) => day.id);
+  if (dayIds.length === 0) return plan;
+
+  const { data: sessions, error } = await client
+    .from('workout_sessions')
+    .select('plan_day_id, status, finished_at')
+    .in('plan_day_id', dayIds)
+    .in('status', ['COMPLETED', 'SKIPPED'])
+    .order('finished_at', { ascending: false });
+  if (error) throw new AppError(500, 'WORKOUT_PROGRESS_READ_FAILED', 'Could not load workout progress.');
+
+  const progressByDay = new Map<string, { status: 'COMPLETED' | 'SKIPPED'; finished_at: string }>();
+  for (const session of sessions ?? []) {
+    if (session.plan_day_id && !progressByDay.has(session.plan_day_id)) {
+      progressByDay.set(session.plan_day_id, {
+        status: session.status as 'COMPLETED' | 'SKIPPED',
+        finished_at: session.finished_at,
+      });
+    }
+  }
+
+  return {
+    ...plan,
+    workout_plan_days: days.map((day) => ({
+      ...day,
+      progress: progressByDay.get(day.id) ?? null,
+    })),
+  };
+}
+
 async function readPlan(client: UserClient, planId: string, locale: string = 'en'): Promise<unknown> {
   const { data, error } = await client
     .from('workout_plans')
@@ -103,7 +143,7 @@ async function readPlan(client: UserClient, planId: string, locale: string = 'en
     .maybeSingle();
   if (error) throw new AppError(500, 'WORKOUT_PLAN_READ_FAILED', 'Could not load your workout plan.');
   if (!data) throw new AppError(404, 'WORKOUT_PLAN_NOT_FOUND', 'Workout plan not found.');
-  return localizePlanExercises(client, data, locale);
+  return localizePlanExercises(client, await attachWorkoutProgress(client, data), locale);
 }
 
 export async function readPlanDay(client: UserClient, dayId: string, locale: string = 'en'): Promise<unknown> {
@@ -205,7 +245,7 @@ export async function generateWorkoutPlan(
       console.info('[ai] workout generation succeeded', { attempt: attempt + 1, latency_ms: Date.now() - started });
       const { data: savedPlan, error: planError } = await client
         .from('workout_plans')
-        .insert({ user_id: userId, name: plan.name, goal: profile.goal, source: 'AI', status: 'DRAFT' })
+        .insert({ user_id: userId, name: plan.name, goal: profile.goal, source: 'AI', status: 'DRAFT', week_start: currentWeekStart() })
         .select('id')
         .single();
       if (planError || !savedPlan) throw new AppError(500, 'WORKOUT_PLAN_SAVE_FAILED', 'Could not save your workout plan.');
@@ -253,10 +293,24 @@ export async function readCurrentPlan(client: UserClient, userId: string, locale
     .select('id')
     .eq('user_id', userId)
     .in('status', ['ACTIVE', 'DRAFT'])
-    .order('status', { ascending: true })
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
   if (error) throw new AppError(500, 'WORKOUT_PLAN_READ_FAILED', 'Could not load your workout plan.');
   return data ? readPlan(client, data.id, locale) : null;
+}
+
+export async function ensureCurrentWeeklyPlan(client: UserClient, userId: string, locale: 'en' | 'vi' = 'en'): Promise<unknown | null> {
+  const { data, error } = await client
+    .from('workout_plans')
+    .select('id, week_start')
+    .eq('user_id', userId)
+    .in('status', ['ACTIVE', 'DRAFT'])
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new AppError(500, 'WORKOUT_PLAN_READ_FAILED', 'Could not load your workout plan.');
+  if (!data) return null;
+  if (data.week_start >= currentWeekStart()) return readPlan(client, data.id, locale);
+  return generateWorkoutPlan(client, userId, undefined, locale);
 }

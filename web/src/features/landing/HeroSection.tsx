@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { t } from '../../i18n/en';
 import { useAuth } from '../auth/useAuth';
-import { HeroMosaic } from './HeroMosaic';
 
 export function HeroSection() {
   const { user } = useAuth();
@@ -18,6 +17,10 @@ export function HeroSection() {
   const primaryLabel = user ? t('public.goDashboard') : t('public.getStarted');
   const primaryPath = user ? '/dashboard' : '/register';
   return <section className={`landing-hero ${entered ? 'is-entered' : ''}`}>
+    <div className="hero-media" aria-hidden="true">
+      <img src="/image/herosection.png" alt="" />
+    </div>
+    <p className="hero-ghost" aria-hidden="true">{t('public.heroGhost')}</p>
     <div className="hero-copy">
       <p className="hero-eyebrow">{t('public.heroEyebrow')}</p>
       <h1>{t('public.heroHeadline').split('|').map((line) => <span key={line}>{line}</span>)}</h1>
@@ -27,6 +30,11 @@ export function HeroSection() {
         <Link className="hero-secondary" to="/exercises">{t('public.exploreExercises')} <span aria-label={t('public.arrowLabel')}>→</span></Link>
       </div>
     </div>
-    <HeroMosaic />
+    <div className="hero-stats" aria-label={t('public.heroStatsLabel')}>
+      <div><strong>{t('public.heroStatOneValue')}</strong><span>{t('public.heroStatOneLabel')}</span></div>
+      <div><strong>{t('public.heroStatTwoValue')}</strong><span>{t('public.heroStatTwoLabel')}</span></div>
+      <div><strong>{t('public.heroStatThreeValue')}</strong><span>{t('public.heroStatThreeLabel')}</span></div>
+    </div>
+    <span className="hero-scroll" aria-hidden="true"><i />{t('public.heroScroll')}</span>
   </section>;
 }
