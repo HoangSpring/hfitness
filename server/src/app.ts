@@ -20,3 +20,5 @@ app.use('/api/v1', workoutRouter);
 app.use('/api/v1', coachRouter);
 app.use('/api/v1', foodScanRouter);
 app.use(errorHandler);
+
+export default app;
