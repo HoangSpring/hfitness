@@ -1,14 +1,38 @@
 import { z } from 'zod';
 import { supabase } from './supabase';
+import { localizeFood, type FoodTranslation } from './content-localization';
+import type { Locale } from '../i18n/en';
 
 export const quantitySchema = z.coerce.number().positive().max(50);
 export const mealTypes = ['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'] as const;
 export type MealType = typeof mealTypes[number];
-export type Food = { id: string; name: string; slug: string; category: string; serving_size: number; unit: string; calories: number; protein: number; carbs: number; fat: number; status: string };
+export type Food = { id: string; name: string; slug: string; category: string; serving_size: number; unit: string; calories: number; protein: number; carbs: number; fat: number; status: string; food_translations?: FoodTranslation[] | FoodTranslation | null };
 export type NutritionValues = { calories: number; protein: number; carbs: number; fat: number };
-export type MealItem = NutritionValues & { id: string; meal_id: string; food_id: string | null; quantity: number; foods: Food | null };
+export type MealItem = NutritionValues & {
+  id: string;
+  meal_id: string;
+  food_id: string | null;
+  item_name: string | null;
+  source: 'MANUAL' | 'SCAN_DB' | 'SCAN_ESTIMATE';
+  ai_confidence: number | null;
+  amount: number | null;
+  amount_unit: 'g' | 'ml' | 'piece' | null;
+  quantity: number;
+  foods: Food | null;
+};
 export type Meal = { id: string; user_id: string; meal_type: MealType; eaten_at: string; meal_items: MealItem[] };
 export type Targets = NutritionValues;
+
+export function getMealItemName(item: Pick<MealItem, 'foods' | 'item_name'>): string {
+  return item.foods?.name ?? item.item_name ?? 'Archived food';
+}
+
+export function getMealItemAmount(item: Pick<MealItem, 'foods' | 'quantity' | 'amount' | 'amount_unit'>): string {
+  if (item.foods || item.amount === null || item.amount_unit === null) {
+    return `${item.quantity} servings`;
+  }
+  return `${item.amount} ${item.amount_unit}`;
+}
 
 const round = (value: number) => Math.round(value * 10) / 10;
 export function calculateItemNutrition(food: Food, quantity: number): NutritionValues {
@@ -25,7 +49,7 @@ export function getLocalDayRange(date: Date): { start: string; end: string } {
 }
 export const dateKey = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-export async function getNutritionDay(date: Date): Promise<{ meals: Meal[]; targets: Targets | null }> {
+export async function getNutritionDay(date: Date, locale: Locale = 'en'): Promise<{ meals: Meal[]; targets: Targets | null }> {
   const range = getLocalDayRange(date);
   const [mealsResult, assessmentResult] = await Promise.all([
     supabase.from('meals').select('*').gte('eaten_at', range.start).lt('eaten_at', range.end).order('eaten_at'),
@@ -38,20 +62,40 @@ export async function getNutritionDay(date: Date): Promise<{ meals: Meal[]; targ
   const itemsResult = mealIds.length ? await supabase.from('meal_items').select('*').in('meal_id', mealIds) : { data: [], error: null };
   if (itemsResult.error) throw itemsResult.error;
   const foods = [...new Set((itemsResult.data ?? []).map((item) => item.food_id).filter(Boolean))];
-  const foodResult = foods.length ? await supabase.from('foods').select('*').in('id', foods) : { data: [], error: null };
+  const foodResult = foods.length ? await supabase.from('foods').select('*,food_translations(name,locale)').in('id', foods) : { data: [], error: null };
   if (foodResult.error) throw foodResult.error;
-  const foodMap = new Map((foodResult.data ?? []).map((food) => [food.id, food as Food]));
+  const foodMap = new Map((foodResult.data ?? []).map((food) => [food.id, localizeFood(food as Food, Array.isArray(food.food_translations) ? food.food_translations[0] : food.food_translations, locale)]));
   return {
     meals: meals.map((meal) => ({ ...meal, meal_items: (itemsResult.data ?? []).filter((item) => item.meal_id === meal.id).map((item) => ({ ...item, foods: foodMap.get(item.food_id) ?? null })) })) as Meal[],
     targets: assessmentResult.data ? { calories: assessmentResult.data.calorie_target, protein: assessmentResult.data.protein_g, carbs: assessmentResult.data.carbs_g, fat: assessmentResult.data.fat_g } : null,
   };
 }
-export async function searchFoods(query: string): Promise<Food[]> {
-  const escaped = query.replace(/[%_\\]/g, '\\$&');
-  const result = await supabase.from('foods').select('*').eq('status', 'PUBLISHED').ilike('name', `%${escaped}%`).order('name').limit(20);
-  if (result.error) throw result.error;
-  return (result.data ?? []) as Food[];
+
+export async function searchFoods(query: string, locale: Locale = 'en'): Promise<Food[]> {
+  const escaped = query.replace(/[%_\\]/g, '\\$&').replace(/[,()]/g, '');
+  if (!escaped.trim()) return [];
+
+  if (locale === 'vi') {
+    const [engRes, viRes] = await Promise.all([
+      supabase.from('foods').select('id').eq('status', 'PUBLISHED').ilike('name', `%${escaped}%`).limit(20),
+      supabase.from('food_translations').select('food_id').eq('locale', 'vi').ilike('name', `%${escaped}%`).limit(20),
+    ]);
+    if (engRes.error) throw engRes.error;
+    if (viRes.error) throw viRes.error;
+
+    const ids = Array.from(new Set([...(engRes.data ?? []).map((f) => f.id), ...(viRes.data ?? []).map((t) => t.food_id)]));
+    if (ids.length === 0) return [];
+
+    const result = await supabase.from('foods').select('*,food_translations(name,locale)').in('id', ids).limit(20);
+    if (result.error) throw result.error;
+    return (result.data ?? []).map((food) => localizeFood(food as Food, Array.isArray(food.food_translations) ? food.food_translations.find((translation: FoodTranslation) => translation.locale === 'vi') ?? food.food_translations[0] : food.food_translations, locale));
+  } else {
+    const result = await supabase.from('foods').select('*,food_translations(name,locale)').eq('status', 'PUBLISHED').ilike('name', `%${escaped}%`).order('name').limit(20);
+    if (result.error) throw result.error;
+    return (result.data ?? []).map((food) => localizeFood(food as Food, Array.isArray(food.food_translations) ? food.food_translations[0] : food.food_translations, locale));
+  }
 }
+
 export async function addFood(food: Food, mealType: MealType, quantity: number, date: Date): Promise<void> {
   const values = calculateItemNutrition(food, quantity);
   const range = getLocalDayRange(date);

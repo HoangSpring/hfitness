@@ -52,25 +52,72 @@ async function logRequest(
   }
 }
 
-async function readPlan(client: UserClient, planId: string): Promise<unknown> {
+async function localizePlanExercises(client: UserClient, plan: any, locale: string) {
+  if (!plan || !plan.workout_plan_days || locale !== 'vi') return plan;
+
+  // Thu thập tất cả các exercise_id có trong kế hoạch
+  const exerciseIds = new Set<string>();
+  for (const day of plan.workout_plan_days) {
+    for (const item of (day.workout_plan_exercises || [])) {
+      if (item.exercise_id) exerciseIds.add(item.exercise_id);
+    }
+  }
+
+  if (exerciseIds.size === 0) return plan;
+
+  // Lấy bản dịch tiếng Việt cho các bài tập này
+  const { data: translations } = await client
+    .from('exercise_translations')
+    .select('exercise_id, name, description, instructions, safety_notes')
+    .eq('locale', 'vi')
+    .in('exercise_id', Array.from(exerciseIds));
+
+  const translationMap = new Map((translations || []).map((t: any) => [t.exercise_id, t]));
+
+  // Gắn bản dịch vào từng bài tập
+  for (const day of plan.workout_plan_days) {
+    for (const item of (day.workout_plan_exercises || [])) {
+      if (item.exercises && translationMap.has(item.exercise_id)) {
+        const trans: any = translationMap.get(item.exercise_id);
+        item.exercises = {
+          ...item.exercises,
+          name: trans.name?.trim() || item.exercises.name,
+          description: trans.description?.trim() || item.exercises.description,
+          instructions: Array.isArray(trans.instructions) && trans.instructions.length > 0
+            ? trans.instructions
+            : item.exercises.instructions,
+          safety_notes: trans.safety_notes?.trim() || item.exercises.safety_notes,
+        };
+      }
+    }
+  }
+
+  return plan;
+}
+
+async function readPlan(client: UserClient, planId: string, locale: string = 'en'): Promise<unknown> {
   const { data, error } = await client
     .from('workout_plans')
-    .select('*, workout_plan_days(*, workout_plan_exercises(*, exercises(id, name, slug, primary_muscle)))')
+    .select('*, workout_plan_days(*, workout_plan_exercises(*, exercises(id, name, slug, primary_muscle, safety_notes, image_url, image_urls, video_url)))')
     .eq('id', planId)
     .maybeSingle();
   if (error) throw new AppError(500, 'WORKOUT_PLAN_READ_FAILED', 'Could not load your workout plan.');
   if (!data) throw new AppError(404, 'WORKOUT_PLAN_NOT_FOUND', 'Workout plan not found.');
-  return data;
+  return localizePlanExercises(client, data, locale);
 }
 
-export async function readPlanDay(client: UserClient, dayId: string): Promise<unknown> {
+export async function readPlanDay(client: UserClient, dayId: string, locale: string = 'en'): Promise<unknown> {
   const { data, error } = await client
     .from('workout_plan_days')
-    .select('id, plan_id, day_index, name, muscle_focus, workout_plans!inner(id), workout_plan_exercises(id, exercise_id, position, sets, reps_min, reps_max, rest_seconds, notes, exercises(name, slug, primary_muscle, safety_notes))')
+    .select('id, plan_id, day_index, name, muscle_focus, workout_plans!inner(id), workout_plan_exercises(id, exercise_id, position, sets, reps_min, reps_max, rest_seconds, notes, exercises(id, name, slug, primary_muscle, safety_notes, image_url, image_urls, video_url))')
     .eq('id', dayId)
     .maybeSingle();
   if (error) throw new AppError(500, 'WORKOUT_DAY_READ_FAILED', 'Could not load this workout day.');
   if (!data) throw new AppError(404, 'WORKOUT_DAY_NOT_FOUND', 'Workout day not found.');
+
+  // Đóng gói thành cấu trúc dạng plan giả lập để dùng chung hàm localizePlanExercises
+  const pseudoPlan = { workout_plan_days: [data] };
+  await localizePlanExercises(client, pseudoPlan, locale);
   return data;
 }
 
@@ -78,6 +125,7 @@ export async function generateWorkoutPlan(
   client: UserClient,
   userId: string,
   provider: AiProvider = createAiProvider(),
+  locale: 'en' | 'vi' = 'en',
 ): Promise<unknown> {
   if (isAiRateLimited(await countRequests(userId), config.AI_DAILY_LIMIT)) {
     throw new AppError(429, 'AI_RATE_LIMIT', 'You have reached your daily AI limit. Try again tomorrow.');
@@ -119,6 +167,7 @@ export async function generateWorkoutPlan(
     equipment,
     assessment,
     exercises: eligible.map(({ id, name, primary_muscle }) => ({ id, name, primary_muscle })),
+    locale,
   });
   console.info('[ai] workout generation started', { timeout_ms: config.AI_TIMEOUT_MS, max_attempts: MAX_AI_ATTEMPTS });
   let lastError = 'WORKOUT_GENERATION_FAILED';
@@ -179,7 +228,7 @@ export async function generateWorkoutPlan(
         );
         if (exerciseSaveError) throw new AppError(500, 'WORKOUT_PLAN_SAVE_FAILED', 'Could not save your workout plan.');
       }
-      return readPlan(client, savedPlan.id);
+      return readPlan(client, savedPlan.id, locale);
     } catch (error) {
       if (error instanceof AppError) throw error;
       lastError = error instanceof AiProviderError
@@ -198,7 +247,7 @@ export async function generateWorkoutPlan(
 
 export { readPlan };
 
-export async function readCurrentPlan(client: UserClient, userId: string): Promise<unknown | null> {
+export async function readCurrentPlan(client: UserClient, userId: string, locale: string = 'en'): Promise<unknown | null> {
   const { data, error } = await client
     .from('workout_plans')
     .select('id')
@@ -209,5 +258,5 @@ export async function readCurrentPlan(client: UserClient, userId: string): Promi
     .limit(1)
     .maybeSingle();
   if (error) throw new AppError(500, 'WORKOUT_PLAN_READ_FAILED', 'Could not load your workout plan.');
-  return data ? readPlan(client, data.id) : null;
+  return data ? readPlan(client, data.id, locale) : null;
 }

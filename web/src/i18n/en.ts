@@ -1,19 +1,81 @@
 export const en = {
   brand: 'HFitness',
+  titles: { home: 'HFitness', dashboard: 'Dashboard', workout: 'Workout', nutrition: 'Nutrition', progress: 'Progress', coach: 'AI Coach', profile: 'Profile', exercises: 'Exercises', admin: 'Admin', login: 'Log in', register: 'Register' },
   tagline: 'Personalized gym training and nutrition powered by AI.',
+  language: { label: 'Language', english: 'English', vietnamese: 'Vietnamese' },
+  enum: {
+    goal: { lose_weight: 'Lose weight', gain_weight: 'Gain weight', build_muscle: 'Build muscle', get_stronger: 'Get stronger', maintain: 'Maintain' },
+    experience: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' },
+    gender: { male: 'Male', female: 'Female' },
+    muscle: { chest: 'Chest', back: 'Back', shoulders: 'Shoulders', biceps: 'Biceps', triceps: 'Triceps', forearms: 'Forearms', quadriceps: 'Quadriceps', hamstrings: 'Hamstrings', glutes: 'Glutes', calves: 'Calves', abdominals: 'Abdominals', abs: 'Abs', trapezius: 'Trapezius', full_body: 'Full body' },
+    equipment: { bodyweight: 'Bodyweight', dumbbell: 'Dumbbell', barbell: 'Barbell', machine: 'Machine', cable: 'Cable', kettlebell: 'Kettlebell', band: 'Band' },
+    difficulty: { BEGINNER: 'Beginner', INTERMEDIATE: 'Intermediate', ADVANCED: 'Advanced', beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' },
+    movement_pattern: { PUSH: 'Push', PULL: 'Pull', SQUAT: 'Squat', HINGE: 'Hinge', CARRY: 'Carry', ROTATION: 'Rotation', LUNGE: 'Lunge', ISOLATION: 'Isolation', LOCOMOTION: 'Locomotion', push: 'Push', pull: 'Pull', squat: 'Squat', hinge: 'Hinge', carry: 'Carry', rotation: 'Rotation', lunge: 'Lunge', isolation: 'Isolation', locomotion: 'Locomotion' },
+    food_category: { PROTEIN: 'Protein', CARB: 'Carbohydrate', FAT: 'Fat', FRUIT: 'Fruit', VEGETABLE: 'Vegetable', DAIRY: 'Dairy', SNACK: 'Snack', protein: 'Protein', carb: 'Carbohydrate', fat: 'Fat', fruit: 'Fruit', vegetable: 'Vegetable', dairy: 'Dairy', snack: 'Snack' },
+    unit: { g: 'g', kg: 'kg', ml: 'ml', serving: 'serving', piece: 'piece' },
+    status: { DRAFT: 'Draft', PUBLISHED: 'Published', ARCHIVED: 'Archived' },
+  },
   auth: {
     login: { title: 'Welcome back', submit: 'Log in', switch: 'Create an account', switchPrompt: "Don't have an account?", error: "Couldn't log you in. Check your email and password and try again." },
     register: { title: 'Create your account', submit: 'Create account', switch: 'Log in', switchPrompt: 'Already have an account?', success: 'Account created. Welcome to HFitness.' },
     email: 'Email address', emailPlaceholder: 'athlete@domain.com', password: 'Password', confirmPassword: 'Confirm password', passwordPlaceholder: 'Enter your password', showPassword: 'Show password', hidePassword: 'Hide password', invalidEmail: 'Enter a valid email address.', passwordShort: 'Password must be at least 8 characters.', passwordMismatch: 'Passwords do not match.', genericError: 'Something went wrong. Please try again.',
   },
-  navigation: { dashboard: 'Dashboard', workout: 'Workout', exercises: 'Exercises', nutrition: 'Nutrition', progress: 'Progress', coach: 'AI Coach', profile: 'Profile', home: 'Home', more: 'More', logout: 'Log out' },
+  navigation: { dashboard: 'Dashboard', workout: 'Workout', exercises: 'Exercises', nutrition: 'Nutrition', progress: 'Progress', coach: 'AI Coach', profile: 'Profile', home: 'Home', more: 'More', admin: 'Admin', logout: 'Log out' },
   admin: { label: 'Admin area', dashboard: 'Dashboard', users: 'Users', exercises: 'Exercises', foods: 'Foods', backToApp: 'Back to app', badge: 'ADMIN', administrator: 'Administrator', loadError: 'We could not verify your admin access. Please try again.', forbiddenCode: '403', forbiddenTitle: 'Access denied', forbiddenDescription: 'You do not have permission to view this area.' },
+  adminExercises: {
+    title: 'Exercises', listDescription: 'Manage the exercise library and its publishing status.', add: 'Add exercise',
+    search: 'Search', searchPlaceholder: 'Search by name or slug', muscle: 'Muscle', equipment: 'Equipment', difficulty: 'Difficulty', statusLabel: 'Status', all: 'All',
+    image: 'Image', name: 'Name', updated: 'Updated', actions: 'Actions', edit: 'Edit', publish: 'Publish', archive: 'Archive', placeholder: 'No image',
+    showing: 'Showing {from}-{to} of {total} exercises', previous: 'Previous', next: 'Next',
+    emptyTitle: 'No exercises found', emptyDescription: 'Try changing your filters or add a new exercise.', loadError: 'We could not load exercises. Please try again.',
+    archiveConfirm: 'Archived exercises disappear from the library and from new AI plans. Existing plans and logs are kept. Continue?',
+    notFound: 'That exercise could not be found.', newTitle: 'New exercise', editTitle: 'Edit exercise', backToList: 'Back to exercises', editorDescription: 'Keep exercise details clear, safe, and ready for publication.',
+    basic: 'Basic information', slug: 'Slug', description: 'Description', instructions: 'Instructions', instructionLabel: 'Instruction {number}', addInstruction: 'Add instruction', remove: 'Remove', moveUp: 'Move instruction up', moveDown: 'Move instruction down',
+    safety: 'Safety notes', muscles: 'Muscles', primaryMuscle: 'Primary muscle', secondaryMuscles: 'Add secondary muscle', details: 'Details', movementPattern: 'Movement pattern',
+    media: 'Media', imageUrl: 'Image URL', videoUrl: 'Video URL', previewImage: 'Preview image', statusHeading: 'Status',
+    imageUrls: 'Additional image URLs', imageUrlsPlaceholder: 'One HTTPS image URL per line',
+    status: { draft: 'Draft', published: 'Published', archived: 'Archived' },
+    statusDescription: { draft: 'Draft exercises are hidden from users and AI plans.', published: 'Published exercises are available in the public library and AI plans.', archived: 'Archived exercises are hidden from users and new AI plans; existing records remain intact.' },
+    slugChecking: 'Checking slug availability...', slugAvailable: 'Slug is available.', slugTaken: 'That slug is already in use.', saving: 'Saving...', saveDraft: 'Save draft', draftSaved: 'Draft saved.', published: 'Exercise published.', archived: 'Exercise archived.', publishInvalid: 'Complete the required fields and add at least one instruction before publishing.', saveError: 'We could not save the exercise. Please try again.', fixErrors: 'Fix the highlighted fields before saving.',
+  },
+  adminFoods: {
+    title: 'Foods', listDescription: 'Manage the food database and publishing status.', add: 'Add food',
+    search: 'Search', searchPlaceholder: 'Search by name or slug', category: 'Category', statusLabel: 'Status', all: 'All',
+    name: 'Name', serving: 'Serving', calories: 'Calories', protein: 'Protein', carbs: 'Carbs', fat: 'Fat', updated: 'Updated', actions: 'Actions', edit: 'Edit', publish: 'Publish', archive: 'Archive',
+    showing: 'Showing {from}-{to} of {total} foods', previous: 'Previous', next: 'Next',
+    emptyTitle: 'No foods found', emptyDescription: 'Try changing your filters or add a new food.', loadError: 'We could not load foods. Please try again.',
+    newTitle: 'New food', editTitle: 'Edit food', backToList: 'Back to foods', editorDescription: 'Keep serving and nutrition values accurate and easy to review.',
+    identity: 'Food identity', slug: 'Slug', servingSection: 'Serving', servingSize: 'Serving size', unit: 'Unit', nutritionSection: 'Nutrition per serving', statusHeading: 'Status',
+    status: { draft: 'Draft', published: 'Published', archived: 'Archived' },
+    statusDescription: { draft: 'Draft foods are hidden from users.', published: 'Published foods are available in food search.', archived: 'Archived foods are hidden from search; existing meal history remains available.' },
+    consistencyWarning: 'Calories differ a lot from protein x4 + carbs x4 + fat x9. Please check the values.', publishInvalid: 'Complete serving size and all four nutrition values before publishing.',
+    archiveTitle: 'Archive food?', archiveDescription: 'Archived foods disappear from food search. Existing meal history keeps its saved nutrition values. Continue?', cancel: 'Cancel',
+    slugChecking: 'Checking slug availability...', slugAvailable: 'Slug is available.', slugTaken: 'That slug is already in use.', saving: 'Saving...', saveDraft: 'Save draft', draftSaved: 'Draft saved.', published: 'Food published.', archived: 'Food archived.', saveError: 'We could not save the food. Please try again.', fixErrors: 'Fix the highlighted fields before saving.',
+  },
+  adminDashboard: {
+    title: 'Platform overview', description: 'A compact view of platform activity and growth.', loadError: 'We could not load dashboard statistics. Please try again.',
+    totalUsers: 'Total users', newUsers: 'New users (7 days)', workouts: 'Workouts completed today', meals: 'Meals logged today', aiRequests: 'AI requests today', aiFailures: 'AI failed requests today',
+    growthTitle: 'New users, last 30 days', growthLabel: 'New user counts for the last 30 days', noGrowth: 'No user growth data is available.', axisDate: 'Date', axisCount: 'New users', tooltip: '{date}: {count} new users',
+  },
+  adminUsers: {
+    title: 'Users', description: 'Read-only user lookup with minimal profile and activity counts.', search: 'Search', searchPlaceholder: 'Search by name or email', goal: 'Goal', allGoals: 'All goals',
+    user: 'User', email: 'Email', goalColumn: 'Goal', joined: 'Joined', lastActive: 'Last activity', actions: 'Actions', view: 'View',
+    showing: 'Showing {from}-{to} of {total} users', previous: 'Previous', next: 'Next', unnamed: 'Unnamed user', notSet: 'Not set', notAvailable: 'Not available',
+    emptyTitle: 'No users found', emptyDescription: 'Try changing your search or goal filter.', loadError: 'We could not load users. Please try again.', detailLoadError: 'We could not load this user summary. Please try again.', backToList: 'Back to users',
+    profile: 'Profile', experience: 'Experience', days: 'Training days per week', minutes: 'Minutes per session', completedWorkouts: 'Completed workouts', mealsLogged: 'Meals logged', aiRequests: 'AI requests',
+  },
   public: {
     features: 'Features',
-    login: 'Log in',
+    login: 'Log in', goDashboard: 'Go to Dashboard',
     getStarted: 'Get Started',
     exploreExercises: 'Explore Exercises',
-    heroDescription: 'A clear plan for your workouts, exercise technique, nutrition targets, and progress tracking.',
+    menu: 'Open menu',
+    arrowLabel: 'Explore exercises',
+    heroEyebrow: 'GYM TRAINING / NUTRITION / PROGRESS',
+    heroHeadline: 'Personalized|gym training|and nutrition|powered by AI.',
+    heroDescription: 'Tell us your goal, schedule and equipment. HFitness builds your gym plan, calculates your nutrition targets, and helps you track workouts, meals and weight in one place.',
+    mosaicBrand: 'HFITNESS',
+    mosaicWorkout: 'Workout plan',
     howItWorks: 'How it works',
     howItWorksDescription: 'Start with the details that make your plan yours.',
     stepOne: 'Tell us about you',
@@ -77,6 +139,10 @@ export const en = {
     notFound: 'Exercise not found',
     notFoundDescription: 'That exercise may have been removed or is not public.',
     placeholder: 'Exercise preview',
+    imageAlt: '{name} demonstration', frameViewer: '{name} exercise image viewer', frameControls: 'Exercise image controls',
+    startFrame: 'Start',
+    endFrame: 'End',
+    videoTitle: '{name} demonstration video', watchOnYouTube: 'Watch on YouTube', openVideo: 'Open video',
     previous: 'Previous',
     next: 'Next',
   },
@@ -160,7 +226,6 @@ export const en = {
     day: 'Day {day}',
     exercises: '{count} exercises',
     minutes: '{minutes} min',
-    startDisabled: 'Workout logging coming soon',
     activate: 'Activate plan',
     activated: 'Plan activated.',
     dayDetail: 'Day {day}',
@@ -172,6 +237,7 @@ export const en = {
     setsReps: '{sets} sets × {repsMin}–{repsMax} reps',
     exerciseDetails: 'View exercise details',
     loadError: 'We could not load your workout plan.',
+    sessionOverview: 'Session overview', focusWarmup: 'Focus: {muscle}. Warm up thoroughly before your first working set.', movements: '{count} movements', prescribedOrder: 'Order prescribed by coach',         volume: 'Volume', restLabel: 'Rest', readyToBegin: 'Ready to begin?', readyDescription: 'Ensure equipment is free and log sets as you complete them.', draftReady: 'Your new plan is ready to review', draftDescription: 'AI created a tailored routine based on your goals. Review the exercises or request new adjustments.', reviewActivate: 'Review & activate', trainingProgram: 'Your training program', generatedByAi: 'Generated by AI', startToday: 'Start today’s session', weeklyTime: 'Weekly time', minutesPerSession: '{minutes} min per session', personalisedByAi: 'Personalised by AI', plannedWorkoutDays: 'Planned workout days', cycleDescription: 'Your {days}-day cycle with planned workouts', nextWorkoutHighlighted: 'Next workout highlighted', upNext: 'Up next', upcoming: 'Upcoming',
     generationError: 'We could not create a valid workout plan. Please try again.',
     rateLimit: 'You have reached today’s AI limit. Try again tomorrow.',
   },
@@ -216,6 +282,7 @@ export const en = {
     viewHistory: 'View history',
   },
   workoutHistory: {
+    latest: 'Latest', duration: 'Duration', minutes: 'mins', totalVolumeLabel: 'Total volume', completedLabel: 'Completed', exercisesCount: '{count} exercises', loggedTimestamp: 'Logged timestamp', preciseTime: 'Precise time', sessionLoad: 'Session load', accumulatedEffort: 'Accumulated effort', setsCompleted: '{count} sets completed', performanceLog: 'Exercise performance log', readOnly: 'Read-only', closeDetail: 'Close detail', repeatWorkout: 'Repeat this workout', setLabel: 'Set {number}', sets: 'Sets',
     title: 'Workout history',
     description: 'Review your completed workouts and logged sets.',
     loadError: 'We could not load your workout history.',
@@ -226,7 +293,6 @@ export const en = {
     workout: 'Workout',
     reps: 'reps',
     date: 'Date',
-    setsCompleted: 'Sets completed',
     setLine: 'Set {number}: {weight} kg × {reps} reps',
     loadMore: 'Load more',
   },
@@ -265,8 +331,21 @@ export const en = {
     noTargetsDescription: 'Complete your profile to calculate calorie and macro targets. Meals can still be logged now.',
     goProfile: 'Go to profile',
     loadError: 'We could not load your nutrition data.',
+    scanTab: 'Scan photo', takePhoto: 'Take photo', choosePhoto: 'Choose from library',
+    scanPrivacy: 'Your photo is processed in memory and discarded. It is not stored. This notice is for convenience, not a security control.',
+    scanBanner: 'These are estimates. Check the amounts before saving.', databaseMatch: 'In our database', aiEstimate: 'AI estimate',
+    removeItem: 'Remove {name}', amount: 'Amount', checkItem: 'Check this item', addMissing: 'Add missing item',
+    analyzePhoto: 'Analyze photo', analyzing: 'Analyzing photo — this can take up to a minute.', saveToMeal: 'Save to meal',
+    scanUnsupported: 'This file type is not supported. Choose a JPEG, PNG, or WebP image.',
+    scanPrepareError: 'This image could not be prepared. Choose another photo.',
+    scanError: 'The scan failed. Please try again.', scanNoFood: 'No food was detected. Choose another photo.',
+    scanRateLimit: 'You have reached today’s scan limit. Try again tomorrow.',
+    scanInProgress: 'A scan is already in progress.', scanProviderBusy: 'The AI provider is busy. Please try again.',
+    scanTimeout: 'The scan took too long. Please try again.', scanTooLarge: 'This image is too large. Choose another photo.',
+    scanMethodLabel: 'Add food method', previewAlt: 'Selected food preview', dailyTargetTitle: 'Daily Target & Macros', dailyTargetDescription: 'Track how close you are to your daily nutrition plan', targetCompleted: 'TARGET COMPLETED', addFoodAction: 'Add food', emptyMealTitle: 'Nothing logged yet', emptyMealDescription: 'Tap + Add food to log a meal, snack, fruit, or protein shake.', addSnack: 'Add Snack', editFoodLabel: 'Edit food', deleteFoodLabel: 'Delete food', nutritionHeading: 'NUTRITION & MACROS', previousDay: 'Previous day', nextDay: 'Next day', todayDate: 'Today, {date}', loggedStatus: 'Logged', notLoggedStatus: 'Not logged',
   },
   progress: {
+    logWeight: 'Log weight', inDays: 'in {days} days', starting: 'Starting ({days} days ago)', total: 'total', weighInFrequency: 'Weigh-in frequency', targetPerWeek: 'Target: > 3/wk', daysPerWeek: 'days / week', totalLogs: '{count} total logs in this period', weightTrend: 'Weight trend', recorded: 'Recorded', recentLogs: 'Recent logs', entries: 'entries', workoutsThisWeek: 'Workouts this week', ofTarget: '{done} of {target}', sessions: 'sessions', completed: 'completed', remaining: '{count} session(s) remaining', completionRateLabel: 'Completion rate', onTarget: 'On target', totalVolumeWeek: 'Total volume this week', weeklySessionFrequency: 'Weekly session frequency', consistencyEightWeeks: '8-week training consistency', completedLegend: 'Completed', currentWeek: 'Current (Week {week})', nutritionConsistency: 'Nutrition consistency', weeklyMacroAverages: 'Weekly macro averages compared to your daily targets', daysLoggedOf: 'Days logged: {logged} of {total} days', average: 'Average {name}', percentOfTarget: '{percent}% of target',
     title: 'Your progress',
     description: 'See your weight, workouts, and nutrition in one place.',
     weightTitle: 'Weight',
@@ -336,8 +415,11 @@ export const en = {
     coachDescription: 'Get a simple recommendation based on your plan and progress.',
     openCoach: 'Open AI Coach',
     widgetError: 'This section could not be loaded. Please try again.',
+    Mon: 'Mon', Tue: 'Tue', Wed: 'Wed', Thu: 'Thu', Fri: 'Fri', Sat: 'Sat', Sun: 'Sun',
+    primaryProtocol: 'Primary protocol', sessions: 'sessions', previewRoutine: 'Preview routine', plannedDuration: 'Planned duration', movements: 'Movements', drills: 'drills', workingSets: 'Working sets', sets: 'sets', sequenceBreakdown: 'Prescribed sequence breakdown', moreExercises: 'More exercises', cumulativeSets: 'sets cumulative', consumed: 'consumed', remainingToday: 'remaining today', logMeal: 'Log meal', target: 'Target: {value} {unit}', done: 'Done', completed: 'Completed', avgSevenDays: '7D avg',
   },
   coach: {
+    conversations: 'Conversations', recommendation: 'Recommendation:', why: 'Why:',
     title: 'AI Coach',
     subtitle: 'Ask about your training, nutrition and progress.',
     newChat: 'New chat',
@@ -367,6 +449,7 @@ export const en = {
   },
   profile: {
     title: 'Your profile',
+    recoveryError: 'We could not restore your profile. Please retry or log out and sign in again.',
     personal: 'Personal information',
     body: 'Body information',
     goal: 'Goal',
@@ -382,9 +465,10 @@ export const en = {
     protein: 'Protein',
     carbs: 'Carbs',
     fat: 'Fat',
-    loadError: 'We could not load your profile.',
+    loadError: 'We could not load your profile.', saveError: 'We could not save your profile. Please try again.', active: 'Active', bodyDescription: 'Manage your body measurements, workout setup, and daily nutrition targets.', targetDescription: 'Automatic daily macronutrient goals tailored to your plan.', readOnly: 'Read-only', years: 'years', bodyCalculationNote: 'Used only to calculate your energy needs and base metabolic burn rate.', goalDescription: 'Your overarching direction. This adjusts workout intensity, schedules, and calorie margins.', sessionsWeekly: '{count} sessions weekly', daysSelected: '{count} days selected', mealsSplit: '{count} meals split', dietaryFilter: 'Dietary filter', gymAccess: 'Gym access', equipmentDescription: 'Workout generators will only recommend exercises matching tools you actually have.', removeFood: 'Remove {name}', addFood: 'Add food',
   },
   errors: {
+    NETWORK_ERROR: "Can't reach the server. Check your connection and try again.",
     PROFILE_INCOMPLETE: 'Complete your profile before calculating targets.',
     ASSESSMENT_NOT_FOUND: 'No assessment has been calculated yet.',
     ASSESSMENT_SAVE_FAILED: 'We could not save your assessment.',
@@ -392,7 +476,7 @@ export const en = {
     AI_RATE_LIMIT: 'You have reached today’s AI limit. Try again tomorrow.',
     WORKOUT_GENERATION_FAILED: 'We could not create a valid workout plan. Please try again.',
     AI_PROVIDER_ERROR: 'The workout service is temporarily unavailable. Please try again.',
-    AI_PROVIDER_TIMEOUT: 'The workout service took too long to respond. Please try again.',
+    AI_PROVIDER_TIMEOUT: 'The service took too long to respond. Please try again.',
     AI_INVALID_RESPONSE: 'The workout service returned an invalid response. Please try again.',
     VALIDATION_DAY_COUNT: 'The generated plan had the wrong number of training days.',
     VALIDATION_EXERCISE_COUNT: 'The generated plan had an invalid number of exercises.',
@@ -415,19 +499,41 @@ export const en = {
     AI_CONVERSATION_CREATE_FAILED: 'We could not start a conversation.',
     AI_MESSAGE_SAVE_FAILED: 'We could not save your message.',
     AI_USAGE_READ_FAILED: 'We could not check the AI Coach limit.',
+    NO_FOOD_DETECTED: 'No food was detected. Choose another photo.',
+    AI_SCAN_IN_PROGRESS: 'A scan is already in progress.',
+    AI_PROVIDER_BUSY: 'The AI provider is busy. Please try again.',
+    UNSUPPORTED_IMAGE: 'Use a JPEG, PNG, or WebP image.',
+    IMAGE_TOO_LARGE: 'This image is too large. Choose another photo.',
   },
-  common: { required: 'Required', loading: 'Loading', retry: 'Retry', error: 'We could not load this section.', dismiss: 'Dismiss' },
+  common: { required: 'Required', loading: 'Loading', retry: 'Retry', error: 'We could not load this section.', networkError: "Can't reach the server. Check your connection and try again.", dismiss: 'Dismiss' },
 } as const;
 
 export type TranslationDictionary = typeof en;
 export type Locale = 'en' | 'vi';
 export type TranslationKey = string;
+let activeLocale: Locale = 'en';
+let activeDictionary: TranslationDictionary = en;
+
+export function setLocale(locale: Locale, dictionary: TranslationDictionary = en): void {
+  activeLocale = locale;
+  activeDictionary = dictionary;
+}
+
+export function getLocale(): Locale {
+  return activeLocale;
+}
 
 export function t(key: TranslationKey, params?: Record<string, string | number>): string {
-  const value = key.split('.').reduce<unknown>((current, part) => {
+  const resolve = (dictionary: unknown) => key.split('.').reduce<unknown>((current, part) => {
     return current && typeof current === 'object' && part in current ? (current as Record<string, unknown>)[part] : undefined;
-  }, en);
-  if (typeof value !== 'string') return key;
+  }, dictionary);
+  const activeValue = resolve(activeDictionary);
+  const value = activeValue ?? resolve(en);
+  if (activeValue === undefined && import.meta.env.DEV) console.warn(`[i18n] Missing translation key: ${key}`);
+  if (typeof value !== 'string') {
+    const fallback = key.split('.').pop() ?? key;
+    return fallback.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]/g, ' ');
+  }
   return value.replace(/\{(\w+)\}/g, (_, name: string) => String(params?.[name] ?? `{${name}}`));
 }
 

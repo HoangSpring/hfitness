@@ -62,12 +62,12 @@ export async function getProgressData(): Promise<ProgressData> {
     getSessionsAndSets(),
     supabase.from('meals').select('id,eaten_at,meal_items(calories,protein,carbs,fat)').gte('eaten_at', nutritionSince.toISOString()).order('eaten_at', { ascending: false }),
     supabase.from('fitness_assessments').select(assessmentSelect).order('created_at', { ascending: false }).limit(1).maybeSingle(),
-    supabase.from('profiles').select('display_name,goal,days_per_week').single(),
+    supabase.from('profiles').select('display_name,goal,days_per_week').maybeSingle(),
   ]);
   if (weightsResult.error) throw weightsResult.error;
   if (mealsResult.error) throw mealsResult.error;
   if (assessmentResult.error) throw assessmentResult.error;
-  if (profileResult.error) throw profileResult.error;
+  if (profileResult.error || !profileResult.data) throw profileResult.error ?? new Error('PROFILE_LOAD_FAILED');
   return {
     weights: (weightsResult.data ?? []).map((row) => ({ ...row, weight_kg: Number(row.weight_kg) })) as WeightLog[],
     sessions: sessionsAndSets.sessions,
@@ -89,7 +89,7 @@ export async function deleteWeight(id: string): Promise<void> {
 }
 
 export async function getDashboardProfile(): Promise<ProgressProfile> {
-  const result = await supabase.from('profiles').select('display_name,goal,days_per_week').single();
+  const result = await supabase.from('profiles').select('display_name,goal,days_per_week').maybeSingle();
   if (result.error || !result.data) throw result.error ?? new Error('Profile unavailable');
   return result.data as ProgressProfile;
 }

@@ -85,9 +85,7 @@ hfitness/
 
 `web/.env.example`
 ```
-VITE_SUPABASE_URL=https://supabase.com/dashboard/project/odmfyqdfihtzhsibscbq/settings/api-keys
-VITE_SUPABASE_ANON_KEY=sb_publishable_h5_PVbuxh82NGSW_NUr2Tw_WrnLQwnW
-VITE_API_URL=http://localhost:3001/api/v1
+
 ```
 
 `server/.env.example`
@@ -181,7 +179,7 @@ For every phase:
 - If a Stitch design uses different colors, **these tokens win**. Adapt the design to the tokens and mention it in the report.
 
 ### Internationalization (i18n)
-- MVP UI language: **English (`en`)**. English is the default locale.
+- English (`en`) and Vietnamese (`vi`) are supported. Every new user-facing string must have both `en` and `vi` keys; the `i18n:check` parity test enforces this.
 - The frontend must be **prepared for future Vietnamese (`vi`)** from Phase 01, but full Vietnamese translations are **not required** in the MVP unless a phase explicitly includes them.
 - Keep user-facing text **out of components**. All UI strings live in centralized translation files using stable keys (for example `auth.login.title`, `nutrition.addFood.button`). Components reference keys through a single translation helper. Do not scatter hardcoded English strings through JSX.
 - Do **not** introduce an i18n library unless the current phase requires it. A small typed dictionary (`web/src/i18n/en.ts`) plus a `t(key, params?)` helper and a locale type (`'en' | 'vi'`) is enough for the MVP. If you add a library, explain why in the phase report.

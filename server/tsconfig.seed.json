@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".."
   },
-  "include": ["scripts", "src/lib/constants"]
+  "include": ["scripts", "src/lib/constants", "../shared"]
 }

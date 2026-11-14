@@ -73,6 +73,7 @@ function countStatuses(rows: Array<{ status: string }>): Record<ExerciseStatus, 
 }
 
 async function main(): Promise<void> {
+  console.warn('WARNING: seed:exercises updates non-media fields only; admin media edits are preserved.');
   validateExercises(seedExercises);
 
   const url = process.env.SUPABASE_URL;
@@ -82,7 +83,8 @@ async function main(): Promise<void> {
   }
 
   const supabase = createClient(url, serviceRoleKey);
-  const { error: upsertError } = await supabase.from('exercises').upsert(seedExercises, { onConflict: 'slug' });
+  const seedRows = seedExercises.map(({ image_url: _imageUrl, video_url: _videoUrl, ...exercise }) => exercise);
+  const { error: upsertError } = await supabase.from('exercises').upsert(seedRows, { onConflict: 'slug' });
   if (upsertError) throw new Error(`Exercise upsert failed: ${upsertError.message}`);
 
   const { data, error: countError } = await supabase

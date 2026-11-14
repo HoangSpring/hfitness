@@ -2,13 +2,17 @@ import { Router } from 'express';
 import { AppError } from '../lib/errors.js';
 import { requireAuth } from '../middleware/auth.js';
 import { generateWorkoutPlan, readCurrentPlan, readPlan, readPlanDay } from '../services/workout.service.js';
+import { z } from 'zod';
+
+export const workoutGenerateRequestSchema = z.object({ locale: z.enum(['en', 'vi']).default('en') });
 
 export const workoutRouter = Router();
 
 workoutRouter.get('/workout-plans/current', requireAuth, async (req, res, next) => {
   try {
     if (!req.supabase || !req.user) throw new AppError(401, 'UNAUTHORIZED', 'Authentication is required.');
-    res.json({ data: await readCurrentPlan(req.supabase, req.user.id) });
+    const locale = typeof req.query.locale === 'string' ? req.query.locale : 'en';
+    res.json({ data: await readCurrentPlan(req.supabase, req.user.id, locale) });
   } catch (error) {
     next(error);
   }
@@ -17,7 +21,9 @@ workoutRouter.get('/workout-plans/current', requireAuth, async (req, res, next) 
 workoutRouter.post('/ai/workout/generate', requireAuth, async (req, res, next) => {
   try {
     if (!req.supabase || !req.user) throw new AppError(401, 'UNAUTHORIZED', 'Authentication is required.');
-    res.status(201).json({ data: await generateWorkoutPlan(req.supabase, req.user.id) });
+    const parsed = workoutGenerateRequestSchema.safeParse(req.body);
+    if (!parsed.success) throw new AppError(422, 'AI_INVALID_REQUEST', 'Invalid workout generation request.');
+    res.status(201).json({ data: await generateWorkoutPlan(req.supabase, req.user.id, undefined, parsed.data.locale) });
   } catch (error) {
     next(error);
   }
@@ -26,7 +32,8 @@ workoutRouter.post('/ai/workout/generate', requireAuth, async (req, res, next) =
 workoutRouter.get('/workout-plans/days/:id', requireAuth, async (req, res, next) => {
   try {
     if (!req.supabase) throw new AppError(401, 'UNAUTHORIZED', 'Authentication is required.');
-    res.json({ data: await readPlanDay(req.supabase, String(req.params.id)) });
+    const locale = typeof req.query.locale === 'string' ? req.query.locale : 'en';
+    res.json({ data: await readPlanDay(req.supabase, String(req.params.id), locale) });
   } catch (error) {
     next(error);
   }

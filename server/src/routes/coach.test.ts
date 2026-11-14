@@ -16,4 +16,7 @@ describe('coach request validation', () => {
   it('rejects malformed conversation IDs', () => {
     expect(coachRequestSchema.safeParse({ conversation_id: 'other-user-conversation', message: 'hello' }).success).toBe(false);
   });
+  it('falls back to English for an unsupported locale', () => {
+    expect(coachRequestSchema.parse({ message: 'hello', locale: 'fr' }).locale).toBe('en');
+  });
 });

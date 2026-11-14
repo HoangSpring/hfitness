@@ -1,31 +1,177 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Card, EmptyState, ErrorState, Skeleton, Spinner } from '../../components/ui';
+import { Button, EmptyState, ErrorState, Skeleton, Spinner } from '../../components/ui';
 import { ApiRequestError } from '../../lib/api';
 import { t, translatedError } from '../../i18n/en';
+import { tEnum } from '../../i18n/enum';
+import { useLocale } from '../../i18n/LocaleContext';
+import { friendlyError } from '../../lib/errors';
 import { activatePlan, estimateDayMinutes, generatePlan, getCurrentPlan, startWorkout, type WorkoutPlan } from './workout';
+import './WorkoutPage.css';
 
-const label = (value: string) => value.replace('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+type PlanDay = WorkoutPlan['workout_plan_days'][number];
+
+/** Best-effort exercise name: adjust to match your real data shape. */
+function exerciseName(exercise: unknown): string {
+  const e = exercise as Record<string, unknown> & { exercises?: { name?: string }; exercise?: { name?: string } };
+  return String(e.exercise_name ?? e.name ?? e.exercises?.name ?? e.exercise?.name ?? '—');
+}
+
+function formatTotal(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return hours ? `${hours} hrs ${rest} min` : `${rest} min`;
+}
+
+const Icon = {
+  play: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M7 4l13 8-13 8z" /></svg>,
+  check: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>,
+  refresh: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7" /></svg>,
+  spark: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l2.2 6.3L21 12l-6.8 2.7L12 21l-2.2-6.3L3 12l6.8-2.7z" /></svg>,
+};
 
 export function WorkoutPage() {
   const navigate = useNavigate();
+  const { locale } = useLocale();
   const [plan, setPlan] = useState<WorkoutPlan | null | undefined>();
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const load = useCallback(() => { setError(''); void getCurrentPlan().then(setPlan).catch((reason: unknown) => setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.loadError')) : t('workout.loadError'))); }, []);
+
+  const load = useCallback(() => {
+    setError('');
+    void getCurrentPlan(locale)
+      .then(setPlan)
+      .catch((reason: unknown) => {
+        setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.loadError')) : friendlyError(reason, t('workout.loadError')));
+      });
+  }, [locale]);
+
   useEffect(() => { load(); }, [load]);
-  const generate = async () => { setBusy(true); setError(''); try { setPlan(await generatePlan()); } catch (reason) { setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.generationError')) : t('workout.generationError')); } finally { setBusy(false); } };
-  const activate = async () => { if (!plan) return; setBusy(true); try { setPlan(await activatePlan(plan.id)); } catch (reason) { setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.generationError')) : t('workout.generationError')); } finally { setBusy(false); } };
-  const start = async (dayId: string) => { setBusy(true); setError(''); try { const session = await startWorkout(dayId); navigate(`/workout/session/${session.id}`); } catch (reason) { setError(reason instanceof Error ? reason.message : t('workoutSession.startError')); } finally { setBusy(false); } };
+
+  const generate = async () => {
+    setBusy(true);
+    setError('');
+    try {
+      setPlan(await generatePlan(locale));
+    } catch (reason) {
+      setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.generationError')) : friendlyError(reason, t('workout.generationError')));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const activate = async () => {
+    if (!plan) return;
+    setBusy(true);
+    try {
+      setPlan(await activatePlan(plan.id));
+    } catch (reason) {
+      setError(reason instanceof ApiRequestError ? translatedError(reason.code, t('workout.generationError')) : friendlyError(reason, t('workout.generationError')));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const start = async (dayId: string) => {
+    setBusy(true);
+    setError('');
+    try {
+      const session = await startWorkout(dayId);
+      navigate(`/workout/session/${session.id}`);
+    } catch (reason) {
+      setError(friendlyError(reason, reason instanceof Error ? reason.message : t('workoutSession.startError')));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   if (plan === undefined && !error) return <main className="page-content workout-page"><Skeleton className="workout-skeleton" /><Skeleton /><Skeleton /></main>;
   if (error && plan === undefined) return <main className="page-content"><ErrorState onRetry={load} /><p className="alert" role="alert">{error}</p></main>;
   if (!plan) return <main className="page-content"><EmptyState title={t('workout.emptyTitle')} description={t('workout.emptyDescription')}><Button onClick={generate} disabled={busy}>{busy && <Spinner />}{t('workout.generate')}</Button></EmptyState></main>;
-  return <main className="page-content workout-page">
-    <div className="page-heading"><div><p className="eyebrow">{plan.status === 'ACTIVE' ? t('workout.active') : t('workout.draft')}</p><h1>{plan.name}</h1><p className="muted">{t('workout.description')}</p></div></div>
+
+  const days: PlanDay[] = plan.workout_plan_days;
+  const nextDay = days[0];
+  const totalMinutes = days.reduce((sum, day) => sum + estimateDayMinutes(day), 0);
+  const averageMinutes = days.length ? Math.round(totalMinutes / days.length) : 0;
+  const isDraft = plan.status === 'DRAFT';
+
+  return <main className="page-content workout-page wk">
+    {/* ───────── Draft banner ───────── */}
+    {isDraft && <section className="wk-card wk-draft">
+      <span className="wk-draft-icon">{Icon.spark}</span>
+      <div className="wk-draft-text">
+        <h2>{t('workout.draftReady')} <span className="wk-pill wk-pill-accent">{t('workout.draft')}</span></h2>
+        <p className="wk-muted">{t('workout.draftDescription')}</p>
+      </div>
+      <div className="wk-actions">
+        <button type="button" className="wk-btn wk-btn-ghost" onClick={generate} disabled={busy}>{Icon.refresh} {t('workout.regenerate')}</button>
+        <button type="button" className="wk-btn wk-btn-primary" onClick={activate} disabled={busy}>{busy ? <Spinner /> : Icon.check} {t('workout.reviewActivate')}</button>
+      </div>
+    </section>}
+
     {error && <p className="alert" role="alert">{error}</p>}
-    <Card className="workout-summary"><div><span className="muted">{t('workout.goal')}</span><strong>{label(plan.goal)}</strong></div><div><span className="muted">{t('workout.frequencyLabel')}</span><strong>{t('workout.frequencyValue', { days: plan.workout_plan_days.length })}</strong></div></Card>
-    {plan.status === 'DRAFT' && <Card className="draft-banner"><div><strong>{t('workout.draft')}</strong></div><div className="workout-actions"><Button onClick={activate} disabled={busy}>{busy && <Spinner />}{t('workout.activate')}</Button><Button variant="secondary" onClick={generate} disabled={busy}>{t('workout.regenerate')}</Button></div></Card>}
-    <h2>{t('workout.schedule')}</h2><div className="workout-days">{plan.workout_plan_days.map((day) => <Card key={day.id} className="workout-day-card"><div className="day-card-heading"><div><p className="eyebrow">{t('workout.day', { day: day.day_index })}</p><h3>{day.name}</h3></div><span className="badge">{label(day.muscle_focus)}</span></div><p className="muted">{t('workout.exercises', { count: day.workout_plan_exercises.length })} · {t('workout.minutes', { minutes: estimateDayMinutes(day) })}</p><div className="workout-actions"><Link className="button button-secondary" to={`/workout/day/${day.id}`}>{t('workout.viewWorkout')}</Link><Button onClick={() => void start(day.id)} disabled={busy}>{t('workoutSession.start')}</Button></div></Card>)}</div>
+
+    {/* ───────── Heading ───────── */}
+    <header className="wk-heading">
+      <p className="wk-eyebrow">{t('workout.trainingProgram')}</p>
+      <h1>{t('workout.title')}</h1>
+      <p className="wk-lead">{t('workout.description')}</p>
+    </header>
+
+    {/* ───────── Plan summary ───────── */}
+    <section className="wk-card wk-summary">
+      <div className="wk-summary-top">
+        <div>
+          <div className="wk-pills">
+            <span className="wk-pill">{Icon.spark} {t('workout.generatedByAi')}</span>
+            <span className="wk-pill">{tEnum('goal', plan.goal)}</span>
+            <span className="wk-pill">{t('workout.frequencyValue', { days: days.length })}</span>
+          </div>
+          <h2 className="wk-plan-name">{plan.name}</h2>
+        </div>
+        {nextDay && <button type="button" className="wk-btn wk-btn-primary" onClick={() => void start(nextDay.id)} disabled={busy}>{Icon.play} {t('workout.startToday')}</button>}
+      </div>
+      <dl className="wk-stats">
+        <div><dt>{t('workout.weeklyTime')}</dt><dd>{formatTotal(totalMinutes)}</dd><span>{t('workout.minutesPerSession', { minutes: averageMinutes })}</span></div>
+        <div><dt>{t('workout.goal')}</dt><dd>{tEnum('goal', plan.goal)}</dd><span>{t('workout.personalisedByAi')}</span></div>
+        <div><dt>{t('workout.frequencyLabel')}</dt><dd>{t('workout.frequencyValue', { days: days.length })}</dd><span>{t('workout.plannedWorkoutDays')}</span></div>
+      </dl>
+    </section>
+
+    {/* ───────── Weekly schedule ───────── */}
+    <section className="wk-section">
+      <div className="wk-section-head">
+        <div><h2>{t('workout.schedule')}</h2><p className="wk-muted">{t('workout.cycleDescription', { days: days.length })}</p></div>
+        <span className="wk-legend"><i className="wk-dot" /> {t('workout.nextWorkoutHighlighted')}</span>
+      </div>
+
+      <div className="wk-days">
+        {days.map((day, index) => {
+          const next = index === 0;
+          const exercises = day.workout_plan_exercises;
+          return <article key={day.id} className={next ? 'wk-day wk-day-next' : 'wk-day'}>
+            <div className="wk-day-top">
+              <span className={next ? 'wk-pill wk-pill-accent' : 'wk-day-state'}>{next ? t('workout.upNext') : t('workout.upcoming')}</span>
+              <span className="wk-minutes">{t('workout.minutes', { minutes: estimateDayMinutes(day) })}</span>
+            </div>
+            <p className="wk-day-label">{t('workout.day', { day: day.day_index })}</p>
+            <h3>{day.name}</h3>
+            <p className="wk-muted">{t('workout.exercises', { count: exercises.length })} · {tEnum('muscle', day.muscle_focus)}</p>
+
+            <ul className="wk-preview">
+              {exercises.slice(0, 3).map((exercise, i) => <li key={i}><i className="wk-dot wk-dot-sm" />{exerciseName(exercise)}</li>)}
+              {exercises.length > 3 && <li className="wk-more">+{exercises.length - 3} more</li>}
+            </ul>
+
+            <div className="wk-day-actions">
+              {next && <button type="button" className="wk-btn wk-btn-primary wk-btn-block" onClick={() => void start(day.id)} disabled={busy}>{Icon.play} {t('workoutSession.start')}</button>}
+              <Link className="wk-link" to={`/workout/day/${day.id}`}>{t('workout.viewWorkout')}</Link>
+            </div>
+          </article>;
+        })}
+      </div>
+    </section>
+
     {plan.status === 'ACTIVE' && <Button variant="secondary" onClick={() => navigate('/dashboard')}>{t('shell.backDashboard')}</Button>}
   </main>;
 }

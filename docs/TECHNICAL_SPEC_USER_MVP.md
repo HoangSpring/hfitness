@@ -43,7 +43,6 @@ Core principle:
 
 ### Out of scope (future work — mention in report)
 - AI nutrition plan
-- AI food photo scanner (can replace AI Coach as the single extra AI feature if preferred)
 - Re-plan engine and recommendation accept/reject workflow
 - AI progress analysis
 - Body measurements (only weight is tracked)
@@ -51,6 +50,15 @@ Core principle:
 - Data export and account deletion UI
 - Notifications, analytics, audit logs, observability dashboards
 - Multi-sport support (Gym/Strength only)
+
+### Phase 11 note
+
+Phase 11 adds the AI food photo scanner inside the Add Food flow. It processes
+JPEG, PNG, and WebP images in memory and discards the photo; only confirmed
+meal items are saved. Published foods are matched to database nutrition when
+possible, while unmatched items are explicitly labelled AI estimates and must
+be checked before saving. Results are estimates only and do not make allergen
+safety or health claims.
 
 ---
 
@@ -423,5 +431,4 @@ The agent must not silently redesign the approved architecture.
 
 ## 23. Future Work (for the project report)
 
-AI nutrition plan, AI food photo scanner, re-plan engine, recommendation workflow, AI progress analysis, body measurements, exercise alternatives, data export/delete, notifications, analytics, audit logs, push/email channels, multi-sport support.
-
+AI nutrition plan, re-plan engine, recommendation workflow, AI progress analysis, body measurements, exercise alternatives, data export/delete, notifications, analytics, audit logs, push/email channels, multi-sport support.

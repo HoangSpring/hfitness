@@ -3,6 +3,12 @@ import { supabase } from '../../lib/supabase';
 
 export type Conversation = { id: string; title: string; created_at: string };
 export type CoachMessage = { id: string; conversation_id: string; role: 'user' | 'assistant'; content: string; created_at: string };
+export type CoachReplySections = { recommendation: string; reason: string } | { plain: string };
+
+export function parseCoachReply(text: string): CoachReplySections {
+  const match = text.match(/^(?:Recommendation:|Khuyến nghị:)\s*([\s\S]*?)\s*(?:Why:|Lý do:)\s*([\s\S]*)$/i);
+  return match ? { recommendation: match[1].trim(), reason: match[2].trim() } : { plain: text };
+}
 
 export async function listConversations(): Promise<Conversation[]> {
   const result = await supabase.from('ai_conversations').select('id,title,created_at').order('created_at', { ascending: false }).limit(50);

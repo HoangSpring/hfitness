@@ -17,6 +17,7 @@ function validateFoods(rows: readonly SeedFood[]): void {
 }
 
 async function main(): Promise<void> {
+  console.warn('WARNING: seed:foods upserts by slug and overwrites admin edits for matching slugs.');
   validateFoods(seedFoods);
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;

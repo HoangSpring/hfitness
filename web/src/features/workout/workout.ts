@@ -1,5 +1,6 @@
 import { apiRequest } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
+import type { Locale } from '../../i18n/en';
 
 export type PlanExercise = {
   id: string;
@@ -10,7 +11,16 @@ export type PlanExercise = {
   reps_max: number;
   rest_seconds: number;
   notes: string | null;
-  exercises?: { name: string; slug: string; primary_muscle: string; safety_notes?: string } | null;
+  exercises?: {
+    name: string;
+    slug: string;
+    primary_muscle: string;
+    safety_notes?: string;
+    image_url?: string | null;
+    image_urls?: string[];
+    video_url?: string | null;
+    exercise_translations?: { name?: string; safety_notes?: string; locale?: string }[] | null;
+  } | null;
 };
 
 export type PlanDay = {
@@ -51,7 +61,15 @@ export type WorkoutSession = {
   notes: string | null;
 };
 export type SessionExercise = PlanExercise & {
-  exercises?: { name: string; slug: string; primary_muscle: string; safety_notes?: string } | null;
+  exercises?: {
+    name: string;
+    slug: string;
+    primary_muscle: string;
+    safety_notes?: string;
+    image_url?: string | null;
+    image_urls?: string[];
+    video_url?: string | null;
+  } | null;
 };
 export type SessionData = WorkoutSession & { day: PlanDay | null; sets: WorkoutSet[] };
 export type HistoryItem = WorkoutSession & {
@@ -59,24 +77,30 @@ export type HistoryItem = WorkoutSession & {
   sets: WorkoutSet[];
 };
 
+export function localizeWorkoutExercise(exercise: NonNullable<PlanExercise['exercises']> | null | undefined, locale: Locale) {
+  const translation = exercise?.exercise_translations?.[0];
+  if (!exercise || locale !== 'vi' || !translation) return exercise;
+  return { ...exercise, name: translation.name?.trim() || exercise.name, safety_notes: translation.safety_notes?.trim() || exercise.safety_notes };
+}
+
 export function estimateDayMinutes(day: Pick<PlanDay, 'workout_plan_exercises'>): number {
   return Math.round(day.workout_plan_exercises.reduce((total, item) => total + item.sets * (40 + item.rest_seconds), 0) / 60);
 }
 
-export function getCurrentPlan() {
-  return apiRequest<WorkoutPlan | null>('/workout-plans/current');
+export function getCurrentPlan(locale: Locale = 'en') {
+  return apiRequest<WorkoutPlan | null>(`/workout-plans/current?locale=${locale}`);
 }
 
-export function generatePlan() {
-  return apiRequest<WorkoutPlan>('/ai/workout/generate', { method: 'POST' });
+export function generatePlan(locale: 'en' | 'vi' = 'en') {
+  return apiRequest<WorkoutPlan>('/ai/workout/generate', { method: 'POST', body: JSON.stringify({ locale }) });
 }
 
 export function activatePlan(id: string) {
   return apiRequest<WorkoutPlan>(`/workout-plans/${id}/activate`, { method: 'POST' });
 }
 
-export function getPlanDay(id: string) {
-  return apiRequest<PlanDay>(`/workout-plans/days/${id}`);
+export function getPlanDay(id: string, locale: Locale = 'en') {
+  return apiRequest<PlanDay>(`/workout-plans/days/${id}?locale=${locale}`);
 }
 
 export async function startWorkout(planDayId: string): Promise<WorkoutSession> {

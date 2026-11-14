@@ -1,0 +1,101 @@
+.progress-page {
+  --pg-bg: #131316;
+  --pg-card: #1e1e22;
+  --pg-track: #2c2c31;
+  --pg-text: #f4f4f5;
+  --pg-muted: #a1a1aa;
+  --pg-accent: #ff5252;
+  --pg-accent-soft: #ffb3ad;
+  --pg-accent-bg: rgba(255, 82, 82, 0.14);
+  color: var(--pg-text);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.progress-page h1 { font-size: 2rem; font-weight: 600; margin: 4px 0 6px; letter-spacing: -0.02em; }
+.progress-page h2 { font-size: 1.35rem; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
+.progress-page h3 { font-size: 1.1rem; font-weight: 500; margin: 0; }
+.pg-muted { color: var(--pg-muted); font-size: 0.85rem; margin: 0; }
+
+/* Header */
+.pg-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.pg-breadcrumb { margin: 0; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pg-muted); }
+.pg-breadcrumb strong { color: var(--pg-accent); font-weight: 600; }
+.pg-segmented { display: inline-flex; background: var(--pg-card); border-radius: 10px; padding: 4px; gap: 2px; }
+.pg-segmented button { background: transparent; border: 0; color: var(--pg-muted); padding: 6px 14px; border-radius: 7px; font-size: 0.8rem; cursor: pointer; }
+.pg-segmented button.selected { background: var(--pg-track); color: var(--pg-text); }
+
+/* Sections */
+.pg-section { display: flex; flex-direction: column; gap: 16px; }
+.pg-section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.pg-primary { background: var(--pg-accent); color: #fff; border: 0; border-radius: 8px; padding: 9px 18px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+.pg-primary:hover { filter: brightness(1.08); }
+.pg-target { font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--pg-muted); display: inline-flex; align-items: center; gap: 6px; }
+
+/* Cards & grids */
+.pg-card { background: var(--pg-card); border-radius: 14px; padding: 20px; }
+.pg-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.pg-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.pg-grid-chart { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.pg-card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+/* Stat cards */
+.pg-stat { display: flex; flex-direction: column; gap: 10px; }
+.pg-stat-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.pg-label { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pg-muted); }
+.pg-chip { font-size: 0.68rem; padding: 3px 8px; border-radius: 6px; background: var(--pg-track); color: var(--pg-text); white-space: nowrap; }
+.pg-chip-plain { background: transparent; padding: 0; color: var(--pg-accent-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.pg-big { margin: 0; font-size: 3rem; font-weight: 700; line-height: 1; letter-spacing: -0.03em; display: flex; align-items: baseline; gap: 6px; }
+.pg-big small { font-size: 0.9rem; font-weight: 500; color: var(--pg-muted); letter-spacing: 0; }
+.pg-big small.pg-accent { color: var(--pg-accent); }
+.pg-big-sm { font-size: 2rem; }
+.pg-foot { margin: 0; font-size: 0.75rem; color: var(--pg-muted); }
+
+/* Progress bars */
+.pg-bar { height: 6px; border-radius: 99px; background: var(--pg-track); overflow: hidden; }
+.pg-bar span { display: block; height: 100%; border-radius: inherit; background: var(--pg-accent); }
+.pg-bar-soft span { background: var(--pg-accent-soft); }
+.pg-compact { display: flex; flex-direction: column; gap: 12px; padding: 14px 18px; }
+.pg-compact strong { font-size: 0.75rem; font-weight: 600; }
+
+/* Dots & legend */
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pg-accent); }
+.dot-muted { background: var(--pg-track); }
+.pg-legend { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--pg-muted); }
+.pg-legend .dot + .dot { margin-left: 8px; }
+
+/* Recent logs */
+.pg-logs { list-style: none; margin: 0; padding: 0; }
+.pg-logs li { display: grid; grid-template-columns: 1fr auto 28px; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--pg-track); font-size: 0.8rem; color: var(--pg-muted); }
+.pg-logs strong { color: var(--pg-text); font-size: 0.85rem; }
+.pg-icon-btn { background: none; border: 0; color: var(--pg-muted); cursor: pointer; padding: 6px; border-radius: 6px; display: grid; place-items: center; }
+.pg-icon-btn:hover { color: var(--pg-accent); background: var(--pg-accent-bg); }
+
+/* Weekly session bars */
+.pg-bars { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 24px; align-items: end; height: 190px; padding-top: 12px; }
+.pg-bar-col { display: flex; flex-direction: column; align-items: center; gap: 12px; height: 100%; }
+.pg-bar-col span { font-size: 0.7rem; font-weight: 600; color: var(--pg-muted); }
+.pg-bar-track { flex: 1; width: 100%; max-width: 38px; display: flex; align-items: flex-end; }
+.pg-bar-fill { position: relative; width: 100%; min-height: 6px; background: var(--pg-track); border-radius: 6px; }
+.pg-bar-fill.current { background: var(--pg-accent); }
+.pg-bar-fill em { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-style: normal; font-size: 0.7rem; color: var(--pg-accent-soft); }
+
+/* Nutrition days logged */
+.pg-logged { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.pg-logged-text { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; }
+.pg-days { display: flex; gap: 14px; }
+.pg-days div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pg-days .dot { width: 12px; height: 12px; }
+.pg-days span { font-size: 0.55rem; color: var(--pg-muted); letter-spacing: 0.04em; }
+.pg-days .today span { color: var(--pg-text); font-weight: 700; }
+
+/* Log-weight form */
+.progress-page .weight-form { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pg-grid-3, .pg-grid-2, .pg-grid-chart { grid-template-columns: 1fr; }
+  .pg-bars { gap: 10px; }
+}

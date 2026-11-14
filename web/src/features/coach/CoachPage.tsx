@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, EmptyState, ErrorState, Skeleton, Spinner } from '../../components/ui';
 import { ApiRequestError } from '../../lib/api';
+import { friendlyError } from '../../lib/errors';
 import { t, translatedError } from '../../i18n/en';
-import { deleteConversation, listConversations, listMessages, sendCoachMessage, type Conversation, type CoachMessage } from './coach';
+import { useLocale } from '../../i18n/LocaleContext';
+import { deleteConversation, listConversations, listMessages, parseCoachReply, sendCoachMessage, type Conversation, type CoachMessage } from './coach';
 
-const timeFormatter = new Intl.DateTimeFormat('en', { hour: 'numeric', minute: '2-digit' });
-const dateFormatter = new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric' });
 const suggestions = ['coach.promptTrain', 'coach.promptProgress', 'coach.promptFood'] as const;
 
 export function CoachPage() {
@@ -21,6 +21,8 @@ export function CoachPage() {
   const [mobileList, setMobileList] = useState(false);
   const [lastFailed, setLastFailed] = useState('');
   const endRef = useRef<HTMLDivElement>(null);
+  const { locale } = useLocale();
+  const timeFormatter = new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' });
 
   const loadConversations = useCallback(async () => {
     setLoadingHistory(true); setHistoryError(false);
@@ -31,7 +33,7 @@ export function CoachPage() {
     } catch { setHistoryError(true); } finally { setLoadingHistory(false); }
   }, []);
   const loadMessages = useCallback(async (id: string) => {
-    try { setMessages(await listMessages(id)); setMessageError(''); } catch { setMessageError(t('coach.historyError')); }
+    try { setMessages(await listMessages(id)); setMessageError(''); } catch (reason) { setMessageError(friendlyError(reason, t('coach.historyError'))); }
   }, []);
   useEffect(() => { void loadConversations(); }, [loadConversations]);
   useEffect(() => { if (selected) void loadMessages(selected); else setMessages([]); }, [selected, loadMessages]);
@@ -46,32 +48,33 @@ export function CoachPage() {
     if (!message || busy || message.length > 1000) return;
     setBusy(true); setMessageError(''); setRateLimited(false); setLastFailed(message); setText('');
     try {
-      const result = await sendCoachMessage({ conversationId: selected, message });
+      const result = await sendCoachMessage({ conversationId: selected, message, locale });
       setSelected(result.conversation_id);
       setMessages((current) => [...current, { id: `user-${Date.now()}`, conversation_id: result.conversation_id, role: 'user', content: message, created_at: new Date().toISOString() }, { id: `assistant-${Date.now()}`, conversation_id: result.conversation_id, role: 'assistant', content: result.message, created_at: new Date().toISOString() }]);
       await loadConversations();
     } catch (reason) {
       const code = reason instanceof ApiRequestError ? reason.code : '';
       setRateLimited(code === 'AI_RATE_LIMIT');
-      setMessageError(code === 'AI_RATE_LIMIT' ? t('coach.rateLimit') : translatedError(code, t('coach.responseError')));
+      setMessageError(code === 'AI_RATE_LIMIT' ? t('coach.rateLimit') : friendlyError(reason, translatedError(code, t('coach.responseError'))));
       setText(message);
     } finally { setBusy(false); }
   };
   const newChat = () => { setSelected(undefined); setMessages([]); setMessageError(''); setRateLimited(false); setMobileList(false); };
   const remove = async (conversation: Conversation) => {
     if (!window.confirm(t('coach.deleteConfirm'))) return;
-    try { await deleteConversation(conversation.id); const remaining = conversations.filter((item) => item.id !== conversation.id); setConversations(remaining); setSelected(remaining[0]?.id); } catch { setMessageError(t('coach.deleteError')); }
+    try { await deleteConversation(conversation.id); const remaining = conversations.filter((item) => item.id !== conversation.id); setConversations(remaining); setSelected(remaining[0]?.id); } catch (reason) { setMessageError(friendlyError(reason, t('coach.deleteError'))); }
   };
 
   return <main className="page-content coach-page">
-    <div className="coach-heading"><div><p className="eyebrow">{t('navigation.coach')}</p><h1>{t('coach.title')}</h1><p className="muted">{t('coach.subtitle')}</p></div><Button variant="secondary" onClick={() => setMobileList((open) => !open)}>{t('coach.today')}</Button></div>
+    <div className="coach-heading"><div><p className="eyebrow">{t('navigation.coach')}</p><h1>{t('coach.title')}</h1><p className="muted">{t('coach.subtitle')}</p></div><Button variant="secondary" onClick={() => setMobileList((open) => !open)}>{t('coach.conversations')}</Button></div>
     <div className="coach-layout">
       <aside className={mobileList ? 'coach-sidebar mobile-open' : 'coach-sidebar'}><Button onClick={newChat}>{t('coach.newChat')}</Button>{loadingHistory ? <><Skeleton /><Skeleton /></> : historyError ? <ErrorState message={t('coach.historyError')} onRetry={() => void loadConversations()} /> : conversations.length === 0 ? <p className="muted">{t('coach.noConversations')}</p> : <><ConversationGroup title={t('coach.today')} items={grouped.today} selected={selected} onSelect={(id) => { setSelected(id); setMobileList(false); }} onDelete={remove} /><ConversationGroup title={t('coach.earlier')} items={grouped.earlier} selected={selected} onSelect={(id) => { setSelected(id); setMobileList(false); }} onDelete={remove} /></>}</aside>
-      <section className="coach-chat" aria-label={t('coach.title')}><div className="message-list">{messageError && <ErrorState message={messageError} onRetry={lastFailed ? () => void send(lastFailed) : undefined} />}{!messages.length && !busy && !messageError && <EmptyState title={t('coach.emptyTitle')} description={t('coach.emptyDescription')}><div className="suggestion-list">{suggestions.map((key) => <button type="button" className="suggestion-chip" key={key} onClick={() => void send(t(key))}>{t(key)}</button>)}</div></EmptyState>}{messages.map((message) => <article className={message.role === 'user' ? 'coach-message user-message' : 'coach-message assistant-message'} key={message.id}><div className="message-meta"><strong>{message.role === 'user' ? t('coach.user') : t('coach.assistant')}</strong><time>{timeFormatter.format(new Date(message.created_at))}</time></div><p className="plain-message">{message.content}</p></article>)}{busy && <div className="typing-indicator"><Spinner />{t('coach.typing')}</div>}<div ref={endRef} /></div><p className="coach-disclaimer">{t('coach.disclaimer')}</p><form className="coach-input" onSubmit={(event) => { event.preventDefault(); void send(); }}><textarea className="input coach-textarea" value={text} maxLength={1000} placeholder={t('coach.inputPlaceholder')} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void send(); } }} disabled={busy || rateLimited} /><div className="coach-input-footer"><span className="muted">{t('coach.characterCount', { count: text.length })}</span><Button type="submit" disabled={busy || !text.trim() || rateLimited}>{busy && <Spinner />}{t('coach.send')}</Button></div></form></section>
+      <section className="coach-chat" aria-label={t('coach.title')}><div className="message-list">{messageError && <ErrorState message={messageError} onRetry={lastFailed ? () => void send(lastFailed) : undefined} />}{!messages.length && !busy && !messageError && <EmptyState title={t('coach.emptyTitle')} description={t('coach.emptyDescription')}><div className="suggestion-list">{suggestions.map((key) => <button type="button" className="suggestion-chip" key={key} onClick={() => void send(t(key))}>{t(key)}</button>)}</div></EmptyState>}{messages.map((message) => { const reply = message.role === 'assistant' ? parseCoachReply(message.content) : { plain: message.content }; return <article className={message.role === 'user' ? 'coach-message user-message' : 'coach-message assistant-message'} key={message.id}><div className="message-meta"><strong>{message.role === 'user' ? t('coach.user') : t('coach.assistant')}</strong><time>{timeFormatter.format(new Date(message.created_at))}</time></div>{'plain' in reply ? <p className="plain-message">{reply.plain}</p> : <><p className="plain-message"><strong>{t('coach.recommendation')}</strong> {reply.recommendation}</p><p className="plain-message"><strong>{t('coach.why')}</strong> {reply.reason}</p></>}</article>; })}{busy && <div className="typing-indicator"><Spinner />{t('coach.typing')}</div>}<div ref={endRef} /></div><p className="coach-disclaimer">{t('coach.disclaimer')}</p><form className="coach-input" onSubmit={(event) => { event.preventDefault(); void send(); }}><textarea className="input coach-textarea" value={text} maxLength={1000} placeholder={t('coach.inputPlaceholder')} onChange={(event) => setText(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void send(); } }} disabled={busy || rateLimited} /><div className="coach-input-footer"><span className="muted">{t('coach.characterCount', { count: text.length })}</span><Button type="submit" disabled={busy || !text.trim() || rateLimited}>{busy && <Spinner />}{t('coach.send')}</Button></div></form></section>
     </div>
   </main>;
 }
 
 function ConversationGroup({ title, items, selected, onSelect, onDelete }: { title: string; items: Conversation[]; selected?: string; onSelect: (id: string) => void; onDelete: (conversation: Conversation) => void }) {
+  const dateFormatter = new Intl.DateTimeFormat(document.documentElement.lang === 'vi' ? 'vi' : 'en', { month: 'short', day: 'numeric' });
   return items.length ? <div className="conversation-group"><h2>{title}</h2>{items.map((item) => <div className={selected === item.id ? 'conversation-item selected' : 'conversation-item'} key={item.id}><button type="button" onClick={() => onSelect(item.id)}><strong>{item.title}</strong><time>{dateFormatter.format(new Date(item.created_at))}</time></button><button type="button" className="conversation-delete" onClick={() => onDelete(item)} aria-label={t('coach.delete')}>×</button></div>)}</div> : null;
 }

@@ -10,10 +10,13 @@ const configSchema = z.object({
   AI_PROVIDER: z.enum(['gemini', 'fake']).default('gemini'),
   AI_API_KEY: z.string().optional(),
   AI_MODEL: z.string().optional(),
+  AI_VISION_MODEL: z.string().optional(),
+  AI_FALLBACK_MODEL: z.string().optional(),
   AI_TIMEOUT_MS: z.coerce.number().int().min(30_000).max(120_000).default(75_000),
   AI_THINKING_BUDGET: z.coerce.number().int().min(0).max(32_768).optional(),
   AI_DAILY_LIMIT: z.coerce.number().int().positive().default(10),
   AI_COACH_DAILY_LIMIT: z.coerce.number().int().positive().default(20),
+  AI_SCAN_DAILY_LIMIT: z.coerce.number().int().positive().default(10),
 });
 
 const testDefaults = process.env.NODE_ENV === 'test'
@@ -24,6 +27,7 @@ const testDefaults = process.env.NODE_ENV === 'test'
       AI_PROVIDER: 'fake',
       AI_API_KEY: 'test-ai-key',
       AI_MODEL: 'test-model',
+      AI_VISION_MODEL: 'test-vision-model',
     }
   : {};
 

@@ -38,4 +38,10 @@ describe('coach service fake provider path', () => {
     await expect(answerCoach(fakeClient(), 'user-1', { conversationId: '00000000-0000-0000-0000-000000000001', message: 'Hello', timezone: 'UTC', locale: 'en' }, new FakeProvider('answer'), { countRequests: async () => 0, logRequest: async () => undefined }))
       .rejects.toMatchObject({ statusCode: 404, code: 'AI_CONVERSATION_NOT_FOUND' });
   });
+
+  it('uses the Vietnamese canned fallback when the provider returns no text', async () => {
+    const result = await answerCoach(fakeClient(), 'user-1', { message: 'Vì sao tiến độ của tôi chậm?', timezone: 'UTC', locale: 'vi' }, new FakeProvider(''), { countRequests: async () => 0, logRequest: async () => undefined });
+    expect(result.message).toContain('Khuyến nghị:');
+    expect(result.message).toContain('Lý do:');
+  });
 });

@@ -74,13 +74,16 @@ export function formToProfile(values: OnboardingValues, completed: boolean) {
 }
 
 export async function getProfile(userId: string): Promise<Profile> {
-  const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
-  if (error || !data) throw new Error('PROFILE_LOAD_FAILED');
-  return data as Profile;
+  const existing = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+  if (existing.error) throw existing.error;
+  if (existing.data) return existing.data as Profile;
+  const created = await supabase.from('profiles').insert({ id: userId, role: 'USER' }).select('*').maybeSingle();
+  if (created.error) throw created.error;
+  if (!created.data) throw new Error('PROFILE_RECOVERY_FAILED');
+  return created.data as Profile;
 }
 
 export async function saveProfile(userId: string, values: OnboardingValues, completed: boolean): Promise<void> {
   const { error } = await supabase.from('profiles').update(formToProfile(values, completed)).eq('id', userId);
   if (error) throw error;
 }
-

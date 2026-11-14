@@ -6,8 +6,12 @@ import { utcDayStart } from '../lib/ai/usage.js';
 import { AppError } from '../lib/errors.js';
 import { serviceSupabaseClient } from '../lib/supabase.js';
 import { gatherCoachContext } from './coachContext.service.js';
+import { normalizeCoachLocale } from './coachContext.service.js';
 
-const FALLBACK_REPLY = 'Recommendation:\nKeep your next step simple and consistent.\n\nWhy:\nSome of your progress data is not available yet, so I cannot make a more specific recommendation.';
+const FALLBACK_REPLIES = {
+  en: 'Recommendation:\nKeep your next step simple and consistent.\n\nWhy:\nSome progress data is missing, so start with a manageable action today and track it.',
+  vi: 'Khuyến nghị:\nHãy bắt đầu bằng một bước đơn giản và duy trì đều đặn.\n\nLý do:\nMột số dữ liệu tiến độ còn thiếu, vì vậy hôm nay hãy chọn một hành động vừa sức và ghi lại kết quả.',
+} as const;
 
 async function countCoachRequests(userId: string): Promise<number> {
   const { count, error } = await serviceSupabaseClient
@@ -35,9 +39,10 @@ function titleFromMessage(message: string): string {
   return message.replace(/\s+/g, ' ').trim().slice(0, 60) || 'New conversation';
 }
 
-function safeReply(text: string): string {
+function safeReply(text: string, locale: 'en' | 'vi'): string {
   const clean = text.replace(/\0/g, '').trim().slice(0, 4000);
-  return clean || FALLBACK_REPLY;
+  const unavailableOnly = /^(?:recommendation|why|khuyến nghị|lý do)\s*:?\s*(?:not available|không có sẵn)\s*(?:[./\n]|$)/i.test(clean);
+  return !clean || unavailableOnly ? FALLBACK_REPLIES[locale] : clean;
 }
 
 export async function answerCoach(
@@ -47,6 +52,8 @@ export async function answerCoach(
   provider: AiProvider = createAiProvider(),
   dependencies: CoachDependencies = {},
 ): Promise<{ conversation_id: string; message: string }> {
+  const locale = normalizeCoachLocale(input.locale);
+  console.info('[ai] coach request', { locale });
   const count = dependencies.countRequests ?? countCoachRequests;
   const log = dependencies.logRequest ?? logCoachRequest;
   if (await count(userId) >= config.AI_COACH_DAILY_LIMIT) {
@@ -68,8 +75,8 @@ export async function answerCoach(
   try {
     if (!conversationId) throw new AppError(500, 'AI_CONVERSATION_CREATE_FAILED', 'Could not start this conversation.');
     const gathered = await gatherCoachContext(client, input.timezone, conversationId);
-    const text = await provider.generateText(COACH_V1(gathered.context, input.message, input.locale));
-    const message = safeReply(text);
+    const text = await provider.generateText(COACH_V1(gathered.context, input.message, locale));
+    const message = safeReply(text, locale);
     const assistant = await client.from('ai_messages').insert({ conversation_id: conversationId, role: 'assistant', content: message }).select('id').single();
     if (assistant.error) throw new AppError(500, 'AI_MESSAGE_SAVE_FAILED', 'Could not save the coach response.');
     await log(userId, 'SUCCEEDED', Date.now() - started);

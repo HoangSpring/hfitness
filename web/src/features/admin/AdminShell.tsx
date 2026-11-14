@@ -1,9 +1,10 @@
-import { NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Spinner } from '../../components/ui';
 import { useAuth } from '../auth/useAuth';
 import { getProfile, type Profile } from '../profile/profile';
 import { t } from '../../i18n/en';
 import { useEffect, useState } from 'react';
+import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 
 const navItems = [
   ['/admin', 'dashboard'],
@@ -59,13 +60,12 @@ function AdminShell({ profile }: { profile: Profile }) {
 
   return <div className="admin-shell">
     <aside className="admin-sidebar">
-      <div className="brand-mark">HF<span>itness</span></div>
+      <Link className="brand-mark" to="/" aria-label={t('brand')}>HF<span>itness</span></Link>
       <p className="admin-label">{t('admin.label')}</p>
       <nav aria-label={t('shell.menu')}>
         {navItems.map(([path, key]) => <NavLink end={path === '/admin'} key={path} to={path} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>{t(`admin.${key}`)}</NavLink>)}
       </nav>
       <NavLink className="nav-link" to="/dashboard">{t('admin.backToApp')}</NavLink>
-      <Button variant="secondary" onClick={() => void logout()}>{t('navigation.logout')}</Button>
     </aside>
     <main className="admin-main">
       <header className="admin-topbar">
@@ -73,6 +73,7 @@ function AdminShell({ profile }: { profile: Profile }) {
         <div className="admin-profile">
           <span>{displayName}</span>
           <strong>{t('admin.badge')}</strong>
+          <LanguageSwitcher />
           <Button variant="secondary" onClick={() => void logout()}>{t('navigation.logout')}</Button>
         </div>
       </header>

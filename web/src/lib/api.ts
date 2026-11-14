@@ -16,7 +16,12 @@ export async function apiRequest<T>(path: string, init: RequestInit = {}): Promi
   const headers = new Headers(init.headers);
   headers.set('Content-Type', 'application/json');
   if (data.session?.access_token) headers.set('Authorization', `Bearer ${data.session.access_token}`);
-  const response = await fetch(`${apiUrl}${path}`, { ...init, headers });
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}${path}`, { ...init, headers });
+  } catch {
+    throw new ApiRequestError('NETWORK_ERROR', 'Network request failed.');
+  }
   const body = (await response.json()) as { data?: T; error?: ApiError };
   if (!response.ok || body.error) throw new ApiRequestError(body.error?.code ?? 'REQUEST_FAILED', body.error?.message ?? 'Request failed.');
   if (!('data' in body)) throw new Error('Invalid API response.');
