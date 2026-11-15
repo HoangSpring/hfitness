@@ -455,7 +455,7 @@ export const en = {
     characterCount: '{count}/1000',
     typing: 'Coach is thinking...',
     user: 'You',
-    assistant: 'AI Coach',
+    assistant: 'AI Coach', widgetOpen: 'Open AI Coach assistant', widgetClose: 'Close AI Coach assistant', widgetDrag: 'Drag AI Coach assistant',
   },
   profile: {
     title: 'Your profile',

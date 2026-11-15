@@ -6,6 +6,7 @@ import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { getProfile, type Profile } from '../features/profile/profile';
 import { useEffect, useState } from 'react';
 import { shouldShowAdminNav } from './adminNavigation';
+import { CoachWidget } from '../features/coach/CoachWidget';
 
 const navItems = [
   ['/dashboard', 'dashboard'], ['/workout', 'workout'], ['/exercises', 'exercises'], ['/nutrition', 'nutrition'], ['/progress', 'progress'], ['/ai-coach', 'coach'], ['/profile', 'profile'],
@@ -28,5 +29,6 @@ export function AppShell() {
     <aside className="sidebar"><Link className="brand-mark" to="/" aria-label={t('brand')}>HF<span>itness</span></Link><nav aria-label={t('shell.menu')}>{navItems.map(([path, key]) => <NavLink key={path} to={path} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>{t(`navigation.${key}`)}</NavLink>)}{isAdmin && <NavLink to="/admin" className={({ isActive }) => isActive || location.pathname.startsWith('/admin') ? 'nav-link active' : 'nav-link'}>{t('navigation.admin')}</NavLink>}</nav><LanguageSwitcher /><Button variant="secondary" onClick={logout}>{t('navigation.logout')}</Button></aside>
     <main className="app-main"><header className="mobile-header"><Link className="brand-mark" to="/" aria-label={t('brand')}>HF<span>itness</span></Link><LanguageSwitcher /></header><Outlet /></main>
     <nav className="bottom-nav" aria-label={t('shell.menu')}>{(['/dashboard', '/workout', '/nutrition', '/progress', '/profile'] as const).map((path, index) => <NavLink key={path} to={path}>{t(`navigation.${(['home', 'workout', 'nutrition', 'progress', 'more'] as const)[index]}`)}</NavLink>)}{isAdmin && <NavLink to="/admin">{t('navigation.admin')}</NavLink>}</nav>
+    <CoachWidget />
   </div>;
 }
