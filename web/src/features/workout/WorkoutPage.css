@@ -13,6 +13,8 @@
   gap: 32px;
   padding-bottom: 48px;
 }
+.wk > *, .wk-card, .wk-draft-text, .wk-day, .wk-section, .wk-section-head { min-width: 0; }
+.wk h1, .wk h2, .wk h3, .wk-muted, .wk-plan-name { overflow-wrap: anywhere; }
 
 .wk h1 { font-size: 2.4rem; font-weight: 700; margin: 4px 0 8px; letter-spacing: -0.03em; }
 .wk h2 { font-size: 1.35rem; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
@@ -36,7 +38,7 @@
 /* Draft banner */
 .wk-draft { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .wk-draft-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--wk-accent-bg); color: var(--wk-accent-soft); display: grid; place-items: center; flex: none; }
-.wk-draft-text { flex: 1; min-width: 240px; }
+.wk-draft-text { flex: 1; min-width: 0; }
 .wk-draft-text h2 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 1.15rem; }
 .wk-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 

@@ -18,6 +18,8 @@
   background: var(--nutrition-bg);
   color: var(--nutrition-text);
 }
+.nutrition-page > *, .nutrition-header > *, .nutrition-header-actions > *, .nutrition-section-header > *, .nutrition-target-card, .nutrition-meal-card { min-width: 0; }
+.nutrition-page h1, .nutrition-page h2, .nutrition-page h3, .nutrition-page p, .nutrition-date-label { overflow-wrap: anywhere; }
 
 /* =========================================
    HEADER
@@ -101,7 +103,8 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  white-space: nowrap;
+  min-width: 0;
+  white-space: normal;
   font-size: 14px;
   font-weight: 500;
 }

@@ -13,6 +13,8 @@
   gap: 40px;
   padding-bottom: 48px;
 }
+.progress-page > *, .pg-card, .pg-grid-3 > *, .pg-grid-2 > *, .pg-grid-chart > *, .pg-section-head > * { min-width: 0; }
+.progress-page h1, .progress-page h2, .progress-page h3, .pg-muted, .pg-foot { overflow-wrap: anywhere; }
 
 .progress-page h1 { font-size: 2rem; font-weight: 600; margin: 4px 0 6px; letter-spacing: -0.02em; }
 .progress-page h2 { font-size: 1.35rem; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }

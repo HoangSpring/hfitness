@@ -13,8 +13,10 @@
   gap: 28px;
   padding-bottom: 48px;
 }
+.db > *, .db-card, .db-header > div, .db-hero-main > div, .db-panel-head > div, .db-columns > *, .db-side > * { min-width: 0; }
 .db h1 { font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; margin: 6px 0 8px; }
 .db h2 { margin: 0; font-size: 1.35rem; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+.db h1, .db h2, .db h3, .db-muted, .db-seq-item strong, .db-seq-item small { overflow-wrap: anywhere; }
 .db-muted { color: var(--db-muted); font-size: 0.95rem; line-height: 1.6; margin: 0; }
 .db-accent { color: var(--db-accent); }
 .db-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--db-muted); margin: 0; }
@@ -105,8 +107,16 @@
 
 @media (max-width: 900px) {
   .db-columns { grid-template-columns: 1fr; }
-  .db h1 { font-size: 2rem; }
+  .db h1 { font-size: clamp(1.75rem, 8vw, 2rem); }
   .db-hero { padding: 24px; }
-  .db-hero-title { font-size: 1.9rem !important; }
+  .db-hero-title { font-size: clamp(1.65rem, 7vw, 1.9rem) !important; }
   .db-protocol { min-width: 0; width: 100%; }
+}
+
+@media (max-width: 520px) {
+  .db-card { padding: 20px 16px; }
+  .db-stats, .db-sequence, .db-macros { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }
+  .db-day { font-size: .65rem; gap: 5px; padding: 8px 2px; }
+  .db-day i { height: 32px; width: 32px; }
+  .db-days { gap: 4px; }
 }
