@@ -49,6 +49,7 @@
 /* Summary */
 .wk-summary { display: flex; flex-direction: column; gap: 24px; }
 .wk-summary-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.wk-summary-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; }
 .wk-plan-name { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
 .wk-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; background: var(--wk-inner); border-radius: 12px; padding: 18px 20px; margin: 0; }
 .wk-stats dt { font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--wk-muted); }

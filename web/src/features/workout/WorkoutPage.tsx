@@ -149,9 +149,12 @@ export function WorkoutPage() {
           </div>
           <h2 className="wk-plan-name">{plan.name}</h2>
         </div>
-        {nextDay
-          ? <button type="button" className="wk-btn wk-btn-primary" onClick={() => void start(nextDay.id, nextDayIndex)} disabled={busy}>{Icon.play} {t(isCatchUp ? 'workout.startCatchUp' : 'workout.startToday')}</button>
-          : <span className="wk-pill wk-pill-accent">{waitingForTomorrow ? t('workout.nextDayTomorrow') : t('workout.allDaysComplete')}</span>}
+        <div className="wk-summary-actions">
+          {nextDay
+            ? <button type="button" className="wk-btn wk-btn-primary" onClick={() => void start(nextDay.id, nextDayIndex)} disabled={busy}>{Icon.play} {t(isCatchUp ? 'workout.startCatchUp' : 'workout.startToday')}</button>
+            : <span className="wk-pill wk-pill-accent">{waitingForTomorrow ? t('workout.nextDayTomorrow') : t('workout.allDaysComplete')}</span>}
+          <Link className="wk-btn wk-btn-ghost" to="/workout/history">{t('workout.viewHistory')}</Link>
+        </div>
       </div>
       <dl className="wk-stats">
         <div><dt>{t('workout.weeklyTime')}</dt><dd>{formatTotal(totalMinutes)}</dd><span>{t('workout.minutesPerSession', { minutes: averageMinutes })}</span></div>
